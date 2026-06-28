@@ -1,0 +1,7 @@
+# Dev-only local save server (not needed for the published site)
+save-server.js
+save-server.log
+
+# OS / editor junk
+.DS_Store
+*.log
