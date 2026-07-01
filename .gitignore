@@ -2,6 +2,7 @@
 save-server.js
 save-server.log
 publish.sh
+发布说明.md
 
 # OS / editor junk
 .DS_Store
