@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" style="--header-height: 63px; --hero-size: 145.4469198630595px; --hero-dot-scale: 1.15; --hero-speed: 12s; --dot-blue: #2f49ff; --dot-red: #ffa3d9; --dot-pink: #00e7eb; --dot-green: #9aace8; --text-panel-opacity: 0.9; --text-panel-blur: 12px; --dot-1: #2f49ff; --dot-2: #00e7eb; --dot-3: #00e7eb; --dot-4: #2f49ff; --dot-5: #9aace8; --dot-6: #9aace8; --dot-7: #ffa3d9; --dot-8: #ffa3d9; --dot-9: transparent; --dot-10: transparent; --dot-11: transparent; --dot-12: transparent; --hero-drift: 157.50650960942343px; --hero-block: 310px;"><head>
+<html lang="en" style="--header-height: 63px; --hero-size: 157.0505013477089px; --hero-dot-scale: 1.15; --hero-speed: 12s; --dot-blue: #2f49ff; --dot-red: #ffa3d9; --dot-pink: #00e7eb; --dot-green: #9aace8; --text-panel-opacity: 0.9; --text-panel-blur: 12px; --dot-1: #2f49ff; --dot-2: #00e7eb; --dot-3: #00e7eb; --dot-4: #2f49ff; --dot-5: #9aace8; --dot-6: #9aace8; --dot-7: #ffa3d9; --dot-8: #ffa3d9; --dot-9: transparent; --dot-10: transparent; --dot-11: transparent; --dot-12: transparent; --hero-drift: 64.63599519663765px; --hero-block: 332px;" class="local-editing"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -7,6 +7,13 @@
     <meta http-equiv="Expires" content="0">
     <meta name="portfolio-build" content="2026-06-22-project-point-scroll-2">
     <title>Julian Zhu Portfolio</title>
+    <script>
+      (() => {
+        const localHosts = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
+        const localEditing = window.location.protocol === "file:" || localHosts.has(window.location.hostname);
+        document.documentElement.classList.toggle("local-editing", localEditing);
+      })();
+    </script>
     <style>
       :root {
         --page: #0a0a0a;
@@ -57,6 +64,20 @@
         background: var(--page);
         color: var(--text);
         font-family: Bauhaus, "Arial Rounded MT Bold", "Trebuchet MS", Arial, sans-serif;
+      }
+
+      html:not(.local-editing) .settings-toggle,
+      html:not(.local-editing) .motion-panel,
+      html:not(.local-editing) .content-editor-panel,
+      html:not(.local-editing) .text-editor-panel,
+      html:not(.local-editing) .tile-edit,
+      html:not(.local-editing) .text-edit {
+        display: none !important;
+      }
+
+      html:not(.local-editing) .text-editable {
+        outline: none !important;
+        cursor: inherit;
       }
 
       .page {
@@ -3333,8 +3354,393 @@
               calc(120.70% - var(--dot-size) / 2) calc(-211.00% - var(--dot-size) / 2),
               calc(1.90% - var(--dot-size) / 2) calc(-227.00% - var(--dot-size) / 2),
               calc(85.60% - var(--dot-size) / 2) calc(-233.00% - var(--dot-size) / 2),
+              0 0; } }</style><style>@keyframes hero-dots-line-1 { 0% { background-position: calc(-8.05% - var(--dot-size) / 2) calc(-129.00% - var(--dot-size) / 2),
+              calc(14.90% - var(--dot-size) / 2) calc(-77.00% - var(--dot-size) / 2),
+              calc(39.20% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-73.00% - var(--dot-size) / 2),
+              calc(95.90% - var(--dot-size) / 2) calc(-121.00% - var(--dot-size) / 2),
+              calc(1.40% - var(--dot-size) / 2) calc(-103.00% - var(--dot-size) / 2),
+              calc(25.70% - var(--dot-size) / 2) calc(-95.00% - var(--dot-size) / 2),
+              calc(50.00% - var(--dot-size) / 2) calc(-131.00% - var(--dot-size) / 2),
+              calc(74.30% - var(--dot-size) / 2) calc(-97.00% - var(--dot-size) / 2),
+              calc(101.30% - var(--dot-size) / 2) calc(-67.00% - var(--dot-size) / 2),
+              calc(-9.40% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(58.10% - var(--dot-size) / 2) calc(-101.00% - var(--dot-size) / 2),
+              0 0; }
+          50% { background-position: calc(4.10% - var(--dot-size) / 2) calc(-73.00% - var(--dot-size) / 2),
+              calc(31.10% - var(--dot-size) / 2) calc(-121.00% - var(--dot-size) / 2),
+              calc(58.10% - var(--dot-size) / 2) calc(-79.00% - var(--dot-size) / 2),
+              calc(85.10% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(101.30% - var(--dot-size) / 2) calc(-93.00% - var(--dot-size) / 2),
+              calc(-6.70% - var(--dot-size) / 2) calc(-115.00% - var(--dot-size) / 2),
+              calc(20.30% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(47.30% - var(--dot-size) / 2) calc(-113.00% - var(--dot-size) / 2),
+              calc(77.00% - var(--dot-size) / 2) calc(-63.00% - var(--dot-size) / 2),
+              calc(109.40% - var(--dot-size) / 2) calc(-117.00% - var(--dot-size) / 2),
+              calc(6.80% - var(--dot-size) / 2) calc(-91.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-131.00% - var(--dot-size) / 2),
+              0 0; }
+          100% { background-position: calc(-4.00% - var(--dot-size) / 2) calc(-97.00% - var(--dot-size) / 2),
+              calc(41.90% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(23.00% - var(--dot-size) / 2) calc(-129.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-111.00% - var(--dot-size) / 2),
+              calc(87.80% - var(--dot-size) / 2) calc(-71.00% - var(--dot-size) / 2),
+              calc(9.50% - var(--dot-size) / 2) calc(-133.00% - var(--dot-size) / 2),
+              calc(33.80% - var(--dot-size) / 2) calc(-87.00% - var(--dot-size) / 2),
+              calc(55.40% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(93.20% - var(--dot-size) / 2) calc(-103.00% - var(--dot-size) / 2),
+              calc(106.70% - var(--dot-size) / 2) calc(-61.00% - var(--dot-size) / 2),
+              calc(-12.10% - var(--dot-size) / 2) calc(-77.00% - var(--dot-size) / 2),
+              calc(71.60% - var(--dot-size) / 2) calc(-83.00% - var(--dot-size) / 2),
+              0 0; } }
+@keyframes hero-dots-line-2 { 0% { background-position: calc(5.95% - var(--dot-size) / 2) calc(-279.00% - var(--dot-size) / 2),
+              calc(28.90% - var(--dot-size) / 2) calc(-227.00% - var(--dot-size) / 2),
+              calc(53.20% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-223.00% - var(--dot-size) / 2),
+              calc(109.90% - var(--dot-size) / 2) calc(-271.00% - var(--dot-size) / 2),
+              calc(15.40% - var(--dot-size) / 2) calc(-253.00% - var(--dot-size) / 2),
+              calc(39.70% - var(--dot-size) / 2) calc(-245.00% - var(--dot-size) / 2),
+              calc(64.00% - var(--dot-size) / 2) calc(-281.00% - var(--dot-size) / 2),
+              calc(88.30% - var(--dot-size) / 2) calc(-247.00% - var(--dot-size) / 2),
+              calc(115.30% - var(--dot-size) / 2) calc(-217.00% - var(--dot-size) / 2),
+              calc(4.60% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(72.10% - var(--dot-size) / 2) calc(-251.00% - var(--dot-size) / 2),
+              0 0; }
+          50% { background-position: calc(18.10% - var(--dot-size) / 2) calc(-223.00% - var(--dot-size) / 2),
+              calc(45.10% - var(--dot-size) / 2) calc(-271.00% - var(--dot-size) / 2),
+              calc(72.10% - var(--dot-size) / 2) calc(-229.00% - var(--dot-size) / 2),
+              calc(99.10% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(115.30% - var(--dot-size) / 2) calc(-243.00% - var(--dot-size) / 2),
+              calc(7.30% - var(--dot-size) / 2) calc(-265.00% - var(--dot-size) / 2),
+              calc(34.30% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(61.30% - var(--dot-size) / 2) calc(-263.00% - var(--dot-size) / 2),
+              calc(91.00% - var(--dot-size) / 2) calc(-213.00% - var(--dot-size) / 2),
+              calc(123.40% - var(--dot-size) / 2) calc(-267.00% - var(--dot-size) / 2),
+              calc(20.80% - var(--dot-size) / 2) calc(-241.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-281.00% - var(--dot-size) / 2),
+              0 0; }
+          100% { background-position: calc(10.00% - var(--dot-size) / 2) calc(-247.00% - var(--dot-size) / 2),
+              calc(55.90% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(37.00% - var(--dot-size) / 2) calc(-279.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-261.00% - var(--dot-size) / 2),
+              calc(101.80% - var(--dot-size) / 2) calc(-221.00% - var(--dot-size) / 2),
+              calc(23.50% - var(--dot-size) / 2) calc(-283.00% - var(--dot-size) / 2),
+              calc(47.80% - var(--dot-size) / 2) calc(-237.00% - var(--dot-size) / 2),
+              calc(69.40% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(107.20% - var(--dot-size) / 2) calc(-253.00% - var(--dot-size) / 2),
+              calc(120.70% - var(--dot-size) / 2) calc(-211.00% - var(--dot-size) / 2),
+              calc(1.90% - var(--dot-size) / 2) calc(-227.00% - var(--dot-size) / 2),
+              calc(85.60% - var(--dot-size) / 2) calc(-233.00% - var(--dot-size) / 2),
+              0 0; } }</style><style>@keyframes hero-dots-line-1 { 0% { background-position: calc(-8.05% - var(--dot-size) / 2) calc(-129.00% - var(--dot-size) / 2),
+              calc(14.90% - var(--dot-size) / 2) calc(-77.00% - var(--dot-size) / 2),
+              calc(39.20% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-73.00% - var(--dot-size) / 2),
+              calc(95.90% - var(--dot-size) / 2) calc(-121.00% - var(--dot-size) / 2),
+              calc(1.40% - var(--dot-size) / 2) calc(-103.00% - var(--dot-size) / 2),
+              calc(25.70% - var(--dot-size) / 2) calc(-95.00% - var(--dot-size) / 2),
+              calc(50.00% - var(--dot-size) / 2) calc(-131.00% - var(--dot-size) / 2),
+              calc(74.30% - var(--dot-size) / 2) calc(-97.00% - var(--dot-size) / 2),
+              calc(101.30% - var(--dot-size) / 2) calc(-67.00% - var(--dot-size) / 2),
+              calc(-9.40% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(58.10% - var(--dot-size) / 2) calc(-101.00% - var(--dot-size) / 2),
+              0 0; }
+          50% { background-position: calc(4.10% - var(--dot-size) / 2) calc(-73.00% - var(--dot-size) / 2),
+              calc(31.10% - var(--dot-size) / 2) calc(-121.00% - var(--dot-size) / 2),
+              calc(58.10% - var(--dot-size) / 2) calc(-79.00% - var(--dot-size) / 2),
+              calc(85.10% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(101.30% - var(--dot-size) / 2) calc(-93.00% - var(--dot-size) / 2),
+              calc(-6.70% - var(--dot-size) / 2) calc(-115.00% - var(--dot-size) / 2),
+              calc(20.30% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(47.30% - var(--dot-size) / 2) calc(-113.00% - var(--dot-size) / 2),
+              calc(77.00% - var(--dot-size) / 2) calc(-63.00% - var(--dot-size) / 2),
+              calc(109.40% - var(--dot-size) / 2) calc(-117.00% - var(--dot-size) / 2),
+              calc(6.80% - var(--dot-size) / 2) calc(-91.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-131.00% - var(--dot-size) / 2),
+              0 0; }
+          100% { background-position: calc(-4.00% - var(--dot-size) / 2) calc(-97.00% - var(--dot-size) / 2),
+              calc(41.90% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(23.00% - var(--dot-size) / 2) calc(-129.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-111.00% - var(--dot-size) / 2),
+              calc(87.80% - var(--dot-size) / 2) calc(-71.00% - var(--dot-size) / 2),
+              calc(9.50% - var(--dot-size) / 2) calc(-133.00% - var(--dot-size) / 2),
+              calc(33.80% - var(--dot-size) / 2) calc(-87.00% - var(--dot-size) / 2),
+              calc(55.40% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(93.20% - var(--dot-size) / 2) calc(-103.00% - var(--dot-size) / 2),
+              calc(106.70% - var(--dot-size) / 2) calc(-61.00% - var(--dot-size) / 2),
+              calc(-12.10% - var(--dot-size) / 2) calc(-77.00% - var(--dot-size) / 2),
+              calc(71.60% - var(--dot-size) / 2) calc(-83.00% - var(--dot-size) / 2),
+              0 0; } }
+@keyframes hero-dots-line-2 { 0% { background-position: calc(5.95% - var(--dot-size) / 2) calc(-279.00% - var(--dot-size) / 2),
+              calc(28.90% - var(--dot-size) / 2) calc(-227.00% - var(--dot-size) / 2),
+              calc(53.20% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-223.00% - var(--dot-size) / 2),
+              calc(109.90% - var(--dot-size) / 2) calc(-271.00% - var(--dot-size) / 2),
+              calc(15.40% - var(--dot-size) / 2) calc(-253.00% - var(--dot-size) / 2),
+              calc(39.70% - var(--dot-size) / 2) calc(-245.00% - var(--dot-size) / 2),
+              calc(64.00% - var(--dot-size) / 2) calc(-281.00% - var(--dot-size) / 2),
+              calc(88.30% - var(--dot-size) / 2) calc(-247.00% - var(--dot-size) / 2),
+              calc(115.30% - var(--dot-size) / 2) calc(-217.00% - var(--dot-size) / 2),
+              calc(4.60% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(72.10% - var(--dot-size) / 2) calc(-251.00% - var(--dot-size) / 2),
+              0 0; }
+          50% { background-position: calc(18.10% - var(--dot-size) / 2) calc(-223.00% - var(--dot-size) / 2),
+              calc(45.10% - var(--dot-size) / 2) calc(-271.00% - var(--dot-size) / 2),
+              calc(72.10% - var(--dot-size) / 2) calc(-229.00% - var(--dot-size) / 2),
+              calc(99.10% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(115.30% - var(--dot-size) / 2) calc(-243.00% - var(--dot-size) / 2),
+              calc(7.30% - var(--dot-size) / 2) calc(-265.00% - var(--dot-size) / 2),
+              calc(34.30% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(61.30% - var(--dot-size) / 2) calc(-263.00% - var(--dot-size) / 2),
+              calc(91.00% - var(--dot-size) / 2) calc(-213.00% - var(--dot-size) / 2),
+              calc(123.40% - var(--dot-size) / 2) calc(-267.00% - var(--dot-size) / 2),
+              calc(20.80% - var(--dot-size) / 2) calc(-241.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-281.00% - var(--dot-size) / 2),
+              0 0; }
+          100% { background-position: calc(10.00% - var(--dot-size) / 2) calc(-247.00% - var(--dot-size) / 2),
+              calc(55.90% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(37.00% - var(--dot-size) / 2) calc(-279.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-261.00% - var(--dot-size) / 2),
+              calc(101.80% - var(--dot-size) / 2) calc(-221.00% - var(--dot-size) / 2),
+              calc(23.50% - var(--dot-size) / 2) calc(-283.00% - var(--dot-size) / 2),
+              calc(47.80% - var(--dot-size) / 2) calc(-237.00% - var(--dot-size) / 2),
+              calc(69.40% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(107.20% - var(--dot-size) / 2) calc(-253.00% - var(--dot-size) / 2),
+              calc(120.70% - var(--dot-size) / 2) calc(-211.00% - var(--dot-size) / 2),
+              calc(1.90% - var(--dot-size) / 2) calc(-227.00% - var(--dot-size) / 2),
+              calc(85.60% - var(--dot-size) / 2) calc(-233.00% - var(--dot-size) / 2),
+              0 0; } }</style><style>@keyframes hero-dots-line-1 { 0% { background-position: calc(-8.05% - var(--dot-size) / 2) calc(-129.00% - var(--dot-size) / 2),
+              calc(14.90% - var(--dot-size) / 2) calc(-77.00% - var(--dot-size) / 2),
+              calc(39.20% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-73.00% - var(--dot-size) / 2),
+              calc(95.90% - var(--dot-size) / 2) calc(-121.00% - var(--dot-size) / 2),
+              calc(1.40% - var(--dot-size) / 2) calc(-103.00% - var(--dot-size) / 2),
+              calc(25.70% - var(--dot-size) / 2) calc(-95.00% - var(--dot-size) / 2),
+              calc(50.00% - var(--dot-size) / 2) calc(-131.00% - var(--dot-size) / 2),
+              calc(74.30% - var(--dot-size) / 2) calc(-97.00% - var(--dot-size) / 2),
+              calc(101.30% - var(--dot-size) / 2) calc(-67.00% - var(--dot-size) / 2),
+              calc(-9.40% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(58.10% - var(--dot-size) / 2) calc(-101.00% - var(--dot-size) / 2),
+              0 0; }
+          50% { background-position: calc(4.10% - var(--dot-size) / 2) calc(-73.00% - var(--dot-size) / 2),
+              calc(31.10% - var(--dot-size) / 2) calc(-121.00% - var(--dot-size) / 2),
+              calc(58.10% - var(--dot-size) / 2) calc(-79.00% - var(--dot-size) / 2),
+              calc(85.10% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(101.30% - var(--dot-size) / 2) calc(-93.00% - var(--dot-size) / 2),
+              calc(-6.70% - var(--dot-size) / 2) calc(-115.00% - var(--dot-size) / 2),
+              calc(20.30% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(47.30% - var(--dot-size) / 2) calc(-113.00% - var(--dot-size) / 2),
+              calc(77.00% - var(--dot-size) / 2) calc(-63.00% - var(--dot-size) / 2),
+              calc(109.40% - var(--dot-size) / 2) calc(-117.00% - var(--dot-size) / 2),
+              calc(6.80% - var(--dot-size) / 2) calc(-91.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-131.00% - var(--dot-size) / 2),
+              0 0; }
+          100% { background-position: calc(-4.00% - var(--dot-size) / 2) calc(-97.00% - var(--dot-size) / 2),
+              calc(41.90% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(23.00% - var(--dot-size) / 2) calc(-129.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-111.00% - var(--dot-size) / 2),
+              calc(87.80% - var(--dot-size) / 2) calc(-71.00% - var(--dot-size) / 2),
+              calc(9.50% - var(--dot-size) / 2) calc(-133.00% - var(--dot-size) / 2),
+              calc(33.80% - var(--dot-size) / 2) calc(-87.00% - var(--dot-size) / 2),
+              calc(55.40% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(93.20% - var(--dot-size) / 2) calc(-103.00% - var(--dot-size) / 2),
+              calc(106.70% - var(--dot-size) / 2) calc(-61.00% - var(--dot-size) / 2),
+              calc(-12.10% - var(--dot-size) / 2) calc(-77.00% - var(--dot-size) / 2),
+              calc(71.60% - var(--dot-size) / 2) calc(-83.00% - var(--dot-size) / 2),
+              0 0; } }
+@keyframes hero-dots-line-2 { 0% { background-position: calc(5.95% - var(--dot-size) / 2) calc(-279.00% - var(--dot-size) / 2),
+              calc(28.90% - var(--dot-size) / 2) calc(-227.00% - var(--dot-size) / 2),
+              calc(53.20% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-223.00% - var(--dot-size) / 2),
+              calc(109.90% - var(--dot-size) / 2) calc(-271.00% - var(--dot-size) / 2),
+              calc(15.40% - var(--dot-size) / 2) calc(-253.00% - var(--dot-size) / 2),
+              calc(39.70% - var(--dot-size) / 2) calc(-245.00% - var(--dot-size) / 2),
+              calc(64.00% - var(--dot-size) / 2) calc(-281.00% - var(--dot-size) / 2),
+              calc(88.30% - var(--dot-size) / 2) calc(-247.00% - var(--dot-size) / 2),
+              calc(115.30% - var(--dot-size) / 2) calc(-217.00% - var(--dot-size) / 2),
+              calc(4.60% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(72.10% - var(--dot-size) / 2) calc(-251.00% - var(--dot-size) / 2),
+              0 0; }
+          50% { background-position: calc(18.10% - var(--dot-size) / 2) calc(-223.00% - var(--dot-size) / 2),
+              calc(45.10% - var(--dot-size) / 2) calc(-271.00% - var(--dot-size) / 2),
+              calc(72.10% - var(--dot-size) / 2) calc(-229.00% - var(--dot-size) / 2),
+              calc(99.10% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(115.30% - var(--dot-size) / 2) calc(-243.00% - var(--dot-size) / 2),
+              calc(7.30% - var(--dot-size) / 2) calc(-265.00% - var(--dot-size) / 2),
+              calc(34.30% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(61.30% - var(--dot-size) / 2) calc(-263.00% - var(--dot-size) / 2),
+              calc(91.00% - var(--dot-size) / 2) calc(-213.00% - var(--dot-size) / 2),
+              calc(123.40% - var(--dot-size) / 2) calc(-267.00% - var(--dot-size) / 2),
+              calc(20.80% - var(--dot-size) / 2) calc(-241.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-281.00% - var(--dot-size) / 2),
+              0 0; }
+          100% { background-position: calc(10.00% - var(--dot-size) / 2) calc(-247.00% - var(--dot-size) / 2),
+              calc(55.90% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(37.00% - var(--dot-size) / 2) calc(-279.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-261.00% - var(--dot-size) / 2),
+              calc(101.80% - var(--dot-size) / 2) calc(-221.00% - var(--dot-size) / 2),
+              calc(23.50% - var(--dot-size) / 2) calc(-283.00% - var(--dot-size) / 2),
+              calc(47.80% - var(--dot-size) / 2) calc(-237.00% - var(--dot-size) / 2),
+              calc(69.40% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(107.20% - var(--dot-size) / 2) calc(-253.00% - var(--dot-size) / 2),
+              calc(120.70% - var(--dot-size) / 2) calc(-211.00% - var(--dot-size) / 2),
+              calc(1.90% - var(--dot-size) / 2) calc(-227.00% - var(--dot-size) / 2),
+              calc(85.60% - var(--dot-size) / 2) calc(-233.00% - var(--dot-size) / 2),
+              0 0; } }</style><style>@keyframes hero-dots-line-1 { 0% { background-position: calc(-8.05% - var(--dot-size) / 2) calc(-129.00% - var(--dot-size) / 2),
+              calc(14.90% - var(--dot-size) / 2) calc(-77.00% - var(--dot-size) / 2),
+              calc(39.20% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-73.00% - var(--dot-size) / 2),
+              calc(95.90% - var(--dot-size) / 2) calc(-121.00% - var(--dot-size) / 2),
+              calc(1.40% - var(--dot-size) / 2) calc(-103.00% - var(--dot-size) / 2),
+              calc(25.70% - var(--dot-size) / 2) calc(-95.00% - var(--dot-size) / 2),
+              calc(50.00% - var(--dot-size) / 2) calc(-131.00% - var(--dot-size) / 2),
+              calc(74.30% - var(--dot-size) / 2) calc(-97.00% - var(--dot-size) / 2),
+              calc(101.30% - var(--dot-size) / 2) calc(-67.00% - var(--dot-size) / 2),
+              calc(-9.40% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(58.10% - var(--dot-size) / 2) calc(-101.00% - var(--dot-size) / 2),
+              0 0; }
+          50% { background-position: calc(4.10% - var(--dot-size) / 2) calc(-73.00% - var(--dot-size) / 2),
+              calc(31.10% - var(--dot-size) / 2) calc(-121.00% - var(--dot-size) / 2),
+              calc(58.10% - var(--dot-size) / 2) calc(-79.00% - var(--dot-size) / 2),
+              calc(85.10% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(101.30% - var(--dot-size) / 2) calc(-93.00% - var(--dot-size) / 2),
+              calc(-6.70% - var(--dot-size) / 2) calc(-115.00% - var(--dot-size) / 2),
+              calc(20.30% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(47.30% - var(--dot-size) / 2) calc(-113.00% - var(--dot-size) / 2),
+              calc(77.00% - var(--dot-size) / 2) calc(-63.00% - var(--dot-size) / 2),
+              calc(109.40% - var(--dot-size) / 2) calc(-117.00% - var(--dot-size) / 2),
+              calc(6.80% - var(--dot-size) / 2) calc(-91.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-131.00% - var(--dot-size) / 2),
+              0 0; }
+          100% { background-position: calc(-4.00% - var(--dot-size) / 2) calc(-97.00% - var(--dot-size) / 2),
+              calc(41.90% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(23.00% - var(--dot-size) / 2) calc(-129.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-111.00% - var(--dot-size) / 2),
+              calc(87.80% - var(--dot-size) / 2) calc(-71.00% - var(--dot-size) / 2),
+              calc(9.50% - var(--dot-size) / 2) calc(-133.00% - var(--dot-size) / 2),
+              calc(33.80% - var(--dot-size) / 2) calc(-87.00% - var(--dot-size) / 2),
+              calc(55.40% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(93.20% - var(--dot-size) / 2) calc(-103.00% - var(--dot-size) / 2),
+              calc(106.70% - var(--dot-size) / 2) calc(-61.00% - var(--dot-size) / 2),
+              calc(-12.10% - var(--dot-size) / 2) calc(-77.00% - var(--dot-size) / 2),
+              calc(71.60% - var(--dot-size) / 2) calc(-83.00% - var(--dot-size) / 2),
+              0 0; } }
+@keyframes hero-dots-line-2 { 0% { background-position: calc(5.95% - var(--dot-size) / 2) calc(-279.00% - var(--dot-size) / 2),
+              calc(28.90% - var(--dot-size) / 2) calc(-227.00% - var(--dot-size) / 2),
+              calc(53.20% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-223.00% - var(--dot-size) / 2),
+              calc(109.90% - var(--dot-size) / 2) calc(-271.00% - var(--dot-size) / 2),
+              calc(15.40% - var(--dot-size) / 2) calc(-253.00% - var(--dot-size) / 2),
+              calc(39.70% - var(--dot-size) / 2) calc(-245.00% - var(--dot-size) / 2),
+              calc(64.00% - var(--dot-size) / 2) calc(-281.00% - var(--dot-size) / 2),
+              calc(88.30% - var(--dot-size) / 2) calc(-247.00% - var(--dot-size) / 2),
+              calc(115.30% - var(--dot-size) / 2) calc(-217.00% - var(--dot-size) / 2),
+              calc(4.60% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(72.10% - var(--dot-size) / 2) calc(-251.00% - var(--dot-size) / 2),
+              0 0; }
+          50% { background-position: calc(18.10% - var(--dot-size) / 2) calc(-223.00% - var(--dot-size) / 2),
+              calc(45.10% - var(--dot-size) / 2) calc(-271.00% - var(--dot-size) / 2),
+              calc(72.10% - var(--dot-size) / 2) calc(-229.00% - var(--dot-size) / 2),
+              calc(99.10% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(115.30% - var(--dot-size) / 2) calc(-243.00% - var(--dot-size) / 2),
+              calc(7.30% - var(--dot-size) / 2) calc(-265.00% - var(--dot-size) / 2),
+              calc(34.30% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(61.30% - var(--dot-size) / 2) calc(-263.00% - var(--dot-size) / 2),
+              calc(91.00% - var(--dot-size) / 2) calc(-213.00% - var(--dot-size) / 2),
+              calc(123.40% - var(--dot-size) / 2) calc(-267.00% - var(--dot-size) / 2),
+              calc(20.80% - var(--dot-size) / 2) calc(-241.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-281.00% - var(--dot-size) / 2),
+              0 0; }
+          100% { background-position: calc(10.00% - var(--dot-size) / 2) calc(-247.00% - var(--dot-size) / 2),
+              calc(55.90% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(37.00% - var(--dot-size) / 2) calc(-279.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-261.00% - var(--dot-size) / 2),
+              calc(101.80% - var(--dot-size) / 2) calc(-221.00% - var(--dot-size) / 2),
+              calc(23.50% - var(--dot-size) / 2) calc(-283.00% - var(--dot-size) / 2),
+              calc(47.80% - var(--dot-size) / 2) calc(-237.00% - var(--dot-size) / 2),
+              calc(69.40% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(107.20% - var(--dot-size) / 2) calc(-253.00% - var(--dot-size) / 2),
+              calc(120.70% - var(--dot-size) / 2) calc(-211.00% - var(--dot-size) / 2),
+              calc(1.90% - var(--dot-size) / 2) calc(-227.00% - var(--dot-size) / 2),
+              calc(85.60% - var(--dot-size) / 2) calc(-233.00% - var(--dot-size) / 2),
+              0 0; } }</style><style>@keyframes hero-dots-line-1 { 0% { background-position: calc(-8.05% - var(--dot-size) / 2) calc(-129.00% - var(--dot-size) / 2),
+              calc(14.90% - var(--dot-size) / 2) calc(-77.00% - var(--dot-size) / 2),
+              calc(39.20% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-73.00% - var(--dot-size) / 2),
+              calc(95.90% - var(--dot-size) / 2) calc(-121.00% - var(--dot-size) / 2),
+              calc(1.40% - var(--dot-size) / 2) calc(-103.00% - var(--dot-size) / 2),
+              calc(25.70% - var(--dot-size) / 2) calc(-95.00% - var(--dot-size) / 2),
+              calc(50.00% - var(--dot-size) / 2) calc(-131.00% - var(--dot-size) / 2),
+              calc(74.30% - var(--dot-size) / 2) calc(-97.00% - var(--dot-size) / 2),
+              calc(101.30% - var(--dot-size) / 2) calc(-67.00% - var(--dot-size) / 2),
+              calc(-9.40% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(58.10% - var(--dot-size) / 2) calc(-101.00% - var(--dot-size) / 2),
+              0 0; }
+          50% { background-position: calc(4.10% - var(--dot-size) / 2) calc(-73.00% - var(--dot-size) / 2),
+              calc(31.10% - var(--dot-size) / 2) calc(-121.00% - var(--dot-size) / 2),
+              calc(58.10% - var(--dot-size) / 2) calc(-79.00% - var(--dot-size) / 2),
+              calc(85.10% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(101.30% - var(--dot-size) / 2) calc(-93.00% - var(--dot-size) / 2),
+              calc(-6.70% - var(--dot-size) / 2) calc(-115.00% - var(--dot-size) / 2),
+              calc(20.30% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(47.30% - var(--dot-size) / 2) calc(-113.00% - var(--dot-size) / 2),
+              calc(77.00% - var(--dot-size) / 2) calc(-63.00% - var(--dot-size) / 2),
+              calc(109.40% - var(--dot-size) / 2) calc(-117.00% - var(--dot-size) / 2),
+              calc(6.80% - var(--dot-size) / 2) calc(-91.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-131.00% - var(--dot-size) / 2),
+              0 0; }
+          100% { background-position: calc(-4.00% - var(--dot-size) / 2) calc(-97.00% - var(--dot-size) / 2),
+              calc(41.90% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(23.00% - var(--dot-size) / 2) calc(-129.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-111.00% - var(--dot-size) / 2),
+              calc(87.80% - var(--dot-size) / 2) calc(-71.00% - var(--dot-size) / 2),
+              calc(9.50% - var(--dot-size) / 2) calc(-133.00% - var(--dot-size) / 2),
+              calc(33.80% - var(--dot-size) / 2) calc(-87.00% - var(--dot-size) / 2),
+              calc(55.40% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(93.20% - var(--dot-size) / 2) calc(-103.00% - var(--dot-size) / 2),
+              calc(106.70% - var(--dot-size) / 2) calc(-61.00% - var(--dot-size) / 2),
+              calc(-12.10% - var(--dot-size) / 2) calc(-77.00% - var(--dot-size) / 2),
+              calc(71.60% - var(--dot-size) / 2) calc(-83.00% - var(--dot-size) / 2),
+              0 0; } }
+@keyframes hero-dots-line-2 { 0% { background-position: calc(5.95% - var(--dot-size) / 2) calc(-279.00% - var(--dot-size) / 2),
+              calc(28.90% - var(--dot-size) / 2) calc(-227.00% - var(--dot-size) / 2),
+              calc(53.20% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-223.00% - var(--dot-size) / 2),
+              calc(109.90% - var(--dot-size) / 2) calc(-271.00% - var(--dot-size) / 2),
+              calc(15.40% - var(--dot-size) / 2) calc(-253.00% - var(--dot-size) / 2),
+              calc(39.70% - var(--dot-size) / 2) calc(-245.00% - var(--dot-size) / 2),
+              calc(64.00% - var(--dot-size) / 2) calc(-281.00% - var(--dot-size) / 2),
+              calc(88.30% - var(--dot-size) / 2) calc(-247.00% - var(--dot-size) / 2),
+              calc(115.30% - var(--dot-size) / 2) calc(-217.00% - var(--dot-size) / 2),
+              calc(4.60% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(72.10% - var(--dot-size) / 2) calc(-251.00% - var(--dot-size) / 2),
+              0 0; }
+          50% { background-position: calc(18.10% - var(--dot-size) / 2) calc(-223.00% - var(--dot-size) / 2),
+              calc(45.10% - var(--dot-size) / 2) calc(-271.00% - var(--dot-size) / 2),
+              calc(72.10% - var(--dot-size) / 2) calc(-229.00% - var(--dot-size) / 2),
+              calc(99.10% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(115.30% - var(--dot-size) / 2) calc(-243.00% - var(--dot-size) / 2),
+              calc(7.30% - var(--dot-size) / 2) calc(-265.00% - var(--dot-size) / 2),
+              calc(34.30% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(61.30% - var(--dot-size) / 2) calc(-263.00% - var(--dot-size) / 2),
+              calc(91.00% - var(--dot-size) / 2) calc(-213.00% - var(--dot-size) / 2),
+              calc(123.40% - var(--dot-size) / 2) calc(-267.00% - var(--dot-size) / 2),
+              calc(20.80% - var(--dot-size) / 2) calc(-241.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-281.00% - var(--dot-size) / 2),
+              0 0; }
+          100% { background-position: calc(10.00% - var(--dot-size) / 2) calc(-247.00% - var(--dot-size) / 2),
+              calc(55.90% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(37.00% - var(--dot-size) / 2) calc(-279.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-261.00% - var(--dot-size) / 2),
+              calc(101.80% - var(--dot-size) / 2) calc(-221.00% - var(--dot-size) / 2),
+              calc(23.50% - var(--dot-size) / 2) calc(-283.00% - var(--dot-size) / 2),
+              calc(47.80% - var(--dot-size) / 2) calc(-237.00% - var(--dot-size) / 2),
+              calc(69.40% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(107.20% - var(--dot-size) / 2) calc(-253.00% - var(--dot-size) / 2),
+              calc(120.70% - var(--dot-size) / 2) calc(-211.00% - var(--dot-size) / 2),
+              calc(1.90% - var(--dot-size) / 2) calc(-227.00% - var(--dot-size) / 2),
+              calc(85.60% - var(--dot-size) / 2) calc(-233.00% - var(--dot-size) / 2),
               0 0; } }</style></head>
-  <body>
+  <body monica-id="ofpnmcalabcbjgholdjcjblkibolbppb" monica-version="9.0.18">
     <main class="page">
       <nav class="nav site-header" aria-label="Primary">
         <span>Julian Zhu</span>
@@ -3385,6 +3791,16 @@
           
         
           
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
         </p>
         </article>
 
@@ -3397,14 +3813,18 @@
 
         <article class="section-title panel" data-text-id="text-2" style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 20px; padding-bottom: 20px; opacity: 1;">Selected Projects 01<br>2025-2026
           
+        
+          
         </article>
 
         <article class="project-head" data-active-project-point="ai-search">
           <div class="project-title panel"><p style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 0px; padding-bottom: 0px; opacity: 1;" class="" data-text-id="text-3">搜推体验设计<br>得物 APP
           
+        
+          
         </p></div>
           <div class="project-middle">
-            <div class="project-desc panel"><p style="font-size: 19px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.3; padding-top: 8px; padding-bottom: 8px; opacity: 1;" class="" data-text-id="text-4" data-default-project-desc="背景：用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。">搜索大促氛围：围绕情人节、新年、礼物节等大促节庆活动，搜索框通过桃花/烟花/雪人等的元素表达，并新增榜单的氛围展示点位，提升搜索场域节庆氛围，提升搜索大盘成交转化。
+            <div class="project-desc panel"><p style="font-size: 19px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.3; padding-top: 8px; padding-bottom: 8px; opacity: 1;" class="" data-text-id="text-4" data-default-project-desc="背景：用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。">背景：用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。
           
         </p></div>
             <div class="project-actions">
@@ -3412,7 +3832,7 @@
               <a class="pill panel" href="#">Motion Design</a>
             </div>
           </div>
-          <div class="project-points panel" data-text-id="project-points-searchpush" data-project-points="searchpush" style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;"><p class="project-point" data-project-point="ai-search" data-project-desc="用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。" role="button" tabindex="0"><span class="project-point-label">AI 智能搜索</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="coupon" data-project-desc="搜索发券链路升级：搜前底纹/下拉/猜你喜欢标签透传优惠权益，搜中通过券条和弹窗两种方式，验证发券效率，同时优惠券出入场动效结合数字滚动强化优惠力度，搜后通过按钮状态（领取&gt;筛选&gt;取消），引导逐步用户核销，提升订单转化。" role="button" tabindex="0"><span class="project-point-label">搜索营销发券</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="visual" data-project-desc="搜索大促氛围：围绕情人节、新年、礼物节等大促节庆活动，搜索框通过桃花/烟花/雪人等的元素表达，并新增榜单的氛围展示点位，提升搜索场域节庆氛围，提升搜索大盘成交转化。" role="button" tabindex="0"><span class="project-point-label">搜索氛围视觉</span><span class="project-point-arrow" aria-hidden="true"></span></p>
+          <div class="project-points panel" data-text-id="project-points-searchpush" data-project-points="searchpush" style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;"><p class="project-point is-active" data-project-point="ai-search" role="button" tabindex="0"><span class="project-point-label">AI 智能搜索</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="coupon" role="button" tabindex="0"><span class="project-point-label">搜索营销发券</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="visual" role="button" tabindex="0"><span class="project-point-label">搜索氛围视觉</span><span class="project-point-arrow" aria-hidden="true"></span></p>
           
         </div>
         </article>
@@ -3421,6 +3841,16 @@
           <div class="horizontal-module-slide">
             <div class="tile-grid" aria-label="搜推体验项目模块 1">
               <article class="tile has-image has-video" data-content-id="content-1a" data-project-point-target="ai-search" data-project-point-id="ai-search" data-project-point-title="AI 智能搜索">
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
             
           
             
@@ -3489,6 +3919,16 @@
             
           
             
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-a.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/blob-b.mp4"></video><p>content 2</p></article>
               <article class="tile has-image has-video" data-content-id="content-3a" data-project-point-target="ai-search" data-project-point-id="ai-search" data-project-point-title="AI 智能搜索">
             
@@ -3524,8 +3964,28 @@
             
           
             
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-c.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/blob-d.mp4"></video><p>content 3</p></article>
               <article class="tile has-image has-video" data-content-id="content-4a" data-project-point-target="ai-search" data-project-point-id="ai-search" data-project-point-title="AI 智能搜索">
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
             
           
             
@@ -3598,8 +4058,28 @@
             
           
             
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-1-image.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/content-1-video.mp4"></video><p>content 2</p></article>
               <article class="tile has-image has-video" data-content-id="content-2" data-project-point-target="coupon" data-project-point-id="coupon" data-project-point-title="搜索营销发券">
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
             
           
             
@@ -3668,8 +4148,28 @@
             
           
             
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-3-image.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/content-3-video.mov"></video><p>content 3</p></article>
               <article class="tile has-image has-video" data-content-id="content-4" data-project-point-target="visual" data-project-point-id="visual" data-project-point-title="搜索氛围视觉">
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
             
           
             
@@ -3713,6 +4213,16 @@
           
             
           
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
                 <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/searchpush-content-9-image.png">
                 <video class="tile-media tile-video" muted="" loop="" playsinline="" preload="metadata"></video>
                 <p>content 9</p>
@@ -3723,15 +4233,19 @@
 
         <article class="section-title panel" data-text-id="text-6" style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 20px; padding-bottom: 20px; opacity: 1;">Selected Projects 02<br>2025-2026
           
+        
+          
         </article>
 
-        <article class="project-head" data-active-project-point="designer-toy">
+        <article class="project-head" data-active-project-point="try-on">
           <div class="project-title panel"><p style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 0px; padding-bottom: 0px; opacity: 1;" class="" data-text-id="text-7">商城行业化<br>得物 APP
+          
+        
           
         </p></div>
           <div class="project-middle">
             <div class="project-desc panel"><p style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" class="" data-text-id="text-8" data-default-project-desc="Discription
-Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动效，模拟用户手拿小卡的真实体验；搜索通过潮玩导购穹顶、Smart Menu、快筛簇，并用日历跟盲盒的意向结合得物防伪扣，在首坑商卡强调伤心跟补货场景，探索潮玩行业的用户决策因子。
+Discription">Discription<br>Discription
           
         </p></div>
             <div class="project-actions">
@@ -3739,15 +4253,25 @@ Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动
               <a class="pill panel" href="#">AE</a>
             </div>
           </div>
-          <div class="project-points panel" data-project-points="industry" style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" data-text-id="text-9"><p class="project-point" data-project-point="try-on" data-project-desc="AI 模特试衣：在商详头图场景，引入与用户身型匹配的 AI 模特进行虚拟试穿，通过视频360度环绕、人物360度定点转、子弹时间，多维度呈现上身效果，支持查看衣服细节。" role="button" tabindex="0"><span class="project-point-label">AI 试衣</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="perfume" data-project-desc="美妆行业化：搜索场景拓展香水、口红、护肤3个重点类目的快筛样式，使用图文结合的设计语言将行业参数可视化，通过香水原料的素材图片真实真实展示香调跟气味，上嘴图结合商品图对应热门色号，口红色块图展示口红的色系，icon加文案描述直观展示护肤品功效，帮助用户高效筛选，其中香水类目成交转化。" role="button" tabindex="0"><span class="project-point-label">香水行业化</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="designer-toy" data-project-desc="商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动效，模拟用户手拿小卡的真实体验；搜索通过潮玩导购穹顶、Smart Menu、快筛簇，并用日历跟盲盒的意向结合得物防伪扣，在首坑商卡强调伤心跟补货场景，探索潮玩行业的用户决策因子。" role="button" tabindex="0"><span class="project-point-label">潮玩行业化</span><span class="project-point-arrow" aria-hidden="true"></span></p>
+          <div class="project-points panel" data-project-points="industry" style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" data-text-id="text-9"><p class="project-point is-active" data-project-point="try-on" role="button" tabindex="0"><span class="project-point-label">AI 试衣</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="perfume" role="button" tabindex="0"><span class="project-point-label">香水行业化</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="designer-toy" role="button" tabindex="0"><span class="project-point-label">潮玩行业化</span><span class="project-point-arrow" aria-hidden="true"></span></p>
           
         </div>
         </article>
 
-        <div class="horizontal-module-scroll peek-content" data-initial-slide="0" aria-label="商城行业化项目横向模块">
+        <div class="horizontal-module-scroll peek-content is-point-scrolling" data-initial-slide="0" aria-label="商城行业化项目横向模块">
           <div class="horizontal-module-slide">
             <div class="tile-grid five-up" aria-label="商城行业化项目模块 1">
               <article class="tile has-image has-video" data-content-id="content-5" data-project-point-target="try-on" data-project-point-id="try-on" data-project-point-title="AI 试衣">
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
             
           
             
@@ -3816,8 +4340,28 @@ Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动
             
           
             
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-6-image.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/content-6-video.mov"></video><p>content 2</p></article>
               <article class="tile has-image has-video" data-content-id="content-6b" data-project-point-target="perfume" data-project-point-id="perfume" data-project-point-title="香水行业化">
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
             
           
             
@@ -3886,8 +4430,28 @@ Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动
             
           
             
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-7-image.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/content-7-video.mp4"></video><p>content 4</p></article>
               <article class="tile has-image has-video" data-content-id="content-8" data-project-point-target="designer-toy" data-project-point-id="designer-toy" data-project-point-title="潮玩行业化">
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
             
           
             
@@ -3943,10 +4507,30 @@ Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动
           
             
           
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
             <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/industry-content-6-image.png">
             <video class="tile-media tile-video" muted="" loop="" playsinline="" preload="metadata"></video>
           <p>content 6</p></article>
               <article class="tile has-image" data-content-id="industry-content-7" data-project-point-target="designer-toy" data-project-point-id="designer-toy" data-project-point-title="潮玩行业化">
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
             
           
             
@@ -3975,6 +4559,16 @@ Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动
           
             
           
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
                 <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/industry-content-8-image.png">
                 <video class="tile-media tile-video" muted="" loop="" playsinline="" preload="metadata"></video>
                 <p>content 8</p>
@@ -3985,14 +4579,18 @@ Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动
 
         <article class="section-title panel" data-text-id="text-10" style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 20px; padding-bottom: 20px; opacity: 1;">Selected Projects 03<br>2026
           
+        
+          
         </article>
 
         <article class="project-head" data-active-project-point="annual-report">
           <div class="project-title panel"><p style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 0px; padding-bottom: 0px; opacity: 1;" class="" data-text-id="text-11">年度商家颁奖会<br>得物 APP
           
+        
+          
         </p></div>
           <div class="project-middle">
-            <div class="project-desc panel"><p style="font-size: 19px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.3; padding-top: 8px; padding-bottom: 8px; opacity: 1;" class="" data-text-id="text-12" data-default-project-desc="背景：为增强商家经营信心，提高分享率，通过年度报告展示给亮眼经营数据，同时作为外宣渠道。">通过年度商家榜单给获奖商家颁奖，提高荣誉感，同时年度报告展示给商家亮眼经营数据，增强商家经营信心，提高分享率；另外根据主视觉延展宣发视频作为外宣渠道。
+            <div class="project-desc panel"><p style="font-size: 19px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.3; padding-top: 8px; padding-bottom: 8px; opacity: 1;" class="" data-text-id="text-12" data-default-project-desc="背景：为增强商家经营信心，提高分享率，通过年度报告展示给亮眼经营数据，同时作为外宣渠道。">背景：为增强商家经营信心，提高分享率，通过年度报告展示给亮眼经营数据，同时作为外宣渠道。
           
         </p></div>
             <div class="project-actions">
@@ -4000,13 +4598,23 @@ Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动
               <a class="pill panel" href="#">AIGC</a>
             </div>
           </div>
-          <div class="project-points panel" data-project-points="annual" style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" data-text-id="text-13"><p class="project-point" data-project-point="annual-report" data-project-desc="通过年度商家榜单给获奖商家颁奖，提高荣誉感，同时年度报告展示给商家亮眼经营数据，增强商家经营信心，提高分享率；另外根据主视觉延展宣发视频作为外宣渠道。" role="button" tabindex="0"><span class="project-point-label">年度报告</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="promo-video" role="button" tabindex="0"><span class="project-point-label">宣发视频</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="annual-ranking" role="button" tabindex="0"><span class="project-point-label">年度榜单</span><span class="project-point-arrow" aria-hidden="true"></span></p>
+          <div class="project-points panel" data-project-points="annual" style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" data-text-id="text-13"><p class="project-point is-active" data-project-point="annual-report" role="button" tabindex="0"><span class="project-point-label">年度报告</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="promo-video" role="button" tabindex="0"><span class="project-point-label">宣发视频</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="annual-ranking" role="button" tabindex="0"><span class="project-point-label">年度榜单</span><span class="project-point-arrow" aria-hidden="true"></span></p>
           
         </div>
         </article>
 
         <div class="tile-grid">
           <article class="tile has-image has-video" data-content-id="content-9" data-project-point-target="annual-report" data-project-point-id="annual-report" data-project-point-title="年度报告">
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
             
           
             
@@ -4075,6 +4683,16 @@ Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动
             
           
             
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-10-image.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/content-10-video.mov"></video><p>content 2</p></article>
           <article class="tile has-image has-video" data-content-id="content-11" data-project-point-target="annual-report" data-project-point-id="annual-report" data-project-point-title="年度报告">
             
@@ -4110,8 +4728,28 @@ Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动
             
           
             
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-11-image.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/content-11-video.mov"></video><p>content 3</p></article>
           <article class="tile has-image has-video" data-content-id="content-12" data-project-point-target="annual-report" data-project-point-id="annual-report" data-project-point-title="年度报告">
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
             
           
             
@@ -4183,6 +4821,16 @@ Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动
             
           
             
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-13-image.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/content-13-video.mp4"></video><p>content 2</p></article>
           <article class="tile center detail-image-card has-detail-image has-image media-text-hover" data-content-id="annual-report-object-result" data-project-point-target="annual-ranking" data-project-point-id="annual-ranking" data-project-point-title="年度榜单">
             
@@ -4218,30 +4866,46 @@ Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动
             
           
             
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image detail-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/annual-report-object-result-image.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="metadata"></video><p style="font-size: 26px; font-weight: 300; color: #ffffff; line-height: 1.75; padding-top: 50px; padding-bottom: 50px;" class="" data-text-id="text-14">Object<br>助力商家侧年报、榜单、颁奖视频落地，体现商家专属格，提升商家荣誉感与成就感。<br><br>Result<br>跑通 AI 动效视频设计生成交付全流程，开箱结合贺卡，营造惊喜与荣誉感，生成 立体印花效果增加品牌属性，设计轻量通透的商家视觉元素，最终覆盖 34,509 家商家，视频触达率 84.7%，分享率 50%，新增 2 项设计专利。
+          
+        
           
         </p></article>
         </div>
 
         <article class="section-title panel" data-text-id="text-15" style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 20px; padding-bottom: 20px; opacity: 1;">Selected Projects 04<br>2026
           
+        
+          
         </article>
 
-        <article class="project-head" data-active-project-point="profile-point-2">
+        <article class="project-head" data-active-project-point="profile-point-1">
           <div class="project-title panel"><p style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 2px; padding-bottom: 2px; opacity: 1;" class="" data-text-id="text-16">个人中心工具<br>得物 APP
+          
+        
           
         </p></div>
           <div class="project-middle">
             <div class="project-desc panel"><p style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" class="" data-text-id="text-17" data-default-project-desc="Discription
-Discription">商家移动端入驻建设：简化入驻流程，分层级展示信息，通过字号、字重、颜色突出当前进度与状态（编辑、预览、修改）。移动端入驻能力上线后，提升商家入驻量，达成手机端入驻商家在大盘占比目标。
+Discription">Discription<br>Discription
           
         </p></div>
             <div class="project-actions">
-              <a class="pill panel" href="#">Information Design</a>
-              <a class="pill panel" href="#">Interaction Design</a>
+              <a class="pill panel" href="#">Open</a>
+              <a class="pill panel" href="#">Open</a>
             </div>
           </div>
-          <div class="project-points panel" data-project-points="profile" style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" data-text-id="text-18"><p class="project-point" data-project-point="profile-point-1" role="button" tabindex="0" data-project-desc="个卖首页改版：个卖首页框架优化，突出强化待办事项，通过设计走查发现并优化7个功能层问题，16个视觉体验问题，促进卖家满意度提升，核心操作用户流量提升。"><span class="project-point-label">个卖首页改版</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point is-active" data-project-point="profile-point-2" role="button" tabindex="0" data-project-desc="商家移动端入驻建设：简化入驻流程，分层级展示信息，通过字号、字重、颜色突出当前进度与状态（编辑、预览、修改）。移动端入驻能力上线后，提升商家入驻量，达成手机端入驻商家在大盘占比目标。"><span class="project-point-label">卖家入驻链路</span><span class="project-point-arrow" aria-hidden="true"></span></p>
+          <div class="project-points panel" data-project-points="profile" style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" data-text-id="text-18"><p class="project-point is-active" data-project-point="profile-point-1" role="button" tabindex="0"><span class="project-point-label">个卖首页改版</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="profile-point-2" role="button" tabindex="0"><span class="project-point-label">卖家入驻链路</span><span class="project-point-arrow" aria-hidden="true"></span></p>
           
         </div>
         </article>
@@ -4250,6 +4914,16 @@ Discription">商家移动端入驻建设：简化入驻流程，分层级展示�
           <div class="horizontal-module-slide">
             <div class="tile-grid" aria-label="个人中心工具项目模块 1">
           <article class="tile has-image" data-content-id="content-14" data-project-point-target="profile-point-1" data-project-point-id="profile-point-1" data-project-point-title="个卖首页改版">
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
             
           
             
@@ -4318,8 +4992,28 @@ Discription">商家移动端入驻建设：简化入驻流程，分层级展示�
             
           
             
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-15-image.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/content-15-video.mov"></video><p>content 2</p></article>
           <article class="tile has-image has-video" data-content-id="profile-content-3" data-project-point-target="profile-point-2" data-project-point-id="profile-point-2" data-project-point-title="卖家入驻链路">
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
             
           
             
@@ -4329,6 +5023,16 @@ Discription">商家移动端入驻建设：简化入驻流程，分层级展示�
             <p>content 3</p>
           </article>
           <article class="tile has-image has-video" data-content-id="profile-content-4" data-project-point-target="profile-point-2" data-project-point-id="profile-point-2" data-project-point-title="卖家入驻链路">
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
             
           
             
@@ -4346,11 +5050,31 @@ Discription">商家移动端入驻建设：简化入驻流程，分层级展示�
           
             
           
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
             <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/profile-content-5-image.png">
             <video class="tile-media tile-video" muted="" loop="" playsinline="" preload="metadata"></video>
             <p>content 5</p>
           </article>
           <article class="tile has-image has-video" data-content-id="profile-content-6" data-project-point-target="profile-point-2" data-project-point-id="profile-point-2" data-project-point-title="卖家入驻链路">
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
             
           
             
@@ -4366,6 +5090,8 @@ Discription">商家移动端入驻建设：简化入驻流程，分层级展示�
         <article class="closing panel">
           <p class="" data-text-id="text-20" style="font-size: 36px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 70px; padding-bottom: 70px; opacity: 1;">UI 自动化：通过将设计语言转译为 AI 可读的 MD 文档，实现 UI 自动化覆盖弱视觉商家 PC 端需求。已跑通 PC 端表单、表格页面的 AI 自动化生成。同时，应用 AI 能力完成大屏适配，实现多设备自动化适配。
           
+        
+          
         </p>
         </article>
 
@@ -4374,6 +5100,8 @@ Discription">商家移动端入驻建设：简化入驻流程，分层级展示�
             <article class="readcv-intro panel">
               <p class="readcv-kicker">READ.CV / ABOUT</p>
               <h2 style="font-size: 36px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 70px; padding-bottom: 70px; opacity: 1;" class="" data-text-id="text-21">你好，我是 Julian。 UX Designer，关注商城行业化设计 与 AI 实践，把复杂场景转译成清晰直观、有质感、可持续迭代的数字产品。
+          
+        
           
         </h2>
             </article>
@@ -4415,11 +5143,23 @@ Discription">商家移动端入驻建设：简化入驻流程，分层级展示�
           
         
           
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
         </article>
           </div>
 
           <article class="readcv-timeline panel">
             <h3 class="" data-text-id="text-23" style="font-size: 16px; font-weight: 400; color: rgb(134, 136, 147); line-height: 1.4; padding-top: 26px; padding-bottom: 26px; opacity: 1;">2025.07 - Now<br>得物 搜推<br>UI&amp;UX 设计师<br><br>负责搜索与行业化体验设计，持续打磨核心链路、内容表达与 AI 能力在业务场景中的落地。
+          
+        
           
         </h3>
             <div class="timeline-grid">
@@ -4429,6 +5169,16 @@ Discription">商家移动端入驻建设：简化入驻流程，分层级展示�
                 <span>UI&amp;UX 设计师</span>
                 <p>负责搜索与行业化体验设计，持续打磨核心链路、内容表达与 AI 能力在业务场景中的落地。</p>
               
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
           
         
           
@@ -4502,6 +5252,16 @@ Discription">商家移动端入驻建设：简化入驻流程，分层级展示�
           
         
           
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
         </div>
               <div class="timeline-item" data-text-id="resume-kuaishou-search">
                 <time>2022.07 - 2022.10</time>
@@ -4509,6 +5269,16 @@ Discription">商家移动端入驻建设：简化入驻流程，分层级展示�
                 <span>UI 实习</span>
                 <p>参与搜索结果话题页设计，优化内容生态搜索场景中的信息组织、视觉呈现与互动反馈。</p>
               
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
           
         
           
@@ -4582,6 +5352,16 @@ Discription">商家移动端入驻建设：简化入驻流程，分层级展示�
           
         
           
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
         </div>
             </div>
           </article>
@@ -4621,9 +5401,21 @@ Discription">商家移动端入驻建设：简化入驻流程，分层级展示�
             
           
             
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
           </article>
             <article class="life-photo panel has-life-overlay media-text-hover" style="--life-image: url('https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/life-2-image.jpg');" data-life-id="life-2">
               <p class="life-gallery-title" style="display: none; font-size: 20px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.45; padding-top: 0px; padding-bottom: 0px;" data-text-id="text-28">感谢一路上遇到的每一位伙伴，是你们让我得以做出最好的作品。
+          
+        
           
         </p>
               <p style="font-size: 20px; font-weight: 400; color: #ffffff; line-height: 1.45; padding-top: 0px; padding-bottom: 0px;" class="" data-text-id="text-29">感谢一路上遇到的每一位伙伴，是你们让我得以做出最好的作品。
@@ -4660,8 +5452,28 @@ Discription">商家移动端入驻建设：简化入驻流程，分层级展示�
           
         
           
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
         </p>
             
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
             
           
             
@@ -4730,8 +5542,28 @@ Discription">商家移动端入驻建设：简化入驻流程，分层级展示�
             
           
             
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
           </article>
             <article class="life-photo panel" style="--life-image: url('https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/life-4-image.jpg');" data-life-id="life-4">
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
             
           
             
@@ -4901,15 +5733,15 @@ Discription">商家移动端入驻建设：简化入驻流程，分层级展示�
     </aside>
 
     <aside class="text-editor-panel" id="textEditorPanel" aria-label="Text editor" aria-hidden="true">
-      <h2 data-text-editor-title="">商家移动端入驻建设：简化入驻流程，分层级展示信息，通过字</h2>
+      <h2 data-text-editor-title="">Selected Projects 2025-2026</h2>
       <label class="text-editor-field">
         Text
         <textarea data-text-control="content"></textarea>
       </label>
-      <div class="point-desc-editor" data-point-desc-editor=""><div class="point-desc-editor-title">小标题项目描述</div><label class="point-desc-item"><span>个卖首页改版</span><textarea data-point-desc-target="profile-point-1" placeholder="未填写时继承：个卖首页改版：个卖首页框架优化，突出强化待办事项，通过设计走查发现并优化7个功能层问题，16个视觉体验问题，促进卖家满意度提升，核心操作用户流量提升。"></textarea></label><label class="point-desc-item"><span>卖家入驻链路</span><textarea data-point-desc-target="profile-point-2" placeholder="未填写时继承：商家移动端入驻建设：简化入驻流程，分层级展示信息，通过字号、字重、颜色突出当前进度与状态（编辑、预览、修改）。移动端入驻能力上线后，提升商家入驻量，达成手机端入驻商家在大盘占比目标。"></textarea></label></div>
+      <div class="point-desc-editor" data-point-desc-editor="" hidden=""></div>
       <label class="text-editor-field text-editor-inline">
         Font size
-        <span class="text-editor-value" data-text-output="fontSize">20px</span>
+        <span class="text-editor-value" data-text-output="fontSize">28px</span>
         <input data-text-control="fontSize" type="range" min="10" max="96" step="1" value="20">
       </label>
       <label class="text-editor-field text-editor-inline">
@@ -4923,12 +5755,12 @@ Discription">商家移动端入驻建设：简化入驻流程，分层级展示�
       </label>
       <label class="text-editor-field text-editor-inline">
         Line height
-        <span class="text-editor-value" data-text-output="lineHeight">2.25</span>
+        <span class="text-editor-value" data-text-output="lineHeight">1.60</span>
         <input data-text-control="lineHeight" type="range" min="0.8" max="2.4" step="0.05" value="1.4">
       </label>
       <label class="text-editor-field text-editor-inline">
         Vertical spacing
-        <span class="text-editor-value" data-text-output="paddingY">10px</span>
+        <span class="text-editor-value" data-text-output="paddingY">20px</span>
         <input data-text-control="paddingY" type="range" min="0" max="120" step="1" value="0">
       </label>
       <label class="text-editor-field text-editor-inline">
@@ -4941,7 +5773,7 @@ Discription">商家移动端入驻建设：简化入驻流程，分层级展示�
         <button type="button" data-action="closeTextEdit">Close</button>
         <button type="button" data-action="saveTextEdit">Save</button>
       </div>
-      <div class="text-editor-status" data-text-editor-status="" aria-live="polite">已保存</div>
+      <div class="text-editor-status" data-text-editor-status="" aria-live="polite"></div>
     </aside>
 
     <button class="settings-toggle" type="button" aria-label="Open motion settings" aria-expanded="false" aria-controls="motionPanel" data-action="toggleSettings">
@@ -6647,7 +7479,7 @@ Discription">商家移动端入驻建设：简化入驻流程，分层级展示�
       initProjectPointHover();
       applyHeroMotion();
       updateHeroDrift();
-    </script><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden="">
+    </script><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden="">
   
 
 
