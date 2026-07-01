@@ -1,6 +1,7 @@
-# Dev-only local save server (not needed for the published site)
+# Dev-only local tools (not needed for the published site)
 save-server.js
 save-server.log
+publish.sh
 
 # OS / editor junk
 .DS_Store
