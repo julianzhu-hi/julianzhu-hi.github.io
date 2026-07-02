@@ -7426,7 +7426,7 @@ Discription">Discription<br>Discription
         const horizontalPadding = parseFloat(heroStyle.paddingLeft) + parseFloat(heroStyle.paddingRight);
         const targetWidth = Math.max(200, hero.clientWidth - horizontalPadding);
         const currentSize = parseFloat(getComputedStyle(heroTitle).fontSize);
-        const widestLine = Math.max(...Array.from(heroLines).map((line) => line.getBoundingClientRect().width));
+        const widestLine = Math.max(...Array.from(heroLines).map((line) => line.scrollWidth));
         if (!currentSize || !widestLine) return;
         const nextSize = Math.max(30, currentSize * targetWidth / widestLine);
         document.documentElement.style.setProperty("--hero-size", `${nextSize}px`);
