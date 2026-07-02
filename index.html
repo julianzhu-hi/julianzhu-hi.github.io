@@ -26,7 +26,7 @@
         --open-dot: #20e7e7;
         --gap: 5px;
         --canvas: 1280px;
-        --hero-size: clamp(44px, calc((100vw - 40px) / 7.25), 170px);
+        --hero-size: clamp(30px, calc((100vw - 40px) / 7.25), 170px);
         --hero-block: calc(var(--hero-size) * 1.76 + 20px);
         --header-height: 63px;
         --hero-dot-scale: 1.35;
@@ -4064,7 +4064,7 @@
               calc(120.70% - var(--dot-size) / 2) calc(-211.00% - var(--dot-size) / 2),
               calc(1.90% - var(--dot-size) / 2) calc(-227.00% - var(--dot-size) / 2),
               calc(85.60% - var(--dot-size) / 2) calc(-233.00% - var(--dot-size) / 2),
-              0 0; } }</style><style id="responsive-project-layout">.project-title .pt-main,.project-title .pt-sub{display:block}@media (max-width:768px){.project-head{display:flex;flex-direction:column;gap:var(--gap)}.project-head>.project-title,.project-head>.project-middle,.project-head>.project-points{grid-column:auto;grid-row:auto;width:100%}}@media (min-width:481px) and (max-width:768px){.project-title p{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:14px;row-gap:0}.project-title .pt-main,.project-title .pt-sub{display:inline-block}}@media (max-width:480px){.project-title p{display:block}.project-title .pt-main,.project-title .pt-sub{display:block}}</style></head>
+              0 0; } }</style><style id="responsive-project-layout">.hero-title{text-transform:capitalize}.project-title .pt-main,.project-title .pt-sub{display:block}@media (max-width:768px){.project-head{display:flex;flex-direction:column;gap:var(--gap)}.project-head>.project-title,.project-head>.project-middle,.project-head>.project-points{grid-column:auto;grid-row:auto;width:100%}}@media (min-width:481px) and (max-width:768px){.project-title p{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:14px;row-gap:0}.project-title .pt-main,.project-title .pt-sub{display:inline-block}}@media (max-width:480px){.project-title p{display:block}.project-title .pt-main,.project-title .pt-sub{display:block}}</style></head>
   <body monica-id="ofpnmcalabcbjgholdjcjblkibolbppb" monica-version="9.0.18">
     <main class="page">
       <nav class="nav site-header" aria-label="Primary">
@@ -7424,11 +7424,11 @@ Discription">Discription<br>Discription
         document.documentElement.style.setProperty("--header-height", `${header.offsetHeight}px`);
         const heroStyle = getComputedStyle(hero);
         const horizontalPadding = parseFloat(heroStyle.paddingLeft) + parseFloat(heroStyle.paddingRight);
-        const targetWidth = Math.max(260, hero.clientWidth - horizontalPadding);
+        const targetWidth = Math.max(200, hero.clientWidth - horizontalPadding);
         const currentSize = parseFloat(getComputedStyle(heroTitle).fontSize);
         const widestLine = Math.max(...Array.from(heroLines).map((line) => line.getBoundingClientRect().width));
         if (!currentSize || !widestLine) return;
-        const nextSize = Math.max(44, currentSize * targetWidth / widestLine);
+        const nextSize = Math.max(30, currentSize * targetWidth / widestLine);
         document.documentElement.style.setProperty("--hero-size", `${nextSize}px`);
         requestAnimationFrame(() => {
           const titleRect = heroTitle.getBoundingClientRect();
