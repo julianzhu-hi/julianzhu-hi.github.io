@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" style="--header-height: 36px; --hero-size: 148.2192570977918px; --hero-dot-scale: 1.15; --hero-speed: 12s; --dot-blue: #2f49ff; --dot-red: #ffa3d9; --dot-pink: #00e7eb; --dot-green: #9aace8; --text-panel-opacity: 0.9; --text-panel-blur: 12px; --dot-1: #2f49ff; --dot-2: #00e7eb; --dot-3: #00e7eb; --dot-4: #2f49ff; --dot-5: #9aace8; --dot-6: #9aace8; --dot-7: #ffa3d9; --dot-8: #ffa3d9; --dot-9: transparent; --dot-10: transparent; --dot-11: transparent; --dot-12: transparent; --hero-drift: 0px; --hero-block: 315px;" class="local-editing"><head>
+<html lang="en" style="--header-height: 36px; --hero-size: 138.3968263888889px; --hero-dot-scale: 1.15; --hero-speed: 12s; --dot-blue: #2f49ff; --dot-red: #ffa3d9; --dot-pink: #00e7eb; --dot-green: #9aace8; --text-panel-opacity: 0.9; --text-panel-blur: 12px; --dot-1: #2f49ff; --dot-2: #00e7eb; --dot-3: #00e7eb; --dot-4: #2f49ff; --dot-5: #9aace8; --dot-6: #9aace8; --dot-7: #ffa3d9; --dot-8: #ffa3d9; --dot-9: transparent; --dot-10: transparent; --dot-11: transparent; --dot-12: transparent; --hero-drift: 261.5980803839232px; --hero-block: 296px;" class=""><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -1065,6 +1065,137 @@
 
       .tile.has-image:not(.has-video):hover .tile-image {
         transform: scale(1.02);
+      }
+
+      /* UI 自动化模块上方的定位标签：胶囊 tag（带底色、宽度按内容自适应），带箭头，点击滚动到对应视频 */
+      .ui-auto-labels {
+        display: flex;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .uiauto-point {
+        flex: 1 1 0;               /* 三个标签等分并填满整行宽度（自适应容器宽） */
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-start;  /* 文字居左 */
+        gap: 10px;
+        margin: 0;
+        padding: 8px 24px;
+        border-radius: 999px;      /* 胶囊：覆盖 .panel 的 10px 圆角 */
+        color: var(--muted);
+        font-size: 21px;
+        line-height: 1.4;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: color 220ms ease;
+      }
+      /* 字色对齐 project 标签：normal=muted(#868893)，hover/选中=白(#fff)；
+         底色始终是标准 .panel（同 C端/APP 等标签），不做灰蓝高亮，选中靠文字变白+箭头指示 */
+      .uiauto-point:hover,
+      .uiauto-point:focus-visible,
+      .uiauto-point.is-active {
+        color: var(--text);
+        outline: none;
+      }
+      .uiauto-point:hover .project-point-label,
+      .uiauto-point:focus-visible .project-point-label,
+      .uiauto-point.is-active .project-point-label {
+        transform: translateX(8px);
+      }
+      .uiauto-point:hover .project-point-arrow,
+      .uiauto-point:focus-visible .project-point-arrow,
+      .uiauto-point.is-active .project-point-arrow {
+        width: 42px;
+        opacity: 1;
+        transform: translateX(10px);
+      }
+      /* 点击时箭头“射出并回弹” */
+      @keyframes uiauto-arrow-shoot {
+        0% { transform: translateX(10px); }
+        45% { transform: translateX(28px); }
+        100% { transform: translateX(10px); }
+      }
+      .uiauto-point.is-clicking .project-point-arrow {
+        width: 42px;
+        opacity: 1;
+        animation: uiauto-arrow-shoot 420ms ease;
+      }
+
+      /* UI 自动化演示：一行 3 个模块，等高、宽度随视频宽高比自适应、点击播放 */
+      .ui-auto-row {
+        display: flex;
+        gap: var(--gap);
+        align-items: flex-start;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overscroll-behavior-x: contain;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: none;
+        padding: 0;
+      }
+      .ui-auto-row::-webkit-scrollbar {
+        display: none;
+      }
+      .ui-auto-row .tile {
+        scroll-snap-align: start;
+      }
+      .ui-auto-row .tile {
+        /* 视频加载后由 JS 用真实 videoWidth/Height 覆盖 --v-ar；未接视频时用竖屏占位比例 */
+        aspect-ratio: var(--v-ar, 307.5 / 665.8);
+        height: var(--ui-auto-h, 60vh);
+        width: auto;
+        flex: 0 0 auto;
+        cursor: pointer;
+      }
+      /* 点击播放：有封面图时图当海报，点击播放时视频才显现 */
+      .ui-auto-row .tile.has-image.has-video .tile-video {
+        opacity: 0;
+      }
+      .ui-auto-row .tile.has-video.is-playing .tile-video {
+        opacity: 1;
+      }
+      /* 只有视频、没封面图时：直接用视频首帧当海报 */
+      .ui-auto-row .tile.has-video:not(.has-image) .tile-video {
+        opacity: 1;
+      }
+      .ui-auto-row .tile.has-video::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.4);
+        border: 2px solid rgba(255, 255, 255, 0.85);
+        pointer-events: none;
+        transition: opacity 180ms ease;
+      }
+      .ui-auto-row .tile.has-video::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-40%, -50%);
+        z-index: 3;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 15px 0 15px 26px;
+        border-color: transparent transparent transparent rgba(255, 255, 255, 0.95);
+        pointer-events: none;
+        transition: opacity 180ms ease;
+      }
+      .ui-auto-row .tile.has-video.is-playing::before,
+      .ui-auto-row .tile.has-video.is-playing::after {
+        opacity: 0;
+      }
+      /* 还没拖入视频的空模块：虚线占位框，提示这里可放视频 */
+      .ui-auto-row .tile:not(.has-video) {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px dashed rgba(255, 255, 255, 0.18);
       }
 
       .tile.has-image:not(.media-text-hover) > p {
@@ -4064,6 +4195,160 @@
               calc(120.70% - var(--dot-size) / 2) calc(-211.00% - var(--dot-size) / 2),
               calc(1.90% - var(--dot-size) / 2) calc(-227.00% - var(--dot-size) / 2),
               calc(85.60% - var(--dot-size) / 2) calc(-233.00% - var(--dot-size) / 2),
+              0 0; } }</style><style>@keyframes hero-dots-line-1 { 0% { background-position: calc(-8.05% - var(--dot-size) / 2) calc(-129.00% - var(--dot-size) / 2),
+              calc(14.90% - var(--dot-size) / 2) calc(-77.00% - var(--dot-size) / 2),
+              calc(39.20% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-73.00% - var(--dot-size) / 2),
+              calc(95.90% - var(--dot-size) / 2) calc(-121.00% - var(--dot-size) / 2),
+              calc(1.40% - var(--dot-size) / 2) calc(-103.00% - var(--dot-size) / 2),
+              calc(25.70% - var(--dot-size) / 2) calc(-95.00% - var(--dot-size) / 2),
+              calc(50.00% - var(--dot-size) / 2) calc(-131.00% - var(--dot-size) / 2),
+              calc(74.30% - var(--dot-size) / 2) calc(-97.00% - var(--dot-size) / 2),
+              calc(101.30% - var(--dot-size) / 2) calc(-67.00% - var(--dot-size) / 2),
+              calc(-9.40% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(58.10% - var(--dot-size) / 2) calc(-101.00% - var(--dot-size) / 2),
+              0 0; }
+          50% { background-position: calc(4.10% - var(--dot-size) / 2) calc(-73.00% - var(--dot-size) / 2),
+              calc(31.10% - var(--dot-size) / 2) calc(-121.00% - var(--dot-size) / 2),
+              calc(58.10% - var(--dot-size) / 2) calc(-79.00% - var(--dot-size) / 2),
+              calc(85.10% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(101.30% - var(--dot-size) / 2) calc(-93.00% - var(--dot-size) / 2),
+              calc(-6.70% - var(--dot-size) / 2) calc(-115.00% - var(--dot-size) / 2),
+              calc(20.30% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(47.30% - var(--dot-size) / 2) calc(-113.00% - var(--dot-size) / 2),
+              calc(77.00% - var(--dot-size) / 2) calc(-63.00% - var(--dot-size) / 2),
+              calc(109.40% - var(--dot-size) / 2) calc(-117.00% - var(--dot-size) / 2),
+              calc(6.80% - var(--dot-size) / 2) calc(-91.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-131.00% - var(--dot-size) / 2),
+              0 0; }
+          100% { background-position: calc(-4.00% - var(--dot-size) / 2) calc(-97.00% - var(--dot-size) / 2),
+              calc(41.90% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(23.00% - var(--dot-size) / 2) calc(-129.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-111.00% - var(--dot-size) / 2),
+              calc(87.80% - var(--dot-size) / 2) calc(-71.00% - var(--dot-size) / 2),
+              calc(9.50% - var(--dot-size) / 2) calc(-133.00% - var(--dot-size) / 2),
+              calc(33.80% - var(--dot-size) / 2) calc(-87.00% - var(--dot-size) / 2),
+              calc(55.40% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(93.20% - var(--dot-size) / 2) calc(-103.00% - var(--dot-size) / 2),
+              calc(106.70% - var(--dot-size) / 2) calc(-61.00% - var(--dot-size) / 2),
+              calc(-12.10% - var(--dot-size) / 2) calc(-77.00% - var(--dot-size) / 2),
+              calc(71.60% - var(--dot-size) / 2) calc(-83.00% - var(--dot-size) / 2),
+              0 0; } }
+@keyframes hero-dots-line-2 { 0% { background-position: calc(5.95% - var(--dot-size) / 2) calc(-279.00% - var(--dot-size) / 2),
+              calc(28.90% - var(--dot-size) / 2) calc(-227.00% - var(--dot-size) / 2),
+              calc(53.20% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-223.00% - var(--dot-size) / 2),
+              calc(109.90% - var(--dot-size) / 2) calc(-271.00% - var(--dot-size) / 2),
+              calc(15.40% - var(--dot-size) / 2) calc(-253.00% - var(--dot-size) / 2),
+              calc(39.70% - var(--dot-size) / 2) calc(-245.00% - var(--dot-size) / 2),
+              calc(64.00% - var(--dot-size) / 2) calc(-281.00% - var(--dot-size) / 2),
+              calc(88.30% - var(--dot-size) / 2) calc(-247.00% - var(--dot-size) / 2),
+              calc(115.30% - var(--dot-size) / 2) calc(-217.00% - var(--dot-size) / 2),
+              calc(4.60% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(72.10% - var(--dot-size) / 2) calc(-251.00% - var(--dot-size) / 2),
+              0 0; }
+          50% { background-position: calc(18.10% - var(--dot-size) / 2) calc(-223.00% - var(--dot-size) / 2),
+              calc(45.10% - var(--dot-size) / 2) calc(-271.00% - var(--dot-size) / 2),
+              calc(72.10% - var(--dot-size) / 2) calc(-229.00% - var(--dot-size) / 2),
+              calc(99.10% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(115.30% - var(--dot-size) / 2) calc(-243.00% - var(--dot-size) / 2),
+              calc(7.30% - var(--dot-size) / 2) calc(-265.00% - var(--dot-size) / 2),
+              calc(34.30% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(61.30% - var(--dot-size) / 2) calc(-263.00% - var(--dot-size) / 2),
+              calc(91.00% - var(--dot-size) / 2) calc(-213.00% - var(--dot-size) / 2),
+              calc(123.40% - var(--dot-size) / 2) calc(-267.00% - var(--dot-size) / 2),
+              calc(20.80% - var(--dot-size) / 2) calc(-241.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-281.00% - var(--dot-size) / 2),
+              0 0; }
+          100% { background-position: calc(10.00% - var(--dot-size) / 2) calc(-247.00% - var(--dot-size) / 2),
+              calc(55.90% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(37.00% - var(--dot-size) / 2) calc(-279.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-261.00% - var(--dot-size) / 2),
+              calc(101.80% - var(--dot-size) / 2) calc(-221.00% - var(--dot-size) / 2),
+              calc(23.50% - var(--dot-size) / 2) calc(-283.00% - var(--dot-size) / 2),
+              calc(47.80% - var(--dot-size) / 2) calc(-237.00% - var(--dot-size) / 2),
+              calc(69.40% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(107.20% - var(--dot-size) / 2) calc(-253.00% - var(--dot-size) / 2),
+              calc(120.70% - var(--dot-size) / 2) calc(-211.00% - var(--dot-size) / 2),
+              calc(1.90% - var(--dot-size) / 2) calc(-227.00% - var(--dot-size) / 2),
+              calc(85.60% - var(--dot-size) / 2) calc(-233.00% - var(--dot-size) / 2),
+              0 0; } }</style><style>@keyframes hero-dots-line-1 { 0% { background-position: calc(-8.05% - var(--dot-size) / 2) calc(-129.00% - var(--dot-size) / 2),
+              calc(14.90% - var(--dot-size) / 2) calc(-77.00% - var(--dot-size) / 2),
+              calc(39.20% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-73.00% - var(--dot-size) / 2),
+              calc(95.90% - var(--dot-size) / 2) calc(-121.00% - var(--dot-size) / 2),
+              calc(1.40% - var(--dot-size) / 2) calc(-103.00% - var(--dot-size) / 2),
+              calc(25.70% - var(--dot-size) / 2) calc(-95.00% - var(--dot-size) / 2),
+              calc(50.00% - var(--dot-size) / 2) calc(-131.00% - var(--dot-size) / 2),
+              calc(74.30% - var(--dot-size) / 2) calc(-97.00% - var(--dot-size) / 2),
+              calc(101.30% - var(--dot-size) / 2) calc(-67.00% - var(--dot-size) / 2),
+              calc(-9.40% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(58.10% - var(--dot-size) / 2) calc(-101.00% - var(--dot-size) / 2),
+              0 0; }
+          50% { background-position: calc(4.10% - var(--dot-size) / 2) calc(-73.00% - var(--dot-size) / 2),
+              calc(31.10% - var(--dot-size) / 2) calc(-121.00% - var(--dot-size) / 2),
+              calc(58.10% - var(--dot-size) / 2) calc(-79.00% - var(--dot-size) / 2),
+              calc(85.10% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(101.30% - var(--dot-size) / 2) calc(-93.00% - var(--dot-size) / 2),
+              calc(-6.70% - var(--dot-size) / 2) calc(-115.00% - var(--dot-size) / 2),
+              calc(20.30% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(47.30% - var(--dot-size) / 2) calc(-113.00% - var(--dot-size) / 2),
+              calc(77.00% - var(--dot-size) / 2) calc(-63.00% - var(--dot-size) / 2),
+              calc(109.40% - var(--dot-size) / 2) calc(-117.00% - var(--dot-size) / 2),
+              calc(6.80% - var(--dot-size) / 2) calc(-91.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-131.00% - var(--dot-size) / 2),
+              0 0; }
+          100% { background-position: calc(-4.00% - var(--dot-size) / 2) calc(-97.00% - var(--dot-size) / 2),
+              calc(41.90% - var(--dot-size) / 2) calc(-65.00% - var(--dot-size) / 2),
+              calc(23.00% - var(--dot-size) / 2) calc(-129.00% - var(--dot-size) / 2),
+              calc(66.20% - var(--dot-size) / 2) calc(-111.00% - var(--dot-size) / 2),
+              calc(87.80% - var(--dot-size) / 2) calc(-71.00% - var(--dot-size) / 2),
+              calc(9.50% - var(--dot-size) / 2) calc(-133.00% - var(--dot-size) / 2),
+              calc(33.80% - var(--dot-size) / 2) calc(-87.00% - var(--dot-size) / 2),
+              calc(55.40% - var(--dot-size) / 2) calc(-125.00% - var(--dot-size) / 2),
+              calc(93.20% - var(--dot-size) / 2) calc(-103.00% - var(--dot-size) / 2),
+              calc(106.70% - var(--dot-size) / 2) calc(-61.00% - var(--dot-size) / 2),
+              calc(-12.10% - var(--dot-size) / 2) calc(-77.00% - var(--dot-size) / 2),
+              calc(71.60% - var(--dot-size) / 2) calc(-83.00% - var(--dot-size) / 2),
+              0 0; } }
+@keyframes hero-dots-line-2 { 0% { background-position: calc(5.95% - var(--dot-size) / 2) calc(-279.00% - var(--dot-size) / 2),
+              calc(28.90% - var(--dot-size) / 2) calc(-227.00% - var(--dot-size) / 2),
+              calc(53.20% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-223.00% - var(--dot-size) / 2),
+              calc(109.90% - var(--dot-size) / 2) calc(-271.00% - var(--dot-size) / 2),
+              calc(15.40% - var(--dot-size) / 2) calc(-253.00% - var(--dot-size) / 2),
+              calc(39.70% - var(--dot-size) / 2) calc(-245.00% - var(--dot-size) / 2),
+              calc(64.00% - var(--dot-size) / 2) calc(-281.00% - var(--dot-size) / 2),
+              calc(88.30% - var(--dot-size) / 2) calc(-247.00% - var(--dot-size) / 2),
+              calc(115.30% - var(--dot-size) / 2) calc(-217.00% - var(--dot-size) / 2),
+              calc(4.60% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(72.10% - var(--dot-size) / 2) calc(-251.00% - var(--dot-size) / 2),
+              0 0; }
+          50% { background-position: calc(18.10% - var(--dot-size) / 2) calc(-223.00% - var(--dot-size) / 2),
+              calc(45.10% - var(--dot-size) / 2) calc(-271.00% - var(--dot-size) / 2),
+              calc(72.10% - var(--dot-size) / 2) calc(-229.00% - var(--dot-size) / 2),
+              calc(99.10% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(115.30% - var(--dot-size) / 2) calc(-243.00% - var(--dot-size) / 2),
+              calc(7.30% - var(--dot-size) / 2) calc(-265.00% - var(--dot-size) / 2),
+              calc(34.30% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(61.30% - var(--dot-size) / 2) calc(-263.00% - var(--dot-size) / 2),
+              calc(91.00% - var(--dot-size) / 2) calc(-213.00% - var(--dot-size) / 2),
+              calc(123.40% - var(--dot-size) / 2) calc(-267.00% - var(--dot-size) / 2),
+              calc(20.80% - var(--dot-size) / 2) calc(-241.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-281.00% - var(--dot-size) / 2),
+              0 0; }
+          100% { background-position: calc(10.00% - var(--dot-size) / 2) calc(-247.00% - var(--dot-size) / 2),
+              calc(55.90% - var(--dot-size) / 2) calc(-215.00% - var(--dot-size) / 2),
+              calc(37.00% - var(--dot-size) / 2) calc(-279.00% - var(--dot-size) / 2),
+              calc(80.20% - var(--dot-size) / 2) calc(-261.00% - var(--dot-size) / 2),
+              calc(101.80% - var(--dot-size) / 2) calc(-221.00% - var(--dot-size) / 2),
+              calc(23.50% - var(--dot-size) / 2) calc(-283.00% - var(--dot-size) / 2),
+              calc(47.80% - var(--dot-size) / 2) calc(-237.00% - var(--dot-size) / 2),
+              calc(69.40% - var(--dot-size) / 2) calc(-275.00% - var(--dot-size) / 2),
+              calc(107.20% - var(--dot-size) / 2) calc(-253.00% - var(--dot-size) / 2),
+              calc(120.70% - var(--dot-size) / 2) calc(-211.00% - var(--dot-size) / 2),
+              calc(1.90% - var(--dot-size) / 2) calc(-227.00% - var(--dot-size) / 2),
+              calc(85.60% - var(--dot-size) / 2) calc(-233.00% - var(--dot-size) / 2),
               0 0; } }</style><style id="responsive-project-layout">.hero-title{text-transform:capitalize}.project-title .pt-main,.project-title .pt-sub{display:block}@media (max-width:768px){.project-head{display:flex;flex-direction:column;gap:var(--gap)}.project-head>.project-title,.project-head>.project-middle,.project-head>.project-points{grid-column:auto;grid-row:auto;width:100%}}@media (min-width:481px) and (max-width:768px){.project-title p{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:14px;row-gap:0}.project-title .pt-main,.project-title .pt-sub{display:inline-block}}@media (max-width:480px){.project-title p{display:block}.project-title .pt-main,.project-title .pt-sub{display:block}}@media (max-width:560px){.life-gallery{display:grid;grid-auto-flow:row;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-columns:auto;gap:10px;overflow-x:visible;scroll-snap-type:none}.life-photo{min-height:0}}</style></head>
   <body monica-id="ofpnmcalabcbjgholdjcjblkibolbppb" monica-version="9.0.18">
     <main class="page">
@@ -4134,6 +4419,10 @@
           
         
           
+        
+          
+        
+          
         </p>
         </article>
 
@@ -4146,12 +4435,18 @@
 
         <article class="section-title panel" data-text-id="text-2" style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 20px; padding-bottom: 20px; opacity: 1;">Selected Projects 01<br>2025-2026
           
+        
+          
+        
+          
         </article>
 
         <article class="project-head" data-active-project-point="ai-search">
           <div class="project-title panel"><p style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 0px; padding-bottom: 0px; opacity: 1;" class="" data-text-id="text-3"><span class="pt-main">搜推体验设计</span><span class="pt-sub">得物 APP</span></p></div>
           <div class="project-middle">
-            <div class="project-desc panel"><p style="font-size: 19px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.3; padding-top: 8px; padding-bottom: 8px; opacity: 1;" class="" data-text-id="text-4" data-default-project-desc="背景：用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。">背景：用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。
+            <div class="project-desc panel"><p style="font-size: 19px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.3; padding-top: 8px; padding-bottom: 8px; opacity: 1;" class="" data-text-id="text-4" data-default-project-desc="背景：用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。">用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。
+          
+        
           
         </p></div>
             <div class="project-actions">
@@ -4161,6 +4456,8 @@
           </div>
           <div class="project-points panel" data-text-id="project-points-searchpush" data-project-points="searchpush" style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;"><p class="project-point is-active" data-project-point="ai-search" data-project-desc="用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。" role="button" tabindex="0"><span class="project-point-label">AI 智能搜索</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="coupon" data-project-desc="搜索发券链路升级：搜前底纹/下拉/猜你喜欢标签透传优惠权益，搜中通过券条和弹窗两种方式，验证发券效率，同时优惠券出入场动效结合数字滚动强化优惠力度，搜后通过按钮状态（领取&gt;筛选&gt;取消），引导逐步用户核销，提升订单转化。" role="button" tabindex="0"><span class="project-point-label">搜索营销发券</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="visual" data-project-desc="搜索大促氛围：围绕情人节、新年、礼物节等大促节庆活动，搜索框通过桃花/烟花/雪人等的元素表达，并新增榜单的氛围展示点位，提升搜索场域节庆氛围，提升搜索大盘成交转化。" role="button" tabindex="0"><span class="project-point-label">搜索氛围视觉</span><span class="project-point-arrow" aria-hidden="true"></span></p>
           
+        
+          
         </div>
         </article>
 
@@ -4168,6 +4465,10 @@
           <div class="horizontal-module-slide">
             <div class="tile-grid" aria-label="搜推体验项目模块 1">
               <article class="tile has-image has-video" data-content-id="content-1a" data-project-point-target="ai-search" data-project-point-id="ai-search" data-project-point-title="AI 智能搜索">
+            
+          
+            
+          
             
           
             
@@ -4272,6 +4573,10 @@
             
           
             
+          
+            
+          
+            
           <img loading="eager" fetchpriority="high" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-a.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="none" src="assets/uploads/blob-b.mp4"></video><p>content 2</p></article>
               <article class="tile has-image has-video" data-content-id="content-3a" data-project-point-target="ai-search" data-project-point-id="ai-search" data-project-point-title="AI 智能搜索">
             
@@ -4325,8 +4630,16 @@
             
           
             
+          
+            
+          
+            
           <img loading="eager" fetchpriority="high" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-c.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="none" src="assets/uploads/blob-d.mp4"></video><p>content 3</p></article>
               <article class="tile has-image has-video" data-content-id="content-4a" data-project-point-target="ai-search" data-project-point-id="ai-search" data-project-point-title="AI 智能搜索">
+            
+          
+            
+          
             
           
             
@@ -4435,8 +4748,16 @@
             
           
             
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-1-image.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="none" src="assets/uploads/content-1-video.mp4"></video><p>content 2</p></article>
               <article class="tile has-image has-video" data-content-id="content-2" data-project-point-target="coupon" data-project-point-id="coupon" data-project-point-title="搜索营销发券">
+            
+          
+            
+          
             
           
             
@@ -4541,8 +4862,16 @@
             
           
             
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-3-image.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="none" src="assets/uploads/content-3-video.mov"></video><p>content 3</p></article>
               <article class="tile has-image has-video" data-content-id="content-4" data-project-point-target="visual" data-project-point-id="visual" data-project-point-title="搜索氛围视觉">
+            
+          
+            
+          
             
           
             
@@ -4622,6 +4951,10 @@
           
             
           
+            
+          
+            
+          
                 <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/searchpush-content-9-image.png">
                 <video class="tile-media tile-video" muted="" loop="" playsinline="" preload="none"></video>
                 <p>content 9</p>
@@ -4632,13 +4965,17 @@
 
         <article class="section-title panel" data-text-id="text-6" style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 20px; padding-bottom: 20px; opacity: 1;">Selected Projects 02<br>2025-2026
           
+        
+          
+        
+          
         </article>
 
-        <article class="project-head" data-active-project-point="try-on">
+        <article class="project-head" data-active-project-point="designer-toy">
           <div class="project-title panel"><p style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 0px; padding-bottom: 0px; opacity: 1;" class="" data-text-id="text-7"><span class="pt-main">商城行业化</span><span class="pt-sub">得物 APP</span></p></div>
           <div class="project-middle">
             <div class="project-desc panel"><p style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" class="" data-text-id="text-8" data-default-project-desc="Discription
-Discription">Discription<br>Discription
+Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动效，模拟用户手拿小卡的真实体验；搜索通过潮玩导购穹顶、Smart Menu、快筛簇，并用日历跟盲盒的意向结合得物防伪扣，在首坑商卡强调伤心跟补货场景，探索潮玩行业的用户决策因子。
           
         </p></div>
             <div class="project-actions">
@@ -4646,7 +4983,9 @@ Discription">Discription<br>Discription
               <a class="pill panel" href="#">AE</a>
             </div>
           </div>
-          <div class="project-points panel" data-project-points="industry" style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" data-text-id="text-9"><p class="project-point" data-project-point="perfume" data-project-desc="美妆行业化：搜索场景拓展香水、口红、护肤3个重点类目的快筛样式，使用图文结合的设计语言将行业参数可视化，通过香水原料的素材图片真实真实展示香调跟气味，上嘴图结合商品图对应热门色号，口红色块图展示口红的色系，icon加文案描述直观展示护肤品功效，帮助用户高效筛选，其中香水类目成交转化。" role="button" tabindex="0"><span class="project-point-label">香水行业化</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="designer-toy" data-project-desc="商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动效，模拟用户手拿小卡的真实体验；搜索通过潮玩导购穹顶、Smart Menu、快筛簇，并用日历跟盲盒的意向结合得物防伪扣，在首坑商卡强调伤心跟补货场景，探索潮玩行业的用户决策因子。" role="button" tabindex="0"><span class="project-point-label">潮玩行业化</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point is-active" data-project-point="try-on" data-project-desc="AI 模特试衣：在商详头图场景，引入与用户身型匹配的 AI 模特进行虚拟试穿，通过视频360度环绕、人物360度定点转、子弹时间，多维度呈现上身效果，支持查看衣服细节。" role="button" tabindex="0"><span class="project-point-label">AI 试衣</span><span class="project-point-arrow" aria-hidden="true"></span></p>
+          <div class="project-points panel" data-project-points="industry" style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" data-text-id="text-9"><p class="project-point" data-project-point="perfume" data-project-desc="美妆行业化：搜索场景拓展香水、口红、护肤3个重点类目的快筛样式，使用图文结合的设计语言将行业参数可视化，通过香水原料的素材图片真实真实展示香调跟气味，上嘴图结合商品图对应热门色号，口红色块图展示口红的色系，icon加文案描述直观展示护肤品功效，帮助用户高效筛选，其中香水类目成交转化。" role="button" tabindex="0"><span class="project-point-label">香水行业化</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="designer-toy" data-project-desc="商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动效，模拟用户手拿小卡的真实体验；搜索通过潮玩导购穹顶、Smart Menu、快筛簇，并用日历跟盲盒的意向结合得物防伪扣，在首坑商卡强调伤心跟补货场景，探索潮玩行业的用户决策因子。" role="button" tabindex="0"><span class="project-point-label">潮玩行业化</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="try-on" data-project-desc="AI 模特试衣：在商详头图场景，引入与用户身型匹配的 AI 模特进行虚拟试穿，通过视频360度环绕、人物360度定点转、子弹时间，多维度呈现上身效果，支持查看衣服细节。" role="button" tabindex="0"><span class="project-point-label">AI 试衣</span><span class="project-point-arrow" aria-hidden="true"></span></p>
+          
+        
           
         </div>
         </article>
@@ -4655,6 +4994,10 @@ Discription">Discription<br>Discription
           <div class="horizontal-module-slide">
             <div class="tile-grid five-up" aria-label="商城行业化项目模块 1">
               <article class="tile has-image has-video" data-content-id="content-5" data-project-point-target="try-on" data-project-point-id="try-on" data-project-point-title="AI 试衣" data-content-order="last" data-point-scroll-align="end">
+            
+          
+            
+          
             
           
             
@@ -4759,8 +5102,16 @@ Discription">Discription<br>Discription
             
           
             
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-6-image.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="none" src="assets/uploads/content-6-video.mov"></video><p>content 1</p></article>
               <article class="tile has-image has-video" data-content-id="content-6b" data-project-point-target="perfume" data-project-point-id="perfume" data-project-point-title="香水行业化">
+            
+          
+            
+          
             
           
             
@@ -4865,8 +5216,16 @@ Discription">Discription<br>Discription
             
           
             
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-7-image.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="none" src="assets/uploads/content-7-video.mp4"></video><p>content 3</p></article>
               <article class="tile has-image has-video" data-content-id="content-8" data-project-point-target="designer-toy" data-project-point-id="designer-toy" data-project-point-title="潮玩行业化">
+            
+          
+            
+          
             
           
             
@@ -4958,10 +5317,18 @@ Discription">Discription<br>Discription
           
             
           
+            
+          
+            
+          
             <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/industry-content-6-image.png">
             <video class="tile-media tile-video" muted="" loop="" playsinline="" preload="none"></video>
           <p>content 5</p></article>
               <article class="tile has-image" data-content-id="industry-content-7" data-project-point-target="designer-toy" data-project-point-id="designer-toy" data-project-point-title="潮玩行业化">
+            
+          
+            
+          
             
           
             
@@ -5026,6 +5393,10 @@ Discription">Discription<br>Discription
           
             
           
+            
+          
+            
+          
                 <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/industry-content-8-image.png">
                 <video class="tile-media tile-video" muted="" loop="" playsinline="" preload="none"></video>
                 <p>content 7</p>
@@ -5036,12 +5407,18 @@ Discription">Discription<br>Discription
 
         <article class="section-title panel" data-text-id="text-10" style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 20px; padding-bottom: 20px; opacity: 1;">Selected Projects 03<br>2026
           
+        
+          
+        
+          
         </article>
 
         <article class="project-head" data-active-project-point="annual-report">
           <div class="project-title panel"><p style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 0px; padding-bottom: 0px; opacity: 1;" class="" data-text-id="text-11"><span class="pt-main">年度商家颁奖会</span><span class="pt-sub">得物 APP</span></p></div>
           <div class="project-middle">
-            <div class="project-desc panel"><p style="font-size: 19px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.3; padding-top: 8px; padding-bottom: 8px; opacity: 1;" class="" data-text-id="text-12" data-default-project-desc="背景：为增强商家经营信心，提高分享率，通过年度报告展示给亮眼经营数据，同时作为外宣渠道。">背景：为增强商家经营信心，提高分享率，通过年度报告展示给亮眼经营数据，同时作为外宣渠道。
+            <div class="project-desc panel"><p style="font-size: 19px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.3; padding-top: 8px; padding-bottom: 8px; opacity: 1;" class="" data-text-id="text-12" data-default-project-desc="背景：为增强商家经营信心，提高分享率，通过年度报告展示给亮眼经营数据，同时作为外宣渠道。">通过年度商家榜单给获奖商家颁奖，提高荣誉感，同时年度报告展示给商家亮眼经营数据，增强商家经营信心，提高分享率；另外根据主视觉延展宣发视频作为外宣渠道。
+          
+        
           
         </p></div>
             <div class="project-actions">
@@ -5051,11 +5428,17 @@ Discription">Discription<br>Discription
           </div>
           <div class="project-points panel" data-project-points="annual" style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" data-text-id="text-13"><p class="project-point is-active" data-project-point="annual-report" data-project-desc="通过年度商家榜单给获奖商家颁奖，提高荣誉感，同时年度报告展示给商家亮眼经营数据，增强商家经营信心，提高分享率；另外根据主视觉延展宣发视频作为外宣渠道。" role="button" tabindex="0"><span class="project-point-label">年度报告</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="promo-video" role="button" tabindex="0"><span class="project-point-label">宣发视频</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="annual-ranking" role="button" tabindex="0"><span class="project-point-label">年度榜单</span><span class="project-point-arrow" aria-hidden="true"></span></p>
           
+        
+          
         </div>
         </article>
 
         <div class="tile-grid">
           <article class="tile has-image has-video" data-content-id="content-9" data-project-point-target="annual-report" data-project-point-id="annual-report" data-project-point-title="年度报告">
+            
+          
+            
+          
             
           
             
@@ -5160,6 +5543,10 @@ Discription">Discription<br>Discription
             
           
             
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-10-image.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="none" src="assets/uploads/content-10-video.mov"></video><p>content 2</p></article>
           <article class="tile has-image has-video" data-content-id="content-11" data-project-point-target="annual-report" data-project-point-id="annual-report" data-project-point-title="年度报告">
             
@@ -5213,8 +5600,16 @@ Discription">Discription<br>Discription
             
           
             
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-11-image.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="none" src="assets/uploads/content-11-video.mov"></video><p>content 3</p></article>
           <article class="tile has-image has-video" data-content-id="content-12" data-project-point-target="annual-report" data-project-point-id="annual-report" data-project-point-title="年度报告">
+            
+          
+            
+          
             
           
             
@@ -5322,6 +5717,10 @@ Discription">Discription<br>Discription
             
           
             
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-13-image.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="none" src="assets/uploads/content-13-video.mp4"></video><p>content 2</p></article>
           <article class="tile center detail-image-card has-detail-image has-image media-text-hover" data-content-id="annual-report-object-result" data-project-point-target="annual-ranking" data-project-point-id="annual-ranking" data-project-point-title="年度榜单">
             
@@ -5375,12 +5774,24 @@ Discription">Discription<br>Discription
             
           
             
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image detail-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/annual-report-object-result-image.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="none"></video><p style="font-size: 26px; font-weight: 300; color: #ffffff; line-height: 1.75; padding-top: 50px; padding-bottom: 50px;" class="" data-text-id="text-14">Object<br>助力商家侧年报、榜单、颁奖视频落地，体现商家专属格，提升商家荣誉感与成就感。<br><br>Result<br>跑通 AI 动效视频设计生成交付全流程，开箱结合贺卡，营造惊喜与荣誉感，生成 立体印花效果增加品牌属性，设计轻量通透的商家视觉元素，最终覆盖 34,509 家商家，视频触达率 84.7%，分享率 50%，新增 2 项设计专利。
+          
+        
+          
+        
           
         </p></article>
         </div>
 
         <article class="section-title panel" data-text-id="text-15" style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 20px; padding-bottom: 20px; opacity: 1;">Selected Projects 04<br>2026
+          
+        
+          
+        
           
         </article>
 
@@ -5388,7 +5799,7 @@ Discription">Discription<br>Discription
           <div class="project-title panel"><p style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 2px; padding-bottom: 2px; opacity: 1;" class="" data-text-id="text-16"><span class="pt-main">个人中心工具</span><span class="pt-sub">得物 APP</span></p></div>
           <div class="project-middle">
             <div class="project-desc panel"><p style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" class="" data-text-id="text-17" data-default-project-desc="Discription
-Discription">Discription<br>Discription
+Discription">个卖首页改版：个卖首页框架优化，突出强化待办事项，通过设计走查发现并优化7个功能层问题，16个视觉体验问题，促进卖家满意度提升，核心操作用户流量提升。
           
         </p></div>
             <div class="project-actions">
@@ -5396,7 +5807,9 @@ Discription">Discription<br>Discription
               <a class="pill panel" href="#">Interaction Design</a>
             </div>
           </div>
-          <div class="project-points panel" data-project-points="profile" style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" data-text-id="text-18"><p class="project-point is-active" data-project-point="profile-point-1" data-project-desc="个卖首页改版：个卖首页框架优化，突出强化待办事项，通过设计走查发现并优化7个功能层问题，16个视觉体验问题，促进卖家满意度提升，核心操作用户流量提升。" role="button" tabindex="0"><span class="project-point-label">个卖首页改版</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="profile-point-2" data-project-desc="商家移动端入驻建设：简化入驻流程，分层级展示信息，通过字号、字重、颜色突出当前进度与状态（编辑、预览、修改）。移动端入驻能力上线后，提升商家入驻量，达成手机端入驻商家在大盘占比目标。" role="button" tabindex="0"><span class="project-point-label">卖家入驻链路</span><span class="project-point-arrow" aria-hidden="true"></span></p>
+          <div class="project-points panel" data-project-points="profile" style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" data-text-id="text-18"><p class="project-point" data-project-point="profile-point-1" data-project-desc="个卖首页改版：个卖首页框架优化，突出强化待办事项，通过设计走查发现并优化7个功能层问题，16个视觉体验问题，促进卖家满意度提升，核心操作用户流量提升。" role="button" tabindex="0"><span class="project-point-label">个卖首页改版</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="profile-point-2" data-project-desc="商家移动端入驻建设：简化入驻流程，分层级展示信息，通过字号、字重、颜色突出当前进度与状态（编辑、预览、修改）。移动端入驻能力上线后，提升商家入驻量，达成手机端入驻商家在大盘占比目标。" role="button" tabindex="0"><span class="project-point-label">卖家入驻链路</span><span class="project-point-arrow" aria-hidden="true"></span></p>
+          
+        
           
         </div>
         </article>
@@ -5405,6 +5818,10 @@ Discription">Discription<br>Discription
           <div class="horizontal-module-slide">
             <div class="tile-grid" aria-label="个人中心工具项目模块 1">
           <article class="tile has-image" data-content-id="content-14" data-project-point-target="profile-point-1" data-project-point-id="profile-point-1" data-project-point-title="个卖首页改版">
+            
+          
+            
+          
             
           
             
@@ -5509,8 +5926,16 @@ Discription">Discription<br>Discription
             
           
             
+          
+            
+          
+            
           <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-15-image.png"><video class="tile-media tile-video" muted="" loop="" playsinline="" preload="none" src="assets/uploads/content-15-video.mov"></video><p>content 2</p></article>
           <article class="tile has-image has-video" data-content-id="profile-content-3" data-project-point-target="profile-point-2" data-project-point-id="profile-point-2" data-project-point-title="卖家入驻链路">
+            
+          
+            
+          
             
           
             
@@ -5538,6 +5963,10 @@ Discription">Discription<br>Discription
             <p>content 3</p>
           </article>
           <article class="tile has-image has-video" data-content-id="profile-content-4" data-project-point-target="profile-point-2" data-project-point-id="profile-point-2" data-project-point-title="卖家入驻链路">
+            
+          
+            
+          
             
           
             
@@ -5591,11 +6020,19 @@ Discription">Discription<br>Discription
           
             
           
+            
+          
+            
+          
             <img loading="lazy" decoding="async" class="tile-media tile-image" alt="" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/profile-content-5-image.png">
             <video class="tile-media tile-video" muted="" loop="" playsinline="" preload="none"></video>
             <p>content 5</p>
           </article>
           <article class="tile has-image has-video" data-content-id="profile-content-6" data-project-point-target="profile-point-2" data-project-point-id="profile-point-2" data-project-point-title="卖家入驻链路">
+            
+          
+            
+          
             
           
             
@@ -5629,14 +6066,119 @@ Discription">Discription<br>Discription
         <article class="closing panel">
           <p class="" data-text-id="text-20" style="font-size: 36px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 70px; padding-bottom: 70px; opacity: 1;">UI 自动化：通过将设计语言转译为 AI 可读的 MD 文档，实现 UI 自动化覆盖弱视觉商家 PC 端需求。已跑通 PC 端表单、表格页面的 AI 自动化生成。同时，应用 AI 能力完成大屏适配，实现多设备自动化适配。
           
+        
+          
+        
+          
         </p>
         </article>
+
+        <div class="ui-auto-labels" aria-label="UI 自动化演示标签">
+          <p class="uiauto-point panel is-active" data-uiauto-index="0" data-text-id="uiauto-label-1" role="button" tabindex="0"><span class="project-point-label">列表页大屏适配</span><span class="project-point-arrow" aria-hidden="true"></span>
+          
+        
+          
+        </p>
+          <p class="uiauto-point panel" data-uiauto-index="1" data-text-id="uiauto-label-2" role="button" tabindex="0"><span class="project-point-label">复杂页面大屏适配</span><span class="project-point-arrow" aria-hidden="true"></span>
+          
+        
+          
+        </p>
+          <p class="uiauto-point panel" data-uiauto-index="2" data-text-id="uiauto-label-3" role="button" tabindex="0"><span class="project-point-label">UI 自动化生成</span><span class="project-point-arrow" aria-hidden="true"></span>
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        </p>
+        </div>
+
+        <div class="ui-auto-row" aria-label="UI 自动化演示模块" style="--ui-auto-h: 401px;">
+          <article class="tile play-on-click has-video" data-content-id="uiauto-content-1" data-play="click" data-project-point-title="个卖首页改版" data-project-point-id="profile-point-1" data-project-point-target="profile-point-1" style="--v-ar: 3438 / 1912;">
+            
+          
+            
+          
+            <img loading="lazy" decoding="async" class="tile-media tile-image" alt="">
+            <video class="tile-media tile-video" muted="" playsinline="" preload="metadata" data-play="click" src="assets/uploads/uiauto-content-1-video.mp4"></video>
+          <p>UI 自动化 1</p></article>
+          <article class="tile play-on-click has-video is-playing" data-content-id="uiauto-content-2" data-play="click" data-project-point-title="个卖首页改版" data-project-point-id="profile-point-1" data-project-point-target="profile-point-1" style="--v-ar: 3438 / 1912;">
+            
+          
+            
+          
+            <img loading="lazy" decoding="async" class="tile-media tile-image" alt="">
+            <video class="tile-media tile-video" muted="" playsinline="" preload="metadata" data-play="click" src="assets/uploads/uiauto-content-2-video.mp4"></video>
+          <p>UI 自动化 2</p></article>
+          <article class="tile play-on-click has-video" data-content-id="uiauto-content-3" data-play="click" data-project-point-title="个卖首页改版" data-project-point-id="profile-point-1" data-project-point-target="profile-point-1">
+            
+          
+            
+          
+            <img loading="lazy" decoding="async" class="tile-media tile-image" alt="">
+            <video class="tile-media tile-video" muted="" playsinline="" preload="metadata" data-play="click" src="assets/uploads/uiauto-content-3-video.mp4"></video>
+          <p>UI 自动化 3</p></article>
+        </div>
 
         <section class="readcv-section" id="readcv" aria-label="Read CV">
           <div class="readcv-hero">
             <article class="readcv-intro panel">
               <p class="readcv-kicker">READ.CV / ABOUT</p>
               <h2 style="font-size: 36px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 70px; padding-bottom: 70px; opacity: 1;" class="" data-text-id="text-21">你好，我是 Julian。 UX Designer，关注商城行业化设计 与 AI 实践，把复杂场景转译成清晰直观、有质感、可持续迭代的数字产品。
+          
+        
+          
+        
           
         </h2>
             </article>
@@ -5696,11 +6238,19 @@ Discription">Discription<br>Discription
           
         
           
+        
+          
+        
+          
         </article>
           </div>
 
           <article class="readcv-timeline panel">
             <h3 class="" data-text-id="text-23" style="font-size: 16px; font-weight: 400; color: rgb(134, 136, 147); line-height: 1.4; padding-top: 26px; padding-bottom: 26px; opacity: 1;">2025.07 - Now<br>得物 搜推<br>UI&amp;UX 设计师<br><br>负责搜索与行业化体验设计，持续打磨核心链路、内容表达与 AI 能力在业务场景中的落地。
+          
+        
+          
+        
           
         </h3>
             <div class="timeline-grid">
@@ -5710,6 +6260,10 @@ Discription">Discription<br>Discription
                 <span>UI&amp;UX 设计师</span>
                 <p>负责搜索与行业化体验设计，持续打磨核心链路、内容表达与 AI 能力在业务场景中的落地。</p>
               
+          
+        
+          
+        
           
         
           
@@ -5819,6 +6373,10 @@ Discription">Discription<br>Discription
           
         
           
+        
+          
+        
+          
         </div>
               <div class="timeline-item" data-text-id="resume-kuaishou-search">
                 <time>2022.07 - 2022.10</time>
@@ -5826,6 +6384,10 @@ Discription">Discription<br>Discription
                 <span>UI 实习</span>
                 <p>参与搜索结果话题页设计，优化内容生态搜索场景中的信息组织、视觉呈现与互动反馈。</p>
               
+          
+        
+          
+        
           
         
           
@@ -5935,6 +6497,10 @@ Discription">Discription<br>Discription
           
         
           
+        
+          
+        
+          
         </div>
             </div>
           </article>
@@ -5992,9 +6558,17 @@ Discription">Discription<br>Discription
             
           
             
+          
+            
+          
+            
           </article>
             <article class="life-photo panel has-life-overlay media-text-hover" style="--life-image: url('https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/life-2-image.jpg');" data-life-id="life-2">
               <p class="life-gallery-title" style="display: none; font-size: 20px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.45; padding-top: 0px; padding-bottom: 0px;" data-text-id="text-28">感谢一路上遇到的每一位伙伴，是你们让我得以做出最好的作品。
+          
+        
+          
+        
           
         </p>
               <p style="font-size: 20px; font-weight: 400; color: #ffffff; line-height: 1.45; padding-top: 0px; padding-bottom: 0px;" class="" data-text-id="text-29">感谢一路上遇到的每一位伙伴，是你们让我得以做出最好的作品。
@@ -6049,8 +6623,16 @@ Discription">Discription<br>Discription
           
         
           
+        
+          
+        
+          
         </p>
             
+            
+          
+            
+          
             
           
             
@@ -6155,8 +6737,16 @@ Discription">Discription<br>Discription
             
           
             
+          
+            
+          
+            
           </article>
             <article class="life-photo panel" style="--life-image: url('https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/life-4-image.jpg');" data-life-id="life-4">
+            
+          
+            
+          
             
           
             
@@ -6321,17 +6911,17 @@ Discription">Discription<br>Discription
     </aside>
 
     <aside class="content-editor-panel" id="contentEditorPanel" aria-label="Content media editor" aria-hidden="true">
-      <h2 data-content-editor-title="">content 4</h2>
+      <h2 data-content-editor-title="">UI 自动化 3</h2>
       <label class="content-editor-field">
         关联小标题 Title
-        <select data-content-input="projectTitle"><option value="ai-search">AI 智能搜索</option><option value="coupon">搜索营销发券</option><option value="visual">搜索氛围视觉</option></select>
+        <select data-content-input="projectTitle"><option value="profile-point-1">个卖首页改版</option><option value="profile-point-2">卖家入驻链路</option></select>
       </label>
       <label class="content-editor-field">
         首图 Image
         <input data-content-input="image" type="file" accept="image/*">
       </label>
       <label class="content-editor-field">
-        Hover 视频 Video
+        <span data-content-video-label="">点击播放 视频 Video</span>
         <input data-content-input="video" type="file" accept="video/*">
       </label>
       <img loading="lazy" decoding="async" class="content-editor-preview" data-content-preview="" alt="" hidden="">
@@ -6344,7 +6934,7 @@ Discription">Discription<br>Discription
     </aside>
 
     <aside class="text-editor-panel" id="textEditorPanel" aria-label="Text editor" aria-hidden="true">
-      <h2 data-text-editor-title="">Selected Projects 2025-2026</h2>
+      <h2 data-text-editor-title="">大屏适配</h2>
       <label class="text-editor-field">
         Text
         <textarea data-text-control="content"></textarea>
@@ -6352,7 +6942,7 @@ Discription">Discription<br>Discription
       <div class="point-desc-editor" data-point-desc-editor="" hidden=""></div>
       <label class="text-editor-field text-editor-inline">
         Font size
-        <span class="text-editor-value" data-text-output="fontSize">28px</span>
+        <span class="text-editor-value" data-text-output="fontSize">21px</span>
         <input data-text-control="fontSize" type="range" min="10" max="96" step="1" value="20">
       </label>
       <label class="text-editor-field text-editor-inline">
@@ -6366,12 +6956,12 @@ Discription">Discription<br>Discription
       </label>
       <label class="text-editor-field text-editor-inline">
         Line height
-        <span class="text-editor-value" data-text-output="lineHeight">1.60</span>
+        <span class="text-editor-value" data-text-output="lineHeight">1.40</span>
         <input data-text-control="lineHeight" type="range" min="0.8" max="2.4" step="0.05" value="1.4">
       </label>
       <label class="text-editor-field text-editor-inline">
         Vertical spacing
-        <span class="text-editor-value" data-text-output="paddingY">20px</span>
+        <span class="text-editor-value" data-text-output="paddingY">8px</span>
         <input data-text-control="paddingY" type="range" min="0" max="120" step="1" value="0">
       </label>
       <label class="text-editor-field text-editor-inline">
@@ -6384,7 +6974,7 @@ Discription">Discription<br>Discription
         <button type="button" data-action="closeTextEdit">Close</button>
         <button type="button" data-action="saveTextEdit">Save</button>
       </div>
-      <div class="text-editor-status" data-text-editor-status="" aria-live="polite"></div>
+      <div class="text-editor-status" data-text-editor-status="" aria-live="polite">已保存</div>
     </aside>
 
     <button class="settings-toggle" type="button" aria-label="Open motion settings" aria-expanded="false" aria-controls="motionPanel" data-action="toggleSettings">
@@ -6718,20 +7308,62 @@ Discription">Discription<br>Discription
           `);
         }
         const video = tile.querySelector(".tile-video");
-        tile.addEventListener("mouseenter", () => {
-          if (!tile.classList.contains("has-video")) return;
-          video.currentTime = 0;
-          video.play().catch(() => {});
-        });
-        tile.addEventListener("mouseleave", () => {
-          video.pause();
-          video.currentTime = 0;
-        });
+        if (tile.dataset.play === "click") {
+          // 点击播放模式（UI 自动化下方模块）：点击整块切换播放/暂停，宽度随视频真实宽高比自适应
+          video.dataset.play = "click";              // 标记：发布时保留 preload=metadata（需读宽高比 + 显示首帧海报）
+          video.setAttribute("preload", "metadata");
+          video.removeAttribute("loop");             // 不循环：播完停在最后一帧
+          video.addEventListener("loadedmetadata", () => {
+            if (video.videoWidth && video.videoHeight) {
+              tile.style.setProperty("--v-ar", `${video.videoWidth} / ${video.videoHeight}`);
+              sizeUiAutoRow(); // 宽高比确定后重算整行统一高度
+            }
+            // 没有封面图时，seek 到起始附近强制解码一帧，把视频首帧当海报显示
+            if (!tile.classList.contains("has-image")) {
+              try { video.currentTime = Math.min(0.1, (video.duration || 1) / 100); } catch (e) {}
+            }
+          });
+          // 视频若延迟加载元数据（preload=none），先用封面图的比例撑出宽度，视频元数据到了再校准
+          const coverImg = tile.querySelector(".tile-image");
+          coverImg?.addEventListener("load", () => {
+            if (!tile.style.getPropertyValue("--v-ar") && coverImg.naturalWidth && coverImg.naturalHeight) {
+              tile.style.setProperty("--v-ar", `${coverImg.naturalWidth} / ${coverImg.naturalHeight}`);
+              sizeUiAutoRow();
+            }
+          });
+          tile.addEventListener("click", (event) => {
+            if (event.target.closest(".tile-edit")) return; // 点编辑铅笔不触发播放
+            if (!tile.classList.contains("has-video")) return;
+            if (video.paused || video.ended) {
+              if (video.ended) video.currentTime = 0; // 播完后再点：从头开始
+              video.play().then(() => tile.classList.add("is-playing")).catch(() => {});
+            } else {
+              video.pause();
+              tile.classList.remove("is-playing");
+            }
+          });
+          // 播完停在最后一帧，去掉 is-playing 让播放按钮重新出现（提示可再点从头播）
+          video.addEventListener("ended", () => tile.classList.remove("is-playing"));
+        } else {
+          tile.addEventListener("mouseenter", () => {
+            if (!tile.classList.contains("has-video")) return;
+            video.currentTime = 0;
+            video.play().catch(() => {});
+          });
+          tile.addEventListener("mouseleave", () => {
+            video.pause();
+            video.currentTime = 0;
+          });
+        }
         tile.querySelector(".tile-edit").addEventListener("click", () => openContentEditor(tile));
       }
 
       async function openContentEditor(tile) {
         activeContentTile = tile;
+        const videoLabel = document.querySelector("[data-content-video-label]");
+        if (videoLabel) {
+          videoLabel.textContent = tile.dataset.play === "click" ? "点击播放 视频 Video" : "Hover 视频 Video";
+        }
         pendingContentImage = null;
         pendingContentVideo = null;
         contentImageInput.value = "";
@@ -6769,7 +7401,16 @@ Discription">Discription<br>Discription
           const id = activeContentTile.dataset.contentId;
           const currentRecord = await getContentRecord(id);
           const currentImage = activeContentTile.querySelector(".tile-image")?.getAttribute("src");
-          if (!pendingContentImage && !currentRecord.image && !currentImage) {
+          const currentVideo = activeContentTile.querySelector(".tile-video")?.getAttribute("src");
+          const hasImage = pendingContentImage || currentRecord.image || currentImage;
+          const hasVideo = pendingContentVideo || currentRecord.video || currentVideo;
+          // 点击播放模块（UI 自动化下方）：首图不必填，只要有视频即可（无首图时直接用视频首帧当海报）
+          if (activeContentTile.dataset.play === "click") {
+            if (!hasImage && !hasVideo) {
+              showContentStatus("请上传视频");
+              return;
+            }
+          } else if (!hasImage) {
             showContentStatus("首图必填");
             return;
           }
@@ -7079,6 +7720,10 @@ Discription">Discription<br>Discription
         if (Object.prototype.hasOwnProperty.call(edit, "text")) {
           if (target.dataset.projectPoints) {
             renderProjectPoints(target, edit.text);
+          } else if (target.classList.contains("uiauto-point")) {
+            // UI 自动化标签：只改标签文字 span，保留箭头等结构
+            const labelSpan = target.querySelector(".project-point-label");
+            if (labelSpan) labelSpan.innerHTML = textToHtml(edit.text);
           } else {
             target.innerHTML = textToHtml(edit.text);
           }
@@ -7250,6 +7895,8 @@ Discription">Discription<br>Discription
             .map((point) => point.textContent.trim())
             .filter(Boolean)
             .join("\n")
+          : target.classList.contains("uiauto-point")
+            ? (target.querySelector(".project-point-label")?.textContent.trim() || "")
           : target.closest(".project-desc")
             ? inheritedProjectDescription(activeProjectPointForDesc(target) || target.closest(".project-head")?.querySelector(".project-point"))
           : target.innerText.trim();
@@ -7354,7 +8001,8 @@ Discription">Discription<br>Discription
           ".readcv-education",
           ".readcv-timeline h3",
           ".timeline-item",
-          ".life-photo.has-life-overlay p"
+          ".life-photo.has-life-overlay p",
+          ".uiauto-point"
         ];
         const targets = Array.from(document.querySelectorAll(selectors.join(",")))
           .filter((target) => !target.closest(".motion-panel, .content-editor-panel, .text-editor-panel"));
@@ -8111,15 +8759,78 @@ Discription">Discription<br>Discription
       textResetButton.addEventListener("click", resetActiveTextEdit);
       textCloseButton.addEventListener("click", () => setTextEditorOpen(false));
       contentPreview.hidden = true;
+      // UI 自动化下方模块：把高度对齐到普通 content 模块（tile-grid 里的 tile）的渲染高度
+      function sizeUiAutoRow() {
+        const rows = document.querySelectorAll(".ui-auto-row");
+        if (!rows.length) return;
+        // 普通内容模块高度作为上限（竖屏视频时封顶，不超过其他模块）
+        const refTile = document.querySelector(".tile-grid:not(.short) .tile") || document.querySelector(".tile-grid .tile");
+        const refH = refTile ? refTile.getBoundingClientRect().height : Infinity;
+        rows.forEach((row) => {
+          const tiles = Array.from(row.querySelectorAll(".tile"));
+          if (!tiles.length) return;
+          const cs = getComputedStyle(row);
+          // 横滑时一次看一个，可见宽 = 容器内宽（不减 gap）
+          const avail = row.clientWidth - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0);
+          // 每个模块的宽高比（用 --v-ar，未设则默认竖屏占位比）；宽度 = 高 × 比
+          const ratios = tiles.map((t) => {
+            const v = t.style.getPropertyValue("--v-ar").trim();
+            if (v) {
+              const parts = v.split("/");
+              const w = parseFloat(parts[0]), hh = parseFloat(parts[1]);
+              if (w && hh) return w / hh;
+            }
+            return 307.5 / 665.8;
+          });
+          // 横向滑动画廊：让最宽的视频约占可用宽度的 85%（留出下一个的 peek 提示可横滑），
+          // 其余视频同高、按各自比例窄一些；高度上限=普通内容模块高度
+          const maxR = Math.max(...ratios);
+          let h = (avail * 0.85) / maxR;
+          if (refH && h > refH) h = refH;
+          if (h > 0) row.style.setProperty("--ui-auto-h", `${Math.floor(h)}px`);
+        });
+      }
       window.addEventListener("scroll", updateHeroDrift, { passive: true });
       window.addEventListener("resize", () => {
         fitHeroToViewport();
         updateHeroDrift();
+        sizeUiAutoRow();
       });
       if (document.fonts) {
-        document.fonts.ready.then(fitHeroToViewport);
+        document.fonts.ready.then(() => {
+          fitHeroToViewport();
+          sizeUiAutoRow();
+        });
+      }
+      // UI 自动化标签：点击 → 箭头射出动画 + 水平滚动定位到对应视频
+      function initUiAutoLabels() {
+        const labels = Array.from(document.querySelectorAll(".uiauto-point"));
+        if (!labels.length) return;
+        const row = document.querySelector(".ui-auto-row");
+        const tiles = row ? Array.from(row.querySelectorAll(".tile")) : [];
+        labels.forEach((label) => {
+          const go = () => {
+            labels.forEach((l) => l.classList.remove("is-active"));
+            label.classList.add("is-active");
+            label.classList.remove("is-clicking");
+            void label.offsetWidth; // 重置动画，允许连点重复触发
+            label.classList.add("is-clicking");
+            const tile = tiles[Number(label.dataset.uiautoIndex) || 0];
+            if (row && tile) {
+              const delta = tile.getBoundingClientRect().left - row.getBoundingClientRect().left;
+              row.scrollBy({ left: delta, behavior: "smooth" }); // 水平滚到该视频
+            }
+          };
+          label.addEventListener("click", go);
+          label.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") { event.preventDefault(); go(); }
+          });
+          label.addEventListener("animationend", () => label.classList.remove("is-clicking"));
+        });
       }
       fitHeroToViewport();
+      sizeUiAutoRow();
+      initUiAutoLabels();
       setMotionSettings(defaults);
       loadMotionSettings();
       initProjectPointHover();
@@ -8146,11 +8857,12 @@ Discription">Discription<br>Discription
       initHorizontalModuleScrolls();
       applyHeroMotion();
       updateHeroDrift();
-    </script><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden=""><input type="file" accept="image/*" hidden="">
+    </script>
   
 
 
-<div id="codex-browser-sidebar-comments-root" style="position: fixed; inset: 0px; pointer-events: none; z-index: 2147483647;"></div>
+
+
 
 
 
