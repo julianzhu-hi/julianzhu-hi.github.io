@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI 智能搜索 — Julian Zhu</title>
+  <style>
+    /* 设计变量与主站 index.html 保持一致 */
+    :root {
+      --page: #0a0a0a;
+      --panel-solid: #212128;
+      --text-panel-opacity: 0.98;
+      --text-panel-blur: 12.5px;
+      --muted: #868893;
+      --text: #ffffff;
+      --gap: 5px;
+      --canvas: 1280px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--page);
+      color: var(--text);
+      font-family: Bauhaus, "Arial Rounded MT Bold", "Trebuchet MS", Arial, sans-serif;
+    }
+    .panel {
+      background: rgba(33, 33, 40, var(--text-panel-opacity));
+      border-radius: 10px;
+      backdrop-filter: blur(var(--text-panel-blur));
+      -webkit-backdrop-filter: blur(var(--text-panel-blur));
+    }
+
+    /* ---- 顶部返回 ---- */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: var(--page);
+      padding: 14px 10px;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 24px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 20px;
+      text-decoration: none;
+      transition: background 220ms ease, color 220ms ease;
+    }
+    .back-link:hover, .back-link:focus-visible {
+      background: rgba(86, 87, 101, 0.92);
+      color: var(--text);
+      outline: 0;
+    }
+    /* 左向箭头：横线 + 45°箭头头（与主站箭头同一套画法，方向相反） */
+    .back-arrow { position: relative; width: 22px; height: 12px; flex: 0 0 auto; transition: width 240ms ease, transform 240ms ease; }
+    .back-arrow::before, .back-arrow::after { content: ""; position: absolute; left: 0; top: 50%; background: currentColor; }
+    .back-arrow::before { width: 100%; height: 2px; transform: translateY(-50%); }
+    .back-arrow::after {
+      width: 8px; height: 8px; background: transparent;
+      border-bottom: 2px solid currentColor; border-left: 2px solid currentColor;
+      transform: translateY(-50%) rotate(45deg);
+    }
+    .back-link:hover .back-arrow { width: 34px; transform: translateX(-6px); }
+
+    /* ---- 主体 ---- */
+    .case {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap);
+      width: 100%;
+      max-width: var(--canvas);
+      margin: 0 auto;
+      padding: 0 10px 60px;
+    }
+    .case-hero { padding: 60px 30px; }
+    .case-kicker { margin: 0 0 16px; color: var(--muted); font-size: 18px; letter-spacing: 0.04em; }
+    .case-title { margin: 0; font-size: 56px; line-height: 1.2; font-weight: 400; }
+    .case-lead { margin: 20px 0 0; max-width: 900px; color: var(--muted); font-size: 20px; line-height: 1.9; }
+
+    /* 项目详情：角色/时间/团队/标签 */
+    .case-meta { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
+    .meta-item { padding: 24px 30px; }
+    .meta-item h3 { margin: 0 0 8px; color: var(--muted); font-size: 15px; font-weight: 400; letter-spacing: 0.06em; }
+    .meta-item p { margin: 0; font-size: 19px; line-height: 1.6; }
+
+    /* 案例拆解区块 */
+    .case-block { padding: 44px 30px; }
+    .case-block h2 { margin: 0 0 6px; font-size: 30px; font-weight: 400; }
+    .case-block .en { margin: 0 0 22px; color: var(--muted); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .case-block p { margin: 0 0 16px; max-width: 900px; color: var(--muted); font-size: 19px; line-height: 2.1; }
+    .case-block p:last-child { margin-bottom: 0; }
+
+    /* 占位提示：内容填好后把 .todo 去掉即可 */
+    .todo {
+      display: inline-block;
+      padding: 2px 10px;
+      border: 1px dashed rgba(255, 255, 255, 0.25);
+      border-radius: 6px;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 16px;
+    }
+
+    /* 媒体展示：沿用主站图块的观感（图为底，hover 播视频） */
+    .case-media { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
+    .m-tile {
+      position: relative;
+      aspect-ratio: 307.5 / 665.8;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--panel-solid);
+    }
+    .m-tile img, .m-tile video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .m-tile video { opacity: 0; transition: opacity 220ms ease; }
+    .m-tile:hover video { opacity: 1; }
+
+    /* ---- 响应式 ---- */
+    @media (max-width: 900px) {
+      .case-title { font-size: 40px; }
+      .case-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .case-media { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .case-hero { padding: 40px 24px; }
+      .case-block { padding: 32px 24px; }
+    }
+    @media (max-width: 480px) {
+      .case-title { font-size: 32px; }
+      .case-meta { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="back-link" href="index.html"><span class="back-arrow" aria-hidden="true"></span><span>返回作品集</span></a>
+  </header>
+
+  <main class="case">
+    <!-- 项目详情 -->
+    <section class="case-hero panel">
+      <p class="case-kicker">SELECTED PROJECTS 01 · 搜推体验设计 / 得物 APP</p>
+      <h1 class="case-title">AI 智能搜索</h1>
+      <p class="case-lead">用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。</p>
+    </section>
+
+    <section class="case-meta">
+      <article class="meta-item panel"><h3>角色 ROLE</h3><p><span class="todo">待填写，如：UI&amp;UX 设计师</span></p></article>
+      <article class="meta-item panel"><h3>时间 TIMELINE</h3><p><span class="todo">待填写，如：2025.07 - Now</span></p></article>
+      <article class="meta-item panel"><h3>团队 TEAM</h3><p><span class="todo">待填写，如：设计 1 / 产品 1 / 研发 3</span></p></article>
+      <article class="meta-item panel"><h3>标签 TAGS</h3><p><span class="todo">UX&amp;UI · Motion Design</span></p></article>
+    </section>
+
+    <!-- 案例拆解：背景 -->
+    <section class="case-block panel">
+      <h2>背景</h2>
+      <p class="en">Background</p>
+      <p><span class="todo">待填写：当时面临什么问题？为什么要做这件事？</span></p>
+      <p><span class="todo">待填写：可以写业务背景、用户痛点、数据现状（例如搜索转化率、跳出率等），以及这个项目要解决的核心矛盾。</span></p>
+    </section>
+
+    <section class="case-media">
+      <article class="m-tile">
+        <img loading="lazy" decoding="async" alt="AI 智能搜索界面 1" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-2d.png" />
+        <video muted loop playsinline preload="metadata" src="assets/uploads/blob-2e.mp4"></video>
+      </article>
+      <article class="m-tile">
+        <img loading="lazy" decoding="async" alt="AI 智能搜索界面 2" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-a.png" />
+        <video muted loop playsinline preload="metadata" src="assets/uploads/blob-b.mp4"></video>
+      </article>
+      <article class="m-tile">
+        <img loading="lazy" decoding="async" alt="AI 智能搜索界面 3" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-c.png" />
+        <video muted loop playsinline preload="metadata" src="assets/uploads/blob-d.mp4"></video>
+      </article>
+      <article class="m-tile">
+        <img loading="lazy" decoding="async" alt="AI 智能搜索界面 4" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-2f.png" />
+        <video muted loop playsinline preload="metadata" src="assets/uploads/blob-30.mp4"></video>
+      </article>
+    </section>
+
+    <!-- 案例拆解：过程 -->
+    <section class="case-block panel">
+      <h2>过程</h2>
+      <p class="en">Process</p>
+      <p><span class="todo">待填写：你是怎么做的？关键的设计决策和取舍。</span></p>
+      <p><span class="todo">待填写：可以写调研 → 概念 → 方案迭代 → 验证的链路，重点讲「为什么这么设计」而不是「设计了什么」。比如：流内 AI 推荐卡 的位置为什么选在结果页、AI 独立搜 的入口如何权衡。</span></p>
+    </section>
+
+    <section class="case-media">
+      <article class="m-tile" style="grid-column: span 2; aspect-ratio: 620 / 665.8;">
+        <img loading="lazy" decoding="async" alt="AI 智能搜索过程图" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-1-image.png" />
+        <video muted loop playsinline preload="metadata" src="assets/uploads/content-1-video.mp4"></video>
+      </article>
+    </section>
+
+    <!-- 案例拆解：结果 -->
+    <section class="case-block panel">
+      <h2>结果</h2>
+      <p class="en">Result</p>
+      <p><span class="todo">待填写：上线后的实际成果。</span></p>
+      <p><span class="todo">待填写：建议放可量化的数据（转化率提升、渗透率、用户满意度等）+ 沉淀（组件/规范/专利）。这里是面试官最关注的部分，务必用真实数据。</span></p>
+    </section>
+
+    <footer class="site-header" style="position: static; padding: 40px 10px 0;">
+      <a class="back-link" href="index.html"><span class="back-arrow" aria-hidden="true"></span><span>返回作品集</span></a>
+    </footer>
+  </main>
+</body>
+</html>

@@ -814,6 +814,9 @@
 
       .project-desc {
         flex: 1 1 auto;
+        /* 改成 flex 列，好把 View more 推到右下角（本身 flex:1 会撑满高度） */
+        display: flex;
+        flex-direction: column;
         padding-top: 10px;
         padding-bottom: 10px;
         color: var(--muted);
@@ -837,6 +840,47 @@
         font-size: 20px;
         line-height: 45px;
         overflow: hidden;
+      }
+
+      /* 描述区里的跳转入口：箭头链接。
+         必须放在 <p> 外面、.project-desc 里面——<p> 的 innerHTML 会被「切换项目小标题」
+         (setActiveProjectPoint) 和文字编辑器整段重写，放里面会被冲掉。 */
+      .desc-more {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        align-self: flex-start;  /* 靠左 */
+        margin-top: auto;        /* 推到底 → 左下角 */
+        color: var(--muted);
+        font-size: 19px;
+        line-height: 1.6;
+        text-decoration: none;
+        cursor: pointer;
+        transition: color 220ms ease;
+      }
+      .desc-more span:first-child {
+        transition: transform 240ms ease;
+      }
+      .desc-more:hover,
+      .desc-more:focus-visible {
+        color: var(--text);
+        outline: 0;
+      }
+      .desc-more:hover span:first-child,
+      .desc-more:focus-visible span:first-child {
+        transform: translateX(8px);
+      }
+      .desc-more:hover .project-point-arrow,
+      .desc-more:focus-visible .project-point-arrow {
+        width: 42px;
+        opacity: 1;
+        transform: translateX(10px);
+      }
+
+      /* 只有绑定了二级页的小标题（data-for-point 匹配当前激活项）才显示，
+         由 setActiveProjectPoint() 切换 hidden。需要显式 display:none 盖掉上面的 inline-flex。 */
+      .desc-more[hidden] {
+        display: none;
       }
 
       .project-points {
@@ -4445,10 +4489,10 @@
           <div class="project-title panel"><p style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 0px; padding-bottom: 0px; opacity: 1;" class="" data-text-id="text-3"><span class="pt-main">搜推体验设计</span><span class="pt-sub">得物 APP</span></p></div>
           <div class="project-middle">
             <div class="project-desc panel"><p style="font-size: 19px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.3; padding-top: 8px; padding-bottom: 8px; opacity: 1;" class="" data-text-id="text-4" data-default-project-desc="背景：用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。">用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。
-          
-        
-          
-        </p></div>
+
+
+
+        </p><a class="desc-more" href="ai-search.html" data-for-point="ai-search"><span>View more</span><span class="project-point-arrow" aria-hidden="true"></span></a></div>
             <div class="project-actions">
               <a class="pill panel" href="#">UX&amp;UI</a>
               <a class="pill panel" href="#">Motion Design</a>
@@ -7781,6 +7825,10 @@ Discription">个卖首页改版：个卖首页框架优化，突出强化待办�
         });
         desc.innerHTML = textToHtml(inheritedProjectDescription(point));
         if (desc.dataset.textId) appendTextEditButton(desc);
+        // View more 只在它绑定的小标题激活时显示（每个小标题可以有自己的二级页；没绑的就不显示）
+        projectHead.querySelectorAll(".desc-more").forEach((link) => {
+          link.hidden = link.dataset.forPoint !== (point.dataset.projectPoint || "");
+        });
       }
 
       function activeProjectPointForDesc(descTarget) {
