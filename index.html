@@ -7515,8 +7515,12 @@ Discription">个卖首页改版：个卖首页框架优化，突出强化待办�
         const observer = new IntersectionObserver((entries) => {
           entries.forEach((entry) => {
             if (!entry.isIntersecting) return;
-            upgrade(entry.target);
-            observer.unobserve(entry.target);
+            const video = entry.target;
+            // UI 自动化横滑轮播只有 3 个视频，数据量小：只要这一整行进入视野就一次性全部预取，
+            // 不必等每个视频各自可视——否则横向划到第 2/3 个的瞬间才现学现卖，会有肉眼可见的空白。
+            const row = video.closest(".ui-auto-row");
+            const targets = row ? Array.from(row.querySelectorAll(".tile-video[src]:not([src=''])")) : [video];
+            targets.forEach((v) => { upgrade(v); observer.unobserve(v); });
           });
         }, { rootMargin: "800px 0px" });
         videos.forEach((video) => observer.observe(video));
