@@ -1,9 +1,16 @@
 <!DOCTYPE html>
-<html lang="zh">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<html lang="zh" class=""><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI 智能搜索 — Julian Zhu</title>
+  <script>
+    // 与主站同一套判定：只有本地(localhost/127.0.0.1/file:)才开编辑模式，线上自动隐藏编辑面板
+    (() => {
+      const localHosts = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
+      const localEditing = window.location.protocol === "file:" || localHosts.has(window.location.hostname);
+      document.documentElement.classList.toggle("local-editing", localEditing);
+    })();
+  </script>
   <style>
     /* 设计变量与主站 index.html 保持一致 */
     :root {
@@ -94,6 +101,12 @@
     .case-block p { margin: 0 0 16px; max-width: 900px; color: var(--muted); font-size: 19px; line-height: 2.1; }
     .case-block p:last-child { margin-bottom: 0; }
 
+    /* 背景后的三个小结：问题 / 业务目标 / 设计目标 */
+    .case-subgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); margin-top: 8px; }
+    .case-subitem { padding: 20px 22px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; }
+    .case-subitem h3 { margin: 0 0 10px; color: var(--muted); font-size: 14px; font-weight: 400; letter-spacing: 0.06em; text-transform: uppercase; }
+    .case-subitem p { margin: 0; max-width: none; font-size: 17px; line-height: 1.8; color: var(--muted); }
+
     /* 占位提示：内容填好后把 .todo 去掉即可 */
     .todo {
       display: inline-block;
@@ -103,6 +116,34 @@
       color: rgba(255, 255, 255, 0.5);
       font-size: 16px;
     }
+
+    /* 前台/后台流程图：AI 独立搜的用户行为 × 后台判断链路 */
+    .flow-diagram { display: flex; flex-direction: column; gap: 20px; margin-bottom: 20px; }
+    .flow-row { display: flex; flex-direction: column; gap: 12px; }
+    .flow-tag {
+      align-self: flex-start;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+    }
+    .flow-tag-front { background: rgba(47, 73, 255, 0.18); color: #97a5ff; }
+    .flow-tag-back { background: rgba(32, 231, 231, 0.14); color: #6fe4e4; }
+    .flow-chain { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .flow-box {
+      padding: 12px 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.5;
+      text-align: center;
+    }
+    .flow-box small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+    .flow-box-highlight { border-color: rgba(32, 231, 231, 0.5); background: rgba(32, 231, 231, 0.08); }
+    .flow-arrow { color: var(--muted); font-size: 18px; flex: 0 0 auto; }
+    .flow-note { font-size: 16px !important; color: rgba(255, 255, 255, 0.45) !important; }
 
     /* 媒体展示：沿用主站图块的观感（图为底，hover 播视频） */
     .case-media { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
@@ -121,11 +162,47 @@
     .m-tile video { opacity: 0; transition: opacity 220ms ease; }
     .m-tile:hover video { opacity: 1; }
 
+    /* ---- 页内文字编辑面板（仅本地可见；线上 html 没有 local-editing 类，整条隐藏）---- */
+    html:not(.local-editing) .edit-bar { display: none; }
+    .edit-bar {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: rgba(18, 18, 22, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 999px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .edit-bar button {
+      padding: 6px 18px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(86, 87, 101, 0.6);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 180ms ease;
+    }
+    .edit-bar button:hover { background: rgba(120, 122, 140, 0.8); }
+    .edit-bar button.primary { background: #ffffff; color: #0a0a0a; }
+    .edit-bar .edit-status { min-width: 70px; color: var(--muted); font-size: 14px; }
+    /* 编辑态：可编辑块加虚线框提示 */
+    html.is-editing [contenteditable="true"] { outline: 1px dashed rgba(32, 231, 231, 0.5); outline-offset: 3px; border-radius: 4px; }
+    html.is-editing [contenteditable="true"]:focus { outline-style: solid; }
+
     /* ---- 响应式 ---- */
     @media (max-width: 900px) {
       .case-title { font-size: 40px; }
       .case-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .case-media { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .case-subgrid { grid-template-columns: 1fr; }
       .case-hero { padding: 40px 24px; }
       .case-block { padding: 32px 24px; }
     }
@@ -149,36 +226,51 @@
     </section>
 
     <section class="case-meta">
-      <article class="meta-item panel"><h3>角色 ROLE</h3><p><span class="todo">待填写，如：UI&amp;UX 设计师</span></p></article>
-      <article class="meta-item panel"><h3>时间 TIMELINE</h3><p><span class="todo">待填写，如：2025.07 - Now</span></p></article>
-      <article class="meta-item panel"><h3>团队 TEAM</h3><p><span class="todo">待填写，如：设计 1 / 产品 1 / 研发 3</span></p></article>
-      <article class="meta-item panel"><h3>标签 TAGS</h3><p><span class="todo">UX&amp;UI · Motion Design</span></p></article>
+      <article class="meta-item panel"><h3>角色 ROLE</h3><p>UI&amp;UX 设计师</p></article>
+      <article class="meta-item panel"><h3>时间 TIMELINE</h3><p>2026.05 - Now</p></article>
+      <article class="meta-item panel"><h3>团队 TEAM</h3><p>设计 × 产品 × 算法/研发协作</p></article>
+      <article class="meta-item panel"><h3>标签 TAGS</h3><p>UX&amp;UI · Motion Design</p></article>
     </section>
 
     <!-- 案例拆解：背景 -->
     <section class="case-block panel">
       <h2>背景</h2>
       <p class="en">Background</p>
-      <p><span class="todo">待填写：当时面临什么问题？为什么要做这件事？</span></p>
-      <p><span class="todo">待填写：可以写业务背景、用户痛点、数据现状（例如搜索转化率、跳出率等），以及这个项目要解决的核心矛盾。</span></p>
+      <p>传统货架式搜索擅长处理「明确关键词」，但用户很多真实需求其实是「复杂决策 + 深度定制」型的模糊表达，比如「5000 元以内、性价比高、可以打游戏的电脑」「户外冲锋衣怎么选」「戴森和追觅哪个好」。这类 query 往往带多重限定条件、需要横向比较或专业知识兜底，传统搜索只能返回一堆静态商品列表，用户还是得自己筛选、自己做决策。</p>
+      <p>竞品侧（淘宝万能搜、京东 AI 搜等）已经验证了这类独立 AI 交互入口能承接到有意义的真实提问量，说明用户确实有为复杂需求换一种交互方式的意愿。但同时也存在明显代价：入口成本高、用户需要被教育，交互响应耗时更长、体验流畅度有待打磨，且对模型的理解、推理、推荐能力要求都极高。搜推团队要解决的核心矛盾：如何在得物的商品导购场景里，把「支持复杂决策」这个优点做出来，同时把「响应慢、门槛高」的代价降到可接受范围。</p>
+
+      <div class="case-subgrid">
+        <article class="case-subitem">
+          <h3>问题 Problem</h3>
+          <p>关键词搜索对「心智明确」的 query 效率很高，但面对「复杂决策 + 深度定制」类模糊表达时命中率低，用户得靠反复试错关键词来逼近需求。这部分决策链路很容易在站内断掉——用户要么放弃搜索，要么转去站外做功课，得物既承接不了这批真实需求，也拿不到这批用户的转化。</p>
+        </article>
+        <article class="case-subitem">
+          <h3>业务目标 Business Goal</h3>
+          <p>Q3 日活目标 1w（当前基准约 4000，+150%），Q4 目标 10w，验证独立 AI 入口值不值得从小流量灰度放大。同时希望通过多轮交互提升用户粘性：人均对话深度从 1.6 提升到 2.5（+50%），作为衡量「用户是否愿意多问一轮」的核心指标。</p>
+        </article>
+        <article class="case-subitem">
+          <h3>设计目标 Design Goal</h3>
+          <p>不是做一个更炫的 AI 对话框，而是用最小的用户教育成本把「支持复杂决策」嵌进现有搜索心智：入口足够克制、不打扰不需要它的大多数用户；命中的用户能明显感觉到「懂我」，愿意留下来多问一轮；整个交互要能在小流量验证阶段快速拿到真实反馈，为后续放量判断提供依据。</p>
+        </article>
+      </div>
     </section>
 
     <section class="case-media">
       <article class="m-tile">
-        <img loading="lazy" decoding="async" alt="AI 智能搜索界面 1" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-2d.png" />
-        <video muted loop playsinline preload="metadata" src="assets/uploads/blob-2e.mp4"></video>
+        <img loading="lazy" decoding="async" alt="AI 智能搜索界面 1" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-2d.png">
+        <video muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/blob-2e.mp4"></video>
       </article>
       <article class="m-tile">
-        <img loading="lazy" decoding="async" alt="AI 智能搜索界面 2" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-a.png" />
-        <video muted loop playsinline preload="metadata" src="assets/uploads/blob-b.mp4"></video>
+        <img loading="lazy" decoding="async" alt="AI 智能搜索界面 2" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-a.png">
+        <video muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/blob-b.mp4"></video>
       </article>
       <article class="m-tile">
-        <img loading="lazy" decoding="async" alt="AI 智能搜索界面 3" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-c.png" />
-        <video muted loop playsinline preload="metadata" src="assets/uploads/blob-d.mp4"></video>
+        <img loading="lazy" decoding="async" alt="AI 智能搜索界面 3" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-c.png">
+        <video muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/blob-d.mp4"></video>
       </article>
       <article class="m-tile">
-        <img loading="lazy" decoding="async" alt="AI 智能搜索界面 4" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-2f.png" />
-        <video muted loop playsinline preload="metadata" src="assets/uploads/blob-30.mp4"></video>
+        <img loading="lazy" decoding="async" alt="AI 智能搜索界面 4" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-2f.png">
+        <video muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/blob-30.mp4"></video>
       </article>
     </section>
 
@@ -186,14 +278,41 @@
     <section class="case-block panel">
       <h2>过程</h2>
       <p class="en">Process</p>
-      <p><span class="todo">待填写：你是怎么做的？关键的设计决策和取舍。</span></p>
-      <p><span class="todo">待填写：可以写调研 → 概念 → 方案迭代 → 验证的链路，重点讲「为什么这么设计」而不是「设计了什么」。比如：流内 AI 推荐卡 的位置为什么选在结果页、AI 独立搜 的入口如何权衡。</span></p>
+      <p>入口设计上没有直接做成一个显眼的强入口——那样等于把「响应慢、门槛高」的代价先甩给了所有用户。取舍后的方案是：后台先用离线 AI-Query 库 + 基础个性化判断哪些搜索请求「值得」引导去 AI 独立搜，命中后才在原搜索结果页做「定坑展示」的轻量入口，并且做了屏控——同一刷只展示 1 次，避免同一个入口反复打扰用户。也就是说，前台用户看到的只是一次不打扰的、克制的推荐，复杂度都压在后台判断上。</p>
+      <p>下面是这条链路的前台用户行为和后台判断逻辑对照：</p>
+    </section>
+
+    <section class="case-block panel">
+      <div class="flow-diagram">
+        <div class="flow-row">
+          <span class="flow-tag flow-tag-front">前台 · 用户行为</span>
+          <div class="flow-chain">
+            <div class="flow-box">用户进入激活页</div><span class="flow-arrow">→</span>
+            <div class="flow-box">Query 召排</div><span class="flow-arrow">→</span>
+            <div class="flow-box">业务逻辑<br><small>流控 / 下拉胶囊等</small></div><span class="flow-arrow">→</span>
+            <div class="flow-box flow-box-highlight">前端展示</div><span class="flow-arrow">→</span>
+            <div class="flow-box">点击进入搜索结果页</div>
+          </div>
+        </div>
+        <div class="flow-row">
+          <span class="flow-tag flow-tag-back">后台 · 新增判断链路</span>
+          <div class="flow-chain">
+            <div class="flow-box">离线 AI-Query 库</div><span class="flow-arrow">→</span>
+            <div class="flow-box">基础个性化</div><span class="flow-arrow">→</span>
+            <div class="flow-box flow-box-highlight">定坑展示<br><small>屏控：一刷只展示 1 次</small></div><span class="flow-arrow">→</span>
+            <div class="flow-box">进入独立 AI 搜索结果页</div>
+          </div>
+        </div>
+      </div>
+      <p class="flow-note">「定坑展示」命中的用户点击后即进入独立 AI 搜索结果页；其余用户仍停留在传统搜索结果页，两条链路只在「前端展示」这一步交汇，互不影响主链路的响应速度。</p>
+      <p>独立 AI 搜索结果页背后是四段式链路：多轮对话意图识别 → 多轮对话 Query 改写 → Summary 总结生成 → 商品召回与排序，底层基于 deepseek-v4-flash，通过业务 Prompt 编排实现搜索意图理解、Query 改写、结果摘要和非商品问题回复。因为独立入口对响应时间的容忍度比传统站内搜索更高，商品召排链路上也做了生成式能力升级：引入生成式召回、生成式 Query 改写、生成式相关性判断，专门用来提升复杂自然语言 query 下的商品召回覆盖率和结果匹配度。</p>
+      <p>一期上线后，复盘发现了几个明显的天花板：多个能力模块耦合在一次大模型调用里，效果很难再往上提；商品意图统一用一套模板回答，对不同商品意图的细分适配不足；非商品意图的 FAQ 兜底还不完善；复杂多轮对话下生成式召排容易出现理解偏差、产生幻觉；也还缺少真实用户反馈数据形成模型训练的闭环。这些问题直接定义了二期迭代的方向：从「一次大模型调用扛所有」拆分为多 skill 独立优化的架构，让每个意图场景都能单独打磨、单独验证。</p>
     </section>
 
     <section class="case-media">
       <article class="m-tile" style="grid-column: span 2; aspect-ratio: 620 / 665.8;">
-        <img loading="lazy" decoding="async" alt="AI 智能搜索过程图" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-1-image.png" />
-        <video muted loop playsinline preload="metadata" src="assets/uploads/content-1-video.mp4"></video>
+        <img loading="lazy" decoding="async" alt="AI 智能搜索过程图" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-1-image.png">
+        <video muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/content-1-video.mp4"></video>
       </article>
     </section>
 
@@ -201,13 +320,81 @@
     <section class="case-block panel">
       <h2>结果</h2>
       <p class="en">Result</p>
-      <p><span class="todo">待填写：上线后的实际成果。</span></p>
-      <p><span class="todo">待填写：建议放可量化的数据（转化率提升、渗透率、用户满意度等）+ 沉淀（组件/规范/专利）。这里是面试官最关注的部分，务必用真实数据。</span></p>
+      <p>从 0 到 1 搭建并上线了面向用户核心商品导购需求的独立 AI 交互页面，通过智能意图判断、商品理解、生成式召排、结构化呈现等能力，一站式承接复杂决策类需求。目前处于 1% 切流验证阶段：入口点击率 0.3%，日均使用 UV 40，日均提问 76 次、人均提问 1.8 次——规模还小，也是当前重点优化入口设计和站内引导的原因。</p>
+      <p>质量指标上更能说明方向是对的：当前有效回答率 93%（有实际商品曝光）；核心的商品导购类意图（约占用户需求 70-80%）回答质量人工测评已达到竞品水位的 97%，基本符合预期。一周维度的 AB 数据显示，触达到这个入口的用户，其商搜行为和大盘留存有显著提升，长期效果还在持续观测中。</p>
     </section>
 
     <footer class="site-header" style="position: static; padding: 40px 10px 0;">
       <a class="back-link" href="index.html"><span class="back-arrow" aria-hidden="true"></span><span>返回作品集</span></a>
     </footer>
   </main>
-</body>
-</html>
+
+  <div class="edit-bar" aria-label="页面文字编辑">
+    <span class="edit-status" data-edit-status="">编辑中</span>
+    <button type="button" data-edit-toggle="">退出编辑</button>
+    <button type="button" class="primary" data-edit-save="">保存</button>
+  </div>
+
+  <script>
+    // 二级页轻量文字编辑器：仅 local-editing 时可用。
+    // 「开始编辑」给正文文本块开 contenteditable，「保存」把清理后的整页 HTML
+    // POST 到 save-server(127.0.0.1:3219)/save-page 写回磁盘上的本文件。
+    (() => {
+      if (!document.documentElement.classList.contains("local-editing")) return;
+      const PAGE = location.pathname.split("/").pop() || "ai-search.html";
+      // 可编辑的文本块（只开文字，不开布局容器，避免误改结构）
+      const EDITABLE = [
+        ".case-kicker", ".case-title", ".case-lead",
+        ".meta-item h3", ".meta-item p",
+        ".case-block h2", ".case-block .en", ".case-block > p",
+        ".case-subitem h3", ".case-subitem p",
+        ".flow-box", ".flow-note", ".flow-tag"
+      ].join(",");
+
+      const toggleBtn = document.querySelector("[data-edit-toggle]");
+      const saveBtn = document.querySelector("[data-edit-save]");
+      const statusEl = document.querySelector("[data-edit-status]");
+      let editing = false;
+
+      const setStatus = (msg) => {
+        statusEl.textContent = msg;
+        clearTimeout(setStatus.t);
+        setStatus.t = setTimeout(() => { statusEl.textContent = editing ? "编辑中" : "本地编辑"; }, 2000);
+      };
+
+      toggleBtn.addEventListener("click", () => {
+        editing = !editing;
+        document.documentElement.classList.toggle("is-editing", editing);
+        document.querySelectorAll(EDITABLE).forEach((el) => {
+          if (editing) el.setAttribute("contenteditable", "true");
+          else el.removeAttribute("contenteditable");
+        });
+        toggleBtn.textContent = editing ? "退出编辑" : "开始编辑";
+        saveBtn.hidden = !editing;
+        statusEl.textContent = editing ? "编辑中" : "本地编辑";
+      });
+
+      saveBtn.addEventListener("click", async () => {
+        // 克隆整份文档并清理编辑器痕迹，得到干净的可保存 HTML
+        const clone = document.documentElement.cloneNode(true);
+        clone.classList.remove("local-editing", "is-editing");
+        clone.querySelectorAll("[contenteditable]").forEach((el) => el.removeAttribute("contenteditable"));
+        const html = "<!DOCTYPE html>\n" + clone.outerHTML + "\n";
+        setStatus("保存中…");
+        try {
+          const res = await fetch("http://127.0.0.1:3219/save-page", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ page: PAGE, html })
+          });
+          const out = await res.json();
+          setStatus(out.ok ? "已保存 ✓" : `失败：${out.error || res.status}`);
+        } catch (e) {
+          setStatus("保存失败：save-server 未启动？");
+        }
+      });
+    })();
+  </script>
+
+
+</body></html>

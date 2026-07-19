@@ -16,13 +16,13 @@
     </script>
     <style>
       :root {
-        --page: #0a0a0a;
-        --panel: rgba(33, 33, 40, 0.98);
-        --panel-solid: #212128;
+        --page: #F5F5F9;
+        --panel: rgba(255, 255, 255, 0.98);
+        --panel-solid: #FFFFFF;
         --text-panel-opacity: 0.98;
         --text-panel-blur: 12.5px;
-        --muted: #868893;
-        --text: #ffffff;
+        --muted: #585A6E;
+        --text: #2B2C3C;
         --open-dot: #20e7e7;
         --gap: 5px;
         --canvas: 1280px;
@@ -166,20 +166,6 @@
         max-width: calc(100vw - 20px);
         margin: 0;
         color: transparent;
-        background:
-          radial-gradient(circle at 50% 50%, var(--dot-1) 0 49%, transparent 50%),
-          radial-gradient(circle at 50% 50%, var(--dot-2) 0 49%, transparent 50%),
-          radial-gradient(circle at 50% 50%, var(--dot-3) 0 49%, transparent 50%),
-          radial-gradient(circle at 50% 50%, var(--dot-4) 0 49%, transparent 50%),
-          radial-gradient(circle at 50% 50%, var(--dot-5) 0 49%, transparent 50%),
-          radial-gradient(circle at 50% 50%, var(--dot-6) 0 49%, transparent 50%),
-          radial-gradient(circle at 50% 50%, var(--dot-7) 0 49%, transparent 50%),
-          radial-gradient(circle at 50% 50%, var(--dot-8) 0 49%, transparent 50%),
-          radial-gradient(circle at 50% 50%, var(--dot-9) 0 49%, transparent 50%),
-          radial-gradient(circle at 50% 50%, var(--dot-10) 0 49%, transparent 50%),
-          radial-gradient(circle at 50% 50%, var(--dot-11) 0 49%, transparent 50%),
-          radial-gradient(circle at 50% 50%, var(--dot-12) 0 49%, transparent 50%),
-          linear-gradient(#ffffff, #ffffff);
         background-size:
           var(--dot-size) var(--dot-size),
           var(--dot-size) var(--dot-size),
@@ -247,7 +233,7 @@
           radial-gradient(circle at 50% 50%, var(--dot-10) 0 49%, transparent 50%),
           radial-gradient(circle at 50% 50%, var(--dot-11) 0 49%, transparent 50%),
           radial-gradient(circle at 50% 50%, var(--dot-12) 0 49%, transparent 50%),
-          linear-gradient(#ffffff, #ffffff);
+          linear-gradient(#2B2C3C, #2B2C3C);
         background-size:
           var(--dot-size) var(--dot-size),
           var(--dot-size) var(--dot-size),
@@ -518,7 +504,7 @@
       }
 
       .panel {
-        background: rgba(33, 33, 40, var(--text-panel-opacity));
+        background: rgba(255, 255, 255, var(--text-panel-opacity));
         border-radius: 10px;
         backdrop-filter: blur(var(--text-panel-blur));
         -webkit-backdrop-filter: blur(var(--text-panel-blur));
@@ -658,7 +644,7 @@
 
       .contact-cta:hover,
       .contact-cta:focus-visible {
-        background: rgba(86, 87, 101, 0.92);
+        background: rgba(43, 44, 60, 0.08);
         color: var(--text);
         outline: 0;
       }
@@ -836,6 +822,7 @@
       }
 
       .project-actions .pill {
+        color: #8A8CA0;
         border-radius: 60px;
         font-size: 20px;
         line-height: 45px;
@@ -1126,7 +1113,7 @@
         margin: 0;
         padding: 8px 24px;
         border-radius: 999px;      /* 胶囊：覆盖 .panel 的 10px 圆角 */
-        color: var(--muted);
+        color: #8A8CA0;
         font-size: 21px;
         line-height: 1.4;
         white-space: nowrap;
@@ -1821,6 +1808,11 @@
         margin: 7px 0 0;
         font-size: 14px;
         line-height: 1.55;
+      }
+
+      /* 经历时间线的描述段落:同项目描述一档的浅灰紫(职位/公司名保持原色) */
+      .timeline-item p {
+        color: #8A8CA0;
       }
 
       .life-gallery {
@@ -4477,7 +4469,7 @@
           <a class="chip panel contact-cta" href="#wechat-qr"><span>联系我</span><span class="contact-arrow" aria-hidden="true"></span></a>
         </div>
 
-        <article class="section-title panel" data-text-id="text-2" style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 20px; padding-bottom: 20px; opacity: 1;">Selected Projects 01<br>2025-2026
+        <article class="section-title panel" data-text-id="text-2" style="font-size: 28px; font-weight: 400; color: rgb(43, 44, 60); line-height: 1.6; padding-top: 20px; padding-bottom: 20px; opacity: 1;">Selected Projects 01<br>2025-2026
           
         
           
@@ -4486,9 +4478,9 @@
         </article>
 
         <article class="project-head" data-active-project-point="ai-search">
-          <div class="project-title panel"><p style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 0px; padding-bottom: 0px; opacity: 1;" class="" data-text-id="text-3"><span class="pt-main">搜推体验设计</span><span class="pt-sub">得物 APP</span></p></div>
+          <div class="project-title panel"><p style="font-size: 28px; font-weight: 400; color: rgb(43, 44, 60); line-height: 1.6; padding-top: 0px; padding-bottom: 0px; opacity: 1;" class="" data-text-id="text-3"><span class="pt-main">搜推体验设计</span><span class="pt-sub">得物 APP</span></p></div>
           <div class="project-middle">
-            <div class="project-desc panel"><p style="font-size: 19px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.3; padding-top: 8px; padding-bottom: 8px; opacity: 1;" class="" data-text-id="text-4" data-default-project-desc="背景：用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。">用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。
+            <div class="project-desc panel"><p style="font-size: 19px; font-weight: 400; color: rgb(138, 140, 160); line-height: 2.3; padding-top: 8px; padding-bottom: 8px; opacity: 1;" class="" data-text-id="text-4" data-default-project-desc="背景：用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。">用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。
 
 
 
@@ -4498,7 +4490,7 @@
               <a class="pill panel" href="#">Motion Design</a>
             </div>
           </div>
-          <div class="project-points panel" data-text-id="project-points-searchpush" data-project-points="searchpush" style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;"><p class="project-point is-active" data-project-point="ai-search" data-project-desc="用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。" role="button" tabindex="0"><span class="project-point-label">AI 智能搜索</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="coupon" data-project-desc="搜索发券链路升级：搜前底纹/下拉/猜你喜欢标签透传优惠权益，搜中通过券条和弹窗两种方式，验证发券效率，同时优惠券出入场动效结合数字滚动强化优惠力度，搜后通过按钮状态（领取&gt;筛选&gt;取消），引导逐步用户核销，提升订单转化。" role="button" tabindex="0"><span class="project-point-label">搜索营销发券</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="visual" data-project-desc="搜索大促氛围：围绕情人节、新年、礼物节等大促节庆活动，搜索框通过桃花/烟花/雪人等的元素表达，并新增榜单的氛围展示点位，提升搜索场域节庆氛围，提升搜索大盘成交转化。" role="button" tabindex="0"><span class="project-point-label">搜索氛围视觉</span><span class="project-point-arrow" aria-hidden="true"></span></p>
+          <div class="project-points panel" data-text-id="project-points-searchpush" data-project-points="searchpush" style="font-size: 20px; font-weight: 400; color: rgb(138, 140, 160); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;"><p class="project-point is-active" data-project-point="ai-search" data-project-desc="用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。" role="button" tabindex="0"><span class="project-point-label">AI 智能搜索</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="coupon" data-project-desc="搜索发券链路升级：搜前底纹/下拉/猜你喜欢标签透传优惠权益，搜中通过券条和弹窗两种方式，验证发券效率，同时优惠券出入场动效结合数字滚动强化优惠力度，搜后通过按钮状态（领取&gt;筛选&gt;取消），引导逐步用户核销，提升订单转化。" role="button" tabindex="0"><span class="project-point-label">搜索营销发券</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="visual" data-project-desc="搜索大促氛围：围绕情人节、新年、礼物节等大促节庆活动，搜索框通过桃花/烟花/雪人等的元素表达，并新增榜单的氛围展示点位，提升搜索场域节庆氛围，提升搜索大盘成交转化。" role="button" tabindex="0"><span class="project-point-label">搜索氛围视觉</span><span class="project-point-arrow" aria-hidden="true"></span></p>
           
         
           
@@ -5007,7 +4999,7 @@
           </div>
         </div>
 
-        <article class="section-title panel" data-text-id="text-6" style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 20px; padding-bottom: 20px; opacity: 1;">Selected Projects 02<br>2025-2026
+        <article class="section-title panel" data-text-id="text-6" style="font-size: 28px; font-weight: 400; color: rgb(43, 44, 60); line-height: 1.6; padding-top: 20px; padding-bottom: 20px; opacity: 1;">Selected Projects 02<br>2025-2026
           
         
           
@@ -5016,9 +5008,9 @@
         </article>
 
         <article class="project-head" data-active-project-point="designer-toy">
-          <div class="project-title panel"><p style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 0px; padding-bottom: 0px; opacity: 1;" class="" data-text-id="text-7"><span class="pt-main">商城行业化</span><span class="pt-sub">得物 APP</span></p></div>
+          <div class="project-title panel"><p style="font-size: 28px; font-weight: 400; color: rgb(43, 44, 60); line-height: 1.6; padding-top: 0px; padding-bottom: 0px; opacity: 1;" class="" data-text-id="text-7"><span class="pt-main">商城行业化</span><span class="pt-sub">得物 APP</span></p></div>
           <div class="project-middle">
-            <div class="project-desc panel"><p style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" class="" data-text-id="text-8" data-default-project-desc="Discription
+            <div class="project-desc panel"><p style="font-size: 20px; font-weight: 400; color: rgb(138, 140, 160); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" class="" data-text-id="text-8" data-default-project-desc="Discription
 Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动效，模拟用户手拿小卡的真实体验；搜索通过潮玩导购穹顶、Smart Menu、快筛簇，并用日历跟盲盒的意向结合得物防伪扣，在首坑商卡强调伤心跟补货场景，探索潮玩行业的用户决策因子。
           
         </p></div>
@@ -5027,7 +5019,7 @@ Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动
               <a class="pill panel" href="#">AE</a>
             </div>
           </div>
-          <div class="project-points panel" data-project-points="industry" style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" data-text-id="text-9"><p class="project-point" data-project-point="perfume" data-project-desc="美妆行业化：搜索场景拓展香水、口红、护肤3个重点类目的快筛样式，使用图文结合的设计语言将行业参数可视化，通过香水原料的素材图片真实真实展示香调跟气味，上嘴图结合商品图对应热门色号，口红色块图展示口红的色系，icon加文案描述直观展示护肤品功效，帮助用户高效筛选，其中香水类目成交转化。" role="button" tabindex="0"><span class="project-point-label">香水行业化</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="designer-toy" data-project-desc="商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动效，模拟用户手拿小卡的真实体验；搜索通过潮玩导购穹顶、Smart Menu、快筛簇，并用日历跟盲盒的意向结合得物防伪扣，在首坑商卡强调伤心跟补货场景，探索潮玩行业的用户决策因子。" role="button" tabindex="0"><span class="project-point-label">潮玩行业化</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="try-on" data-project-desc="AI 模特试衣：在商详头图场景，引入与用户身型匹配的 AI 模特进行虚拟试穿，通过视频360度环绕、人物360度定点转、子弹时间，多维度呈现上身效果，支持查看衣服细节。" role="button" tabindex="0"><span class="project-point-label">AI 试衣</span><span class="project-point-arrow" aria-hidden="true"></span></p>
+          <div class="project-points panel" data-project-points="industry" style="font-size: 20px; font-weight: 400; color: rgb(138, 140, 160); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" data-text-id="text-9"><p class="project-point" data-project-point="perfume" data-project-desc="美妆行业化：搜索场景拓展香水、口红、护肤3个重点类目的快筛样式，使用图文结合的设计语言将行业参数可视化，通过香水原料的素材图片真实真实展示香调跟气味，上嘴图结合商品图对应热门色号，口红色块图展示口红的色系，icon加文案描述直观展示护肤品功效，帮助用户高效筛选，其中香水类目成交转化。" role="button" tabindex="0"><span class="project-point-label">香水行业化</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="designer-toy" data-project-desc="商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动效，模拟用户手拿小卡的真实体验；搜索通过潮玩导购穹顶、Smart Menu、快筛簇，并用日历跟盲盒的意向结合得物防伪扣，在首坑商卡强调伤心跟补货场景，探索潮玩行业的用户决策因子。" role="button" tabindex="0"><span class="project-point-label">潮玩行业化</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="try-on" data-project-desc="AI 模特试衣：在商详头图场景，引入与用户身型匹配的 AI 模特进行虚拟试穿，通过视频360度环绕、人物360度定点转、子弹时间，多维度呈现上身效果，支持查看衣服细节。" role="button" tabindex="0"><span class="project-point-label">AI 试衣</span><span class="project-point-arrow" aria-hidden="true"></span></p>
           
         
           
@@ -5449,7 +5441,7 @@ Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动
           </div>
         </div>
 
-        <article class="section-title panel" data-text-id="text-10" style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 20px; padding-bottom: 20px; opacity: 1;">Selected Projects 03<br>2026
+        <article class="section-title panel" data-text-id="text-10" style="font-size: 28px; font-weight: 400; color: rgb(43, 44, 60); line-height: 1.6; padding-top: 20px; padding-bottom: 20px; opacity: 1;">Selected Projects 03<br>2026
           
         
           
@@ -5458,9 +5450,9 @@ Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动
         </article>
 
         <article class="project-head" data-active-project-point="annual-report">
-          <div class="project-title panel"><p style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 0px; padding-bottom: 0px; opacity: 1;" class="" data-text-id="text-11"><span class="pt-main">年度商家颁奖会</span><span class="pt-sub">得物 APP</span></p></div>
+          <div class="project-title panel"><p style="font-size: 28px; font-weight: 400; color: rgb(43, 44, 60); line-height: 1.6; padding-top: 0px; padding-bottom: 0px; opacity: 1;" class="" data-text-id="text-11"><span class="pt-main">年度商家颁奖会</span><span class="pt-sub">得物 APP</span></p></div>
           <div class="project-middle">
-            <div class="project-desc panel"><p style="font-size: 19px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.3; padding-top: 8px; padding-bottom: 8px; opacity: 1;" class="" data-text-id="text-12" data-default-project-desc="背景：为增强商家经营信心，提高分享率，通过年度报告展示给亮眼经营数据，同时作为外宣渠道。">通过年度商家榜单给获奖商家颁奖，提高荣誉感，同时年度报告展示给商家亮眼经营数据，增强商家经营信心，提高分享率；另外根据主视觉延展宣发视频作为外宣渠道。
+            <div class="project-desc panel"><p style="font-size: 19px; font-weight: 400; color: rgb(138, 140, 160); line-height: 2.3; padding-top: 8px; padding-bottom: 8px; opacity: 1;" class="" data-text-id="text-12" data-default-project-desc="背景：为增强商家经营信心，提高分享率，通过年度报告展示给亮眼经营数据，同时作为外宣渠道。">通过年度商家榜单给获奖商家颁奖，提高荣誉感，同时年度报告展示给商家亮眼经营数据，增强商家经营信心，提高分享率；另外根据主视觉延展宣发视频作为外宣渠道。
           
         
           
@@ -5470,7 +5462,7 @@ Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动
               <a class="pill panel" href="#">AIGC</a>
             </div>
           </div>
-          <div class="project-points panel" data-project-points="annual" style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" data-text-id="text-13"><p class="project-point is-active" data-project-point="annual-report" data-project-desc="通过年度商家榜单给获奖商家颁奖，提高荣誉感，同时年度报告展示给商家亮眼经营数据，增强商家经营信心，提高分享率；另外根据主视觉延展宣发视频作为外宣渠道。" role="button" tabindex="0"><span class="project-point-label">年度报告</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="promo-video" role="button" tabindex="0"><span class="project-point-label">宣发视频</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="annual-ranking" role="button" tabindex="0"><span class="project-point-label">年度榜单</span><span class="project-point-arrow" aria-hidden="true"></span></p>
+          <div class="project-points panel" data-project-points="annual" style="font-size: 20px; font-weight: 400; color: rgb(138, 140, 160); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" data-text-id="text-13"><p class="project-point is-active" data-project-point="annual-report" data-project-desc="通过年度商家榜单给获奖商家颁奖，提高荣誉感，同时年度报告展示给商家亮眼经营数据，增强商家经营信心，提高分享率；另外根据主视觉延展宣发视频作为外宣渠道。" role="button" tabindex="0"><span class="project-point-label">年度报告</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="promo-video" role="button" tabindex="0"><span class="project-point-label">宣发视频</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="annual-ranking" role="button" tabindex="0"><span class="project-point-label">年度榜单</span><span class="project-point-arrow" aria-hidden="true"></span></p>
           
         
           
@@ -5831,7 +5823,7 @@ Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动
         </p></article>
         </div>
 
-        <article class="section-title panel" data-text-id="text-15" style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 20px; padding-bottom: 20px; opacity: 1;">Selected Projects 04<br>2026
+        <article class="section-title panel" data-text-id="text-15" style="font-size: 28px; font-weight: 400; color: rgb(43, 44, 60); line-height: 1.6; padding-top: 20px; padding-bottom: 20px; opacity: 1;">Selected Projects 04<br>2026
           
         
           
@@ -5840,9 +5832,9 @@ Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动
         </article>
 
         <article class="project-head" data-active-project-point="profile-point-1">
-          <div class="project-title panel"><p style="font-size: 28px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 2px; padding-bottom: 2px; opacity: 1;" class="" data-text-id="text-16"><span class="pt-main">个人中心工具</span><span class="pt-sub">得物 APP</span></p></div>
+          <div class="project-title panel"><p style="font-size: 28px; font-weight: 400; color: rgb(43, 44, 60); line-height: 1.6; padding-top: 2px; padding-bottom: 2px; opacity: 1;" class="" data-text-id="text-16"><span class="pt-main">个人中心工具</span><span class="pt-sub">得物 APP</span></p></div>
           <div class="project-middle">
-            <div class="project-desc panel"><p style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" class="" data-text-id="text-17" data-default-project-desc="Discription
+            <div class="project-desc panel"><p style="font-size: 20px; font-weight: 400; color: rgb(138, 140, 160); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" class="" data-text-id="text-17" data-default-project-desc="Discription
 Discription">个卖首页改版：个卖首页框架优化，突出强化待办事项，通过设计走查发现并优化7个功能层问题，16个视觉体验问题，促进卖家满意度提升，核心操作用户流量提升。
           
         </p></div>
@@ -5851,7 +5843,7 @@ Discription">个卖首页改版：个卖首页框架优化，突出强化待办�
               <a class="pill panel" href="#">Interaction Design</a>
             </div>
           </div>
-          <div class="project-points panel" data-project-points="profile" style="font-size: 20px; font-weight: 400; color: rgb(134, 136, 147); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" data-text-id="text-18"><p class="project-point" data-project-point="profile-point-1" data-project-desc="个卖首页改版：个卖首页框架优化，突出强化待办事项，通过设计走查发现并优化7个功能层问题，16个视觉体验问题，促进卖家满意度提升，核心操作用户流量提升。" role="button" tabindex="0"><span class="project-point-label">个卖首页改版</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="profile-point-2" data-project-desc="商家移动端入驻建设：简化入驻流程，分层级展示信息，通过字号、字重、颜色突出当前进度与状态（编辑、预览、修改）。移动端入驻能力上线后，提升商家入驻量，达成手机端入驻商家在大盘占比目标。" role="button" tabindex="0"><span class="project-point-label">卖家入驻链路</span><span class="project-point-arrow" aria-hidden="true"></span></p>
+          <div class="project-points panel" data-project-points="profile" style="font-size: 20px; font-weight: 400; color: rgb(138, 140, 160); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" data-text-id="text-18"><p class="project-point" data-project-point="profile-point-1" data-project-desc="个卖首页改版：个卖首页框架优化，突出强化待办事项，通过设计走查发现并优化7个功能层问题，16个视觉体验问题，促进卖家满意度提升，核心操作用户流量提升。" role="button" tabindex="0"><span class="project-point-label">个卖首页改版</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="profile-point-2" data-project-desc="商家移动端入驻建设：简化入驻流程，分层级展示信息，通过字号、字重、颜色突出当前进度与状态（编辑、预览、修改）。移动端入驻能力上线后，提升商家入驻量，达成手机端入驻商家在大盘占比目标。" role="button" tabindex="0"><span class="project-point-label">卖家入驻链路</span><span class="project-point-arrow" aria-hidden="true"></span></p>
           
         
           
@@ -6108,7 +6100,7 @@ Discription">个卖首页改版：个卖首页框架优化，突出强化待办�
         </div>
 
         <article class="closing panel">
-          <p class="" data-text-id="text-20" style="font-size: 36px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 70px; padding-bottom: 70px; opacity: 1;">UI 自动化：通过将设计语言转译为 AI 可读的 MD 文档，实现 UI 自动化覆盖弱视觉商家 PC 端需求。已跑通 PC 端表单、表格页面的 AI 自动化生成。同时，应用 AI 能力完成大屏适配，实现多设备自动化适配。
+          <p class="" data-text-id="text-20" style="font-size: 36px; font-weight: 400; color: rgb(43, 44, 60); line-height: 1.6; padding-top: 70px; padding-bottom: 70px; opacity: 1;">UI 自动化：通过将设计语言转译为 AI 可读的 MD 文档，实现 UI 自动化覆盖弱视觉商家 PC 端需求。已跑通 PC 端表单、表格页面的 AI 自动化生成。同时，应用 AI 能力完成大屏适配，实现多设备自动化适配。
           
         
           
@@ -6218,7 +6210,7 @@ Discription">个卖首页改版：个卖首页框架优化，突出强化待办�
           <div class="readcv-hero">
             <article class="readcv-intro panel">
               <p class="readcv-kicker">READ.CV / ABOUT</p>
-              <h2 style="font-size: 36px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.6; padding-top: 70px; padding-bottom: 70px; opacity: 1;" class="" data-text-id="text-21">你好，我是 Julian。 UX Designer，关注商城行业化设计 与 AI 实践，把复杂场景转译成清晰直观、有质感、可持续迭代的数字产品。
+              <h2 style="font-size: 36px; font-weight: 400; color: rgb(43, 44, 60); line-height: 1.6; padding-top: 70px; padding-bottom: 70px; opacity: 1;" class="" data-text-id="text-21">你好，我是 Julian。 UX Designer，关注商城行业化设计 与 AI 实践，把复杂场景转译成清晰直观、有质感、可持续迭代的数字产品。
           
         
           
@@ -6290,7 +6282,7 @@ Discription">个卖首页改版：个卖首页框架优化，突出强化待办�
           </div>
 
           <article class="readcv-timeline panel">
-            <h3 class="" data-text-id="text-23" style="font-size: 16px; font-weight: 400; color: rgb(134, 136, 147); line-height: 1.4; padding-top: 26px; padding-bottom: 26px; opacity: 1;">2025.07 - Now<br>得物 搜推<br>UI&amp;UX 设计师<br><br>负责搜索与行业化体验设计，持续打磨核心链路、内容表达与 AI 能力在业务场景中的落地。
+            <h3 class="" data-text-id="text-23" style="font-size: 16px; font-weight: 400; color: rgb(88, 90, 110); line-height: 1.4; padding-top: 26px; padding-bottom: 26px; opacity: 1;">2025.07 - Now<br>得物 搜推<br>UI&amp;UX 设计师<br><br>负责搜索与行业化体验设计，持续打磨核心链路、内容表达与 AI 能力在业务场景中的落地。
           
         
           
@@ -6608,7 +6600,7 @@ Discription">个卖首页改版：个卖首页框架优化，突出强化待办�
             
           </article>
             <article class="life-photo panel has-life-overlay media-text-hover" style="--life-image: url('https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/life-2-image.jpg');" data-life-id="life-2">
-              <p class="life-gallery-title" style="display: none; font-size: 20px; font-weight: 400; color: rgb(255, 255, 255); line-height: 1.45; padding-top: 0px; padding-bottom: 0px;" data-text-id="text-28">感谢一路上遇到的每一位伙伴，是你们让我得以做出最好的作品。
+              <p class="life-gallery-title" style="display: none; font-size: 20px; font-weight: 400; color: rgb(43, 44, 60); line-height: 1.45; padding-top: 0px; padding-bottom: 0px;" data-text-id="text-28">感谢一路上遇到的每一位伙伴，是你们让我得以做出最好的作品。
           
         
           
@@ -8340,7 +8332,14 @@ Discription">个卖首页改版：个卖首页框架优化，突出强化待办�
             setActiveProjectPoint(point, { persist: true });
           };
           const deactivate = () => {
-            getPoint()?.classList.remove("is-active");
+            // 锚定型小标题要求任何时刻都有一个高亮项:鼠标离开图块时,
+            // 只有当该小标题不是「最近一次持久选中项」时才取消高亮(否则保持,不清空)
+            const point = getPoint();
+            const head = point?.closest(".project-head");
+            if (!point || !head) return;
+            if ((point.dataset.projectPoint || "") !== (head.dataset.activeProjectPoint || "")) {
+              point.classList.remove("is-active");
+            }
           };
           if (boundProjectPointTiles.has(tile)) return;
           boundProjectPointTiles.add(tile);
