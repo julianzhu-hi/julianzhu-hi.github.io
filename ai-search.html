@@ -12,6 +12,16 @@
     })();
   </script>
   <style>
+    /* 自托管字体：英文用 Space Grotesk（SIL OFL），Hero 用 Clash Display（Fontshare 免费商用）。
+       同源加载，访客与本机看到的一致，不再依赖本机是否装了这两款字体。 */
+    @font-face {
+      font-family: "Inter";
+      font-style: normal;
+      font-weight: 300 700;
+      font-display: swap;
+      src: url("assets/fonts/inter-latin-var.woff2") format("woff2");
+    }
+
     /* 设计变量与主站 index.html 保持一致 */
     :root {
       --page: #F5F5F9;
@@ -29,7 +39,7 @@
       min-width: 320px;
       background: var(--page);
       color: var(--text);
-      font-family: Bauhaus, "Arial Rounded MT Bold", "Trebuchet MS", Arial, sans-serif;
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
     }
     .panel {
       background: rgba(255, 255, 255, var(--text-panel-opacity));
@@ -86,7 +96,7 @@
     .case-hero { padding: 60px 30px; }
     .case-kicker { margin: 0 0 16px; color: var(--muted); font-size: 18px; letter-spacing: 0.04em; }
     .case-title { margin: 0; font-size: 56px; line-height: 1.2; font-weight: 400; }
-    .case-lead { margin: 20px 0 0; max-width: 900px; color: var(--muted); font-size: 20px; line-height: 1.9; }
+    .case-lead { margin: 20px 0 0; color: var(--muted); font-size: 20px; line-height: 1.9; }
 
     /* 项目详情：角色/时间/团队/标签 */
     .case-meta { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
@@ -98,8 +108,26 @@
     .case-block { padding: 44px 30px; }
     .case-block h2 { margin: 0 0 6px; font-size: 30px; font-weight: 400; }
     .case-block .en { margin: 0 0 22px; color: var(--muted); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; }
-    .case-block p { margin: 0 0 16px; max-width: 900px; color: var(--muted); font-size: 19px; line-height: 2.1; }
+    .case-block p { margin: 0 0 16px; color: var(--muted); font-size: 19px; line-height: 2.1; }
     .case-block p:last-child { margin-bottom: 0; }
+
+    /* 普通搜 vs AI 搜 对比表 */
+    .vs-block { margin-top: 28px; }
+    .vs-block h3 { margin: 0 0 16px; font-size: 20px; font-weight: 400; color: var(--text); }
+    .vs-scroll { overflow-x: auto; }
+    .vs-table { width: 100%; min-width: 620px; border-collapse: collapse; table-layout: fixed; }
+    .vs-table .vs-col-dim { width: 150px; }   /* 首列固定，剩余由普通搜/AI搜两列等分 */
+    .vs-table th, .vs-table td { text-align: left; padding: 14px 16px; vertical-align: top; line-height: 1.7; }
+    .vs-table thead th { font-size: 15px; font-weight: 400; letter-spacing: 0.02em; border-bottom: 1px solid rgba(43, 44, 60, 0.12); }
+    .vs-table thead .vs-dim { color: var(--muted); }
+    .vs-table thead .vs-normal { color: #2F49FF; }
+    .vs-table thead .vs-ai { color: #0F8B8B; }
+    .vs-table tbody th { width: 118px; color: #2B2C3C; font-weight: 600; white-space: nowrap; }
+    .vs-table tbody td { color: #585A6E; font-size: 16px; }
+    .vs-table tbody tr { border-top: 1px solid rgba(43, 44, 60, 0.07); }
+    .vs-table tbody tr:first-child { border-top: 0; }
+    .vs-table tr.vs-essence { border-top: 2px solid rgba(43, 44, 60, 0.18); }
+    .vs-table tr.vs-essence td { color: #2B2C3C; }
 
     /* 背景后的三个小结：问题 / 业务目标 / 设计目标 */
     .case-subgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); margin-top: 8px; }
@@ -145,8 +173,78 @@
     .flow-arrow { color: var(--muted); font-size: 18px; flex: 0 0 auto; }
     .flow-note { font-size: 16px !important; color: rgba(43, 44, 60, 0.45) !important; }
 
+    /* 过程 & 架构：两张独立卡片左右并列 */
+    .modules-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); align-items: stretch; }
+    .modules-row > .case-block { margin: 0; }
+    .vlanes { margin-top: 8px; margin-bottom: 26px; }
+    .arch-stack { margin-top: 8px; }
+
+    /* 通用竖向盒子/箭头（过程 + 架构共用） */
+    .v-box {
+      width: 100%;
+      padding: 11px 12px;
+      background: rgba(43, 44, 60, 0.03);
+      border: 1px solid rgba(43, 44, 60, 0.12);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.45;
+      text-align: center;
+    }
+    .v-box small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+    .v-box-hl { border-color: rgba(15, 139, 139, 0.55); background: rgba(32, 231, 231, 0.12); }
+    .v-down { color: rgba(43, 44, 60, 0.4); font-size: 13px; letter-spacing: 0.04em; text-align: center; line-height: 1.3; }
+
+    /* 旅程：前台分流 + 后台 AI 数据基建 */
+    .stage-label { display: block; text-align: center; font-size: 13px; letter-spacing: 0.04em; color: var(--muted); margin: 22px 0 10px; }
+    .data-base + .flow-note { margin-top: 22px; }
+    .journey { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
+    .journey .v-box { font-size: 14px; }
+    .journey > .v-box { width: auto; min-width: 62%; }
+    .journey .arch-2 { gap: 10px; }
+    .journey .arch-2 .v-box { width: 100%; }
+
+    /* 后台 · AI 数据基建（分组盒 + 内部 chips） */
+    .data-base { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+    .db-group { padding: 11px 13px; background: rgba(43, 44, 60, 0.03); border: 1px solid rgba(43, 44, 60, 0.12); border-radius: 10px; }
+    .db-title { display: block; margin-bottom: 8px; font-size: 13.5px; color: var(--text); }
+    .db-title small { color: var(--muted); font-size: 11px; margin-left: 4px; }
+    .db-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .db-chips span { padding: 5px 10px; background: var(--panel-solid); border: 1px solid rgba(43, 44, 60, 0.12); border-radius: 6px; font-size: 12.5px; color: var(--muted); }
+
+    /* 四个回答范式：等宽四列，高度随图片内容自适应 */
+    .paradigms { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap); align-items: stretch; }
+    .p-tile { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+    .p-media { flex: 0 0 auto; overflow: hidden; border-radius: 10px; background: var(--panel-solid); }
+    .p-media img { display: block; width: 100%; height: auto; }
+    .p-media[data-empty] { aspect-ratio: 3 / 5; display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(43, 44, 60, 0.25); color: rgba(43, 44, 60, 0.4); font-size: 13px; text-align: center; }
+    .p-desc { flex: 1 1 auto; margin: 0; display: flex; align-items: center; justify-content: center; padding: 16px; background: var(--panel-solid); border-radius: 10px; font-size: 14px; line-height: 1.6; color: var(--muted); text-align: center; }
+    @media (max-width: 900px) { .paradigms { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .paradigms { grid-template-columns: 1fr; } }
+
+    /* 架构：竖向分层 */
+    .arch-stack { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
+    .arch-row { display: flex; justify-content: center; gap: 10px; width: 100%; }
+    .arch-row .v-box { width: auto; min-width: 62%; font-size: 14px; }
+    .arch-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+    .arch-skills { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+    .arch-skills .v-box { font-size: 13.5px; padding: 9px 8px; }
+    .arch-note-inline {
+      width: 100%;
+      margin: 2px 0;
+      padding: 8px 12px;
+      background: rgba(43, 44, 60, 0.03);
+      border: 1px dashed rgba(43, 44, 60, 0.14);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+      text-align: center;
+    }
+    .arch-note-inline b { color: var(--text); font-weight: 500; }
+
     /* 媒体展示：沿用主站图块的观感（图为底，hover 播视频） */
-    .case-media { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
+    .case-media { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); align-items: start; }
     .m-tile {
       position: relative;
       aspect-ratio: 307.5 / 665.8;
@@ -161,6 +259,24 @@
     }
     .m-tile video { opacity: 0; transition: opacity 220ms ease; }
     .m-tile:hover video { opacity: 1; }
+    /* 媒体上方与图同宽的标签 */
+    .media-item { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+    .media-tag { padding: 10px 12px; background: var(--panel-solid); border-radius: 999px; text-align: center; font-size: 14px; line-height: 1.4; color: var(--text); }
+    .m-tile.is-empty { display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(43, 44, 60, 0.25); background: var(--panel-solid); color: rgba(43, 44, 60, 0.4); font-size: 13px; text-align: center; }
+    .m-tile.is-autoplay video { opacity: 1; }   /* 无首图、视频常显自动循环 */
+    /* 方形 gif：缩放 80%、四周等宽留白(padding% 按宽度算)、模块高度 hug 成正方形 */
+    .m-tile.is-gif { aspect-ratio: auto; padding: 10%; }
+    .m-tile.is-gif img { position: static; inset: auto; display: block; width: 100%; height: auto; object-fit: contain; }
+    /* 模块4列：上下两格等高，整列撑到与其他列等高 */
+    .col4-stack { align-self: stretch; display: flex; flex-direction: column; gap: var(--gap); }
+    .col4-stack .stack-cell { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; gap: 8px; }
+    .col4-stack .stack-cell .m-tile { flex: 1 1 0; min-height: 0; aspect-ratio: auto; }
+    .col4-stack .m-tile.is-gif { padding: 0; display: flex; align-items: center; justify-content: center; }
+    .col4-stack .m-tile.is-gif img { width: auto; height: auto; max-width: 80%; max-height: 80%; }
+    /* 合并的大模块：跨 2 列，撑到与其他列等高 */
+    .media-item.merged { align-self: stretch; }
+    .media-item.merged .m-tile { flex: 1 1 auto; min-height: 0; aspect-ratio: auto; }
+    .media-item.merged .m-tile video { object-fit: contain; }   /* 宽扁视频完整显示，不裁切 */
 
     /* ---- 页内文字编辑面板（仅本地可见；线上 html 没有 local-editing 类，整条隐藏）---- */
     html:not(.local-editing) .edit-bar { display: none; }
@@ -205,13 +321,14 @@
       .case-subgrid { grid-template-columns: 1fr; }
       .case-hero { padding: 40px 24px; }
       .case-block { padding: 32px 24px; }
+      .modules-row { grid-template-columns: 1fr; gap: var(--gap); }
     }
     @media (max-width: 480px) {
       .case-title { font-size: 32px; }
       .case-meta { grid-template-columns: 1fr; }
     }
   </style>
-</head>
+<style id="accent-trial">.flow-tag-front{background:rgba(216,27,96,.12)!important;color:#D81B60!important}.vs-table thead .vs-normal{color:#D81B60!important}.flow-tag-back{background:rgba(2,153,153,.12)!important;color:#029999!important}.vs-table thead .vs-ai{color:#029999!important}.flow-box-highlight{border-color:rgba(2,153,153,.55)!important}</style></head>
 <body>
   <header class="site-header">
     <a class="back-link" href="index.html"><span class="back-arrow" aria-hidden="true"></span><span>返回作品集</span></a>
@@ -222,7 +339,6 @@
     <section class="case-hero panel">
       <p class="case-kicker">SELECTED PROJECTS 01 · 搜推体验设计 / 得物 APP</p>
       <h1 class="case-title">AI 智能搜索</h1>
-      <p class="case-lead">用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。</p>
     </section>
 
     <section class="case-meta">
@@ -232,96 +348,226 @@
       <article class="meta-item panel"><h3>标签 TAGS</h3><p>UX&amp;UI · Motion Design</p></article>
     </section>
 
-    <!-- 案例拆解：背景 -->
+    <!-- 模块一：背景 -->
     <section class="case-block panel">
-      <h2>背景</h2>
-      <p class="en">Background</p>
-      <p>传统货架式搜索擅长处理「明确关键词」，但用户很多真实需求其实是「复杂决策 + 深度定制」型的模糊表达，比如「5000 元以内、性价比高、可以打游戏的电脑」「户外冲锋衣怎么选」「戴森和追觅哪个好」。这类 query 往往带多重限定条件、需要横向比较或专业知识兜底，传统搜索只能返回一堆静态商品列表，用户还是得自己筛选、自己做决策。</p>
-      <p>竞品侧（淘宝万能搜、京东 AI 搜等）已经验证了这类独立 AI 交互入口能承接到有意义的真实提问量，说明用户确实有为复杂需求换一种交互方式的意愿。但同时也存在明显代价：入口成本高、用户需要被教育，交互响应耗时更长、体验流畅度有待打磨，且对模型的理解、推理、推荐能力要求都极高。搜推团队要解决的核心矛盾：如何在得物的商品导购场景里，把「支持复杂决策」这个优点做出来，同时把「响应慢、门槛高」的代价降到可接受范围。</p>
+      <h2>概要</h2>
+      <p class="en">Brief</p>
+      <p>传统电商货架固定返回商品列表，难以精准匹配用户意图，AI 搜让电商导购从「被动匹配」升级为「主动理解 + 定向推荐」，降低找货成本。其中，流内 AI 卡-趋势/属性组合，意图发散；AI 独立搜-意图匹配。</p>
+    </section>
 
+    <!-- 模块二：普通搜 vs AI 搜 对比 -->
+    <section class="case-block panel">
+      <h2>普通搜 vs AI 搜</h2>
+      <p class="en">Traditional vs AI Search</p>
+      <div class="vs-scroll">
+        <table class="vs-table">
+          <colgroup>
+            <col class="vs-col-dim">
+            <col>
+            <col>
+          </colgroup>
+          <thead>
+            <tr>
+              <th class="vs-dim">用户行为</th>
+              <th class="vs-normal">普通搜索 · 逛货架</th>
+              <th class="vs-ai">AI 搜索 · 私人导购</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th>Step 1 找货架</th><td>走进超市，按照头顶一块块区域指示牌，快逛完一圈超市，才走到「洗护用品」的货架前</td><td>一进门导购就迎上来问「今天想找点什么？」，你说「敏感肌能用的洗面奶」，他直接领你去对的那一排</td></tr>
+            <tr><th>Step 2 表达需求</th><td>货架前没人问你要什么，全靠自己那点经验——知道敏感肌用氨基酸的更温和，就顺着这个方向挑</td><td>不用翻译，直接说人话：「我皮肤有点敏感，想要温和不紧绷的」，他边听边点头</td></tr>
+            <tr><th>Step 3 满足需求</th><td>一整排洗面奶摆在面前，得自己一支支拿起来，翻到背面看成分表、比价格、猜适不适合自己</td><td>导购分门别类递给你：「温和派选这支、敏感专研看这支、平价好用的是这支」，每支都告诉你为什么推荐</td></tr>
+            <tr><th>Step 4 不满意</th><td>好不容易看中一支氨基酸洗面奶，一看价格太贵，只能自己再从头一支支翻过</td><td>直接跟他说「有没有更平价的」，他直接拿给你对的商品</td></tr>
+            <tr class="vs-essence"><th>底层逻辑</th><td>索引匹配： 输入关键词，系统去库里找包含这些词的商品，按相关性排序后返回商品列表。</td><td>推理生成： 先理解你的自然语言意图，实时检索商品与相关资料，再由大模型整合总结，生成结构化的答案和推荐。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 模块三：问题 / 业务目标 / 设计目标 -->
+    <section class="case-block panel">
       <div class="case-subgrid">
         <article class="case-subitem">
           <h3>问题 Problem</h3>
-          <p>关键词搜索对「心智明确」的 query 效率很高，但面对「复杂决策 + 深度定制」类模糊表达时命中率低，用户得靠反复试错关键词来逼近需求。这部分决策链路很容易在站内断掉——用户要么放弃搜索，要么转去站外做功课，得物既承接不了这批真实需求，也拿不到这批用户的转化。</p>
+          <p>传统搜索对明确的关键词 query 效率很高，但面对「复杂决策 + 深度定制」类模糊表达时命中率低。这类模糊需求往往带多重限定条件、需要横向比较或专业知识兜底，比如「5000 元以内、性价比高、可以打游戏的电脑」。这部分决策链路很容易在站内断掉——用户倾向转去内容平台做功课，传统商品流承接不了这批真实需求。</p>
         </article>
         <article class="case-subitem">
-          <h3>业务目标 Business Goal</h3>
-          <p>Q3 日活目标 1w（当前基准约 4000，+150%），Q4 目标 10w，验证独立 AI 入口值不值得从小流量灰度放大。同时希望通过多轮交互提升用户粘性：人均对话深度从 1.6 提升到 2.5（+50%），作为衡量「用户是否愿意多问一轮」的核心指标。</p>
+          <h3>目标 Goal</h3>
+          <p>在小流量灰度里验证快速验证独立 AI 入口值不值得放大：Q3 日活用户+150%，Q4 通过多轮交互把人均对话深度从 1.6 拉到 2.5（+50%）。同时，用最小的用户教育成本把它嵌进现有搜索心智——入口克制、不打扰不需要它的用户；用户使用时，能明显感到「懂我」、愿意多问一轮，从而在验证阶段快速拿到真实反馈。</p>
         </article>
         <article class="case-subitem">
-          <h3>设计目标 Design Goal</h3>
-          <p>不是做一个更炫的 AI 对话框，而是用最小的用户教育成本把「支持复杂决策」嵌进现有搜索心智：入口足够克制、不打扰不需要它的大多数用户；命中的用户能明显感觉到「懂我」，愿意留下来多问一轮；整个交互要能在小流量验证阶段快速拿到真实反馈，为后续放量判断提供依据。</p>
+          <h3>设计 Concept</h3>
+          <p>两层互补的 AI 能力：① 流内 AI 推荐卡——在商品流主动插入可能感兴趣的趋势或属性组合，接住「随便逛逛」的模糊心态；② AI 独立搜——理解用户模糊、描述性的表达，直接生成更贴合的答案与推荐，承接「想要明确方案」的深度需求。同时，脉冲式线性形态，用有律动、智能感的动效，可视化「AI 在思考」的生命感。</p>
         </article>
       </div>
     </section>
 
     <section class="case-media">
-      <article class="m-tile">
-        <img loading="lazy" decoding="async" alt="AI 智能搜索界面 1" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-2d.png">
-        <video muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/blob-2e.mp4"></video>
-      </article>
-      <article class="m-tile">
-        <img loading="lazy" decoding="async" alt="AI 智能搜索界面 2" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-a.png">
-        <video muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/blob-b.mp4"></video>
-      </article>
-      <article class="m-tile">
-        <img loading="lazy" decoding="async" alt="AI 智能搜索界面 3" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-c.png">
-        <video muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/blob-d.mp4"></video>
-      </article>
-      <article class="m-tile">
-        <img loading="lazy" decoding="async" alt="AI 智能搜索界面 4" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-2f.png">
-        <video muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/blob-30.mp4"></video>
-      </article>
+      <figure class="media-item">
+        <span class="media-tag">首页 · 搜索发起</span>
+        <article class="m-tile">
+          <img loading="lazy" decoding="async" alt="AI 智能搜索界面 1" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-2d.png">
+          <video muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/blob-2e.mp4"></video>
+        </article>
+      </figure>
+      <figure class="media-item">
+        <span class="media-tag">结果页 · 流内 AI 插卡</span>
+        <article class="m-tile">
+          <img loading="lazy" decoding="async" alt="AI 智能搜索界面 2" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-a.png">
+          <video muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/blob-b.mp4"></video>
+        </article>
+      </figure>
+      <figure class="media-item">
+        <span class="media-tag">AI 独立搜 · 对话回答</span>
+        <article class="m-tile">
+          <img loading="lazy" decoding="async" alt="AI 智能搜索界面 3" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-c.png">
+          <video muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/blob-d.mp4"></video>
+        </article>
+      </figure>
+      <figure class="media-item">
+        <span class="media-tag">AI 独立搜 · 语音搜索</span>
+        <article class="m-tile">
+          <img loading="lazy" decoding="async" alt="AI 智能搜索界面 4" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/blob-2f.png">
+          <video muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/blob-30.mp4"></video>
+        </article>
+      </figure>
     </section>
 
-    <!-- 案例拆解：过程 -->
-    <section class="case-block panel">
-      <h2>过程</h2>
-      <p class="en">Process</p>
-      <p>入口设计上没有直接做成一个显眼的强入口——那样等于把「响应慢、门槛高」的代价先甩给了所有用户。取舍后的方案是：后台先用离线 AI-Query 库 + 基础个性化判断哪些搜索请求「值得」引导去 AI 独立搜，命中后才在原搜索结果页做「定坑展示」的轻量入口，并且做了屏控——同一刷只展示 1 次，避免同一个入口反复打扰用户。也就是说，前台用户看到的只是一次不打扰的、克制的推荐，复杂度都压在后台判断上。</p>
-      <p>下面是这条链路的前台用户行为和后台判断逻辑对照：</p>
-    </section>
+    <!-- 案例拆解：过程 + 架构（两张独立卡片左右并列） -->
+    <div class="modules-row">
+      <!-- 过程模块 -->
+      <section class="case-block panel">
+        <h2>旅程</h2>
+        <p class="en">Journey</p>
+        <p>入口设计上没有直接做成一个显眼的强入口—— AI 搜索的定位仍是导购工具。用户从搜索发起需求，在流内通过 AI 插卡推荐可能感兴趣的趋势或属性组合，进行意图发散；在 AI 独立搜通过对话式问答，根据用户模糊、描述性的想法，直接生成结构化的答案与推荐。</p>
 
-    <section class="case-block panel">
-      <div class="flow-diagram">
-        <div class="flow-row">
-          <span class="flow-tag flow-tag-front">前台 · 用户行为</span>
-          <div class="flow-chain">
-            <div class="flow-box">用户进入激活页</div><span class="flow-arrow">→</span>
-            <div class="flow-box">Query 召排</div><span class="flow-arrow">→</span>
-            <div class="flow-box">业务逻辑<br><small>流控 / 下拉胶囊等</small></div><span class="flow-arrow">→</span>
-            <div class="flow-box flow-box-highlight">前端展示</div><span class="flow-arrow">→</span>
-            <div class="flow-box">点击进入搜索结果页</div>
+        <span class="stage-label">前台 · 用户旅程</span>
+        <div class="journey">
+          <div class="v-box">搜索框发起搜索<small>输入「520 礼物，520 送什么礼物」</small></div>
+          <div class="v-down">↓ 分流 ↓</div>
+          <div class="arch-2">
+            <div class="v-box">流内 AI 插卡<small>结果页插入「520 送礼精选」卡</small></div>
+            <div class="v-box">AI 独立搜<small>对话式「实用派 / 浪漫派礼物」</small></div>
+          </div>
+          <div class="v-down">↓ 结果 ↓</div>
+          <div class="v-box">推荐商品<small>香水 · 口红礼盒等贴合 520 的商品</small></div>
+        </div>
+
+        <span class="stage-label">后台 · AI 数据基建</span>
+        <div class="data-base">
+          <div class="db-group">
+            <span class="db-title">用户画像</span>
+            <div class="db-chips"><span>离线画像</span><span>实时行为</span></div>
+          </div>
+          <div class="db-group">
+            <span class="db-title">平台知识体系</span>
+            <div class="db-chips"><span>商品信息（基础/解读）</span><span>社区内容信息</span><span>用户评价/评论</span><span>商品站外信息</span><span>品类/品牌知识</span><span>鉴别工艺解读</span></div>
+          </div>
+          <div class="db-group">
+            <span class="db-title">世界知识查询<small>外部 API 调用</small></span>
+            <div class="db-chips"><span>小红书</span><span>百度</span><span>外部专业模型</span></div>
           </div>
         </div>
-        <div class="flow-row">
-          <span class="flow-tag flow-tag-back">后台 · 新增判断链路</span>
-          <div class="flow-chain">
-            <div class="flow-box">离线 AI-Query 库</div><span class="flow-arrow">→</span>
-            <div class="flow-box">基础个性化</div><span class="flow-arrow">→</span>
-            <div class="flow-box flow-box-highlight">定坑展示<br><small>屏控：一刷只展示 1 次</small></div><span class="flow-arrow">→</span>
-            <div class="flow-box">进入独立 AI 搜索结果页</div>
+
+        <p class="flow-note">流内 AI 插卡由用户实时行为反馈触发（例如商详页回退）；而 AI 插卡与 AI 独立搜的生成与推荐，都建立在用户画像与平台知识 AI 体系之上——两条前台路径最终都收敛到贴合需求的商品推荐。</p>
+      </section>
+
+      <!-- 架构模块 -->
+      <section class="case-block panel">
+        <h2>架构</h2>
+        <p class="en">Architecture</p>
+        <p>四段式链路：多轮对话意图识别 → Query 改写 → 生成总结 → 商品召回与排序。</p>
+        <div class="arch-stack">
+          <div class="arch-row"><div class="v-box">用户 Query 输入</div></div>
+          <div class="v-down">↓</div>
+          <div class="arch-2">
+            <div class="v-box">预处理 Agent<small>清洗 / 分流 / 归一</small></div>
+            <div class="v-box">对话状态管理 Agent<small>存储多轮结构化需求</small></div>
           </div>
+          <div class="v-down">↓</div>
+          <div class="arch-row"><div class="v-box">意图理解 Agent<small>输出标准化结构化需求</small></div></div>
+          <div class="v-down">↓ 按意图分流到多个 skill ↓</div>
+          <div class="arch-skills">
+            <div class="v-box v-box-hl">商品查找 skill</div>
+            <div class="v-box">比价决策 skill</div>
+            <div class="v-box">穿搭搭配类 skill</div>
+            <div class="v-box">攻略咨询类 skill</div>
+            <div class="v-box">售后咨询类 skill</div>
+            <div class="v-box">闲聊无关类 skill</div>
+          </div>
+          <div class="arch-note-inline">商品查找 skill 再细分为 <b>精准 / 较精准 / 泛商品意图</b>，分别匹配不同回答范式</div>
+          <div class="v-down">↓ 汇入 不同回答范式 ↓</div>
+          <div class="arch-row"><div class="v-box">Query 改写 · 摘要输出</div></div>
+          <div class="v-down">↓</div>
+          <div class="arch-row"><div class="v-box">传统召排 + 生成式召排<small>商品 + 内容</small></div></div>
+          <div class="v-down">↓</div>
+          <div class="arch-row"><div class="v-box">后置校验 Agent<small>合规 / 格式 / 兜底等</small></div></div>
+          <div class="v-down">↓</div>
+          <div class="arch-row"><div class="v-box v-box-hl">最终结果呈现</div></div>
         </div>
-      </div>
-      <p class="flow-note">「定坑展示」命中的用户点击后即进入独立 AI 搜索结果页；其余用户仍停留在传统搜索结果页，两条链路只在「前端展示」这一步交汇，互不影响主链路的响应速度。</p>
-      <p>独立 AI 搜索结果页背后是四段式链路：多轮对话意图识别 → 多轮对话 Query 改写 → Summary 总结生成 → 商品召回与排序，底层基于 deepseek-v4-flash，通过业务 Prompt 编排实现搜索意图理解、Query 改写、结果摘要和非商品问题回复。因为独立入口对响应时间的容忍度比传统站内搜索更高，商品召排链路上也做了生成式能力升级：引入生成式召回、生成式 Query 改写、生成式相关性判断，专门用来提升复杂自然语言 query 下的商品召回覆盖率和结果匹配度。</p>
-      <p>一期上线后，复盘发现了几个明显的天花板：多个能力模块耦合在一次大模型调用里，效果很难再往上提；商品意图统一用一套模板回答，对不同商品意图的细分适配不足；非商品意图的 FAQ 兜底还不完善；复杂多轮对话下生成式召排容易出现理解偏差、产生幻觉；也还缺少真实用户反馈数据形成模型训练的闭环。这些问题直接定义了二期迭代的方向：从「一次大模型调用扛所有」拆分为多 skill 独立优化的架构，让每个意图场景都能单独打磨、单独验证。</p>
+      </section>
+    </div>
+
+    <!-- 四个回答范式（等宽四列，图片高度自适应；占位待放图） -->
+    <section class="paradigms">
+      <figure class="p-tile">
+        <span class="media-tag">结构化引导</span>
+        <div class="p-media"><img loading="lazy" decoding="async" alt="回答范式 · 结构化引导" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/answer-paradigm-1-image.png"></div>
+        <p class="p-desc">模糊意图：有大致的方向，但没能清楚表述需求。<br><br>回答范式：<br>1. 结构化引导：用卡片承接结构化筛选，引导收敛需求；<br><br>2.选购标准前置：先给出核心判断/决策依据，让后续推荐有据可依；<br><br>3. 结构化商品推荐：按纬度分类推荐商品，每个维度下展示多款商卡。<br></p>
+      </figure>
+      <figure class="p-tile">
+        <span class="media-tag">模糊意图</span>
+        <div class="p-media"><img loading="lazy" decoding="async" alt="回答范式 · 模糊意图" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/answer-paradigm-2-image.png"></div>
+      </figure>
+      <figure class="p-tile">
+        <span class="media-tag">较精准意图</span>
+        <div class="p-media"><img loading="lazy" decoding="async" alt="回答范式 · 泛意图" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/answer-paradigm-3-image.png"></div>
+        <p class="p-desc">意图发散：「你还可以问」模块补充更多相关语意query；<br>文字&amp;语音输入：支持追问。<br></p>
+      </figure>
+      <figure class="p-tile">
+        <span class="media-tag">精准意图</span>
+        <div class="p-media"><img loading="lazy" decoding="async" alt="回答范式 · 精准意图" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/answer-paradigm-4-image.png"></div>
+        <p class="p-desc">较精准意图：有明确需求方向，但不知哪款商品能满足；<br><br>回答范式：分档精选推荐-按价位/风格/产地等维度分组，每组主推一款并附推荐理由与卖点，避免选择过载。<br><br><br>精准意图：用户知道要什么，能准确说出商品名称/型号：<br><br>回答范式：结论&amp;主商卡直达：直接给出决策所需的关键信息，单张主推商品卡承接。<br></p>
+      </figure>
     </section>
 
+<!-- [已隐藏·待追回] 媒体展示行（搜索入口强化 / 模块2 搜索框 / star / 模块5）。去掉本行首尾的注释标记即可恢复。
     <section class="case-media">
-      <article class="m-tile" style="grid-column: span 2; aspect-ratio: 620 / 665.8;">
-        <img loading="lazy" decoding="async" alt="AI 智能搜索过程图" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-1-image.png">
-        <video muted="" loop="" playsinline="" preload="metadata" src="assets/uploads/content-1-video.mp4"></video>
-      </article>
+      <figure class="media-item">
+        <span class="media-tag">搜索入口强化</span>
+        <article class="m-tile is-autoplay">
+          <video autoplay muted loop playsinline preload="metadata" src="assets/uploads/case-mod-1-video.mp4"></video>
+        </article>
+      </figure>
+      <figure class="media-item merged" style="grid-column: span 2;">
+        <span class="media-tag">模块 2</span>
+        <article class="m-tile is-autoplay">
+          <video autoplay muted loop playsinline preload="metadata" src="assets/uploads/case-mod-2-video.mp4"></video>
+        </article>
+      </figure>
+      <figure class="media-item col4-stack">
+        <div class="stack-cell">
+          <span class="media-tag">模块 4</span>
+          <article class="m-tile is-gif">
+            <img loading="lazy" decoding="async" alt="star" src="assets/uploads/star.gif">
+          </article>
+        </div>
+        <div class="stack-cell">
+          <span class="media-tag">模块 5</span>
+          <article class="m-tile is-empty">模块 5 · 待放图/视频</article>
+        </div>
+      </figure>
     </section>
+    -->
+
+
 
     <!-- 案例拆解：结果 -->
     <section class="case-block panel">
       <h2>结果</h2>
       <p class="en">Result</p>
-      <p>从 0 到 1 搭建并上线了面向用户核心商品导购需求的独立 AI 交互页面，通过智能意图判断、商品理解、生成式召排、结构化呈现等能力，一站式承接复杂决策类需求。目前处于 1% 切流验证阶段：入口点击率 0.3%，日均使用 UV 40，日均提问 76 次、人均提问 1.8 次——规模还小，也是当前重点优化入口设计和站内引导的原因。</p>
-      <p>质量指标上更能说明方向是对的：当前有效回答率 93%（有实际商品曝光）；核心的商品导购类意图（约占用户需求 70-80%）回答质量人工测评已达到竞品水位的 97%，基本符合预期。一周维度的 AB 数据显示，触达到这个入口的用户，其商搜行为和大盘留存有显著提升，长期效果还在持续观测中。</p>
+      <p>从 0 到 1 搭建并上线了面向用户核心商品导购需求的独立 AI 交互页面，通过意图判断、商品理解、生成式召排、结构化呈现等能力，一站式承接复杂决策类需求。目前处于 1% 切流验证阶段：入口点击率较低，规模小，后续加强优化入口设计和站内引导； 同时在质量指标上：当前有效回答率 93%（有实际商品曝光）。</p>
+      <p>流内 AI 插卡在具备逛选意图的站内优势品类（服装、鞋等）下效率更高，结合一些具备人感的引导文案下，点选效率整体更高。</p>
     </section>
 
     <footer class="site-header" style="position: static; padding: 40px 10px 0;">
@@ -348,7 +594,10 @@
         ".meta-item h3", ".meta-item p",
         ".case-block h2", ".case-block .en", ".case-block > p",
         ".case-subitem h3", ".case-subitem p",
-        ".flow-box", ".flow-note", ".flow-tag"
+        ".flow-box", ".flow-note", ".flow-tag", ".arch-note-inline",
+        ".v-box", ".v-down", ".lane-label", ".stage-label", ".db-title", ".db-chips span",
+        ".p-cap", ".p-desc", ".media-tag",
+        ".vs-table th", ".vs-table td"   // 对比表:表头 + 每个单元格可编辑
       ].join(",");
 
       const toggleBtn = document.querySelector("[data-edit-toggle]");
@@ -361,6 +610,16 @@
         clearTimeout(setStatus.t);
         setStatus.t = setTimeout(() => { statusEl.textContent = editing ? "编辑中" : "本地编辑"; }, 2000);
       };
+
+      // 粘贴时只保留纯文本 —— 否则富文本会带进 <div>/<span style> 等非法嵌套，
+      // 破坏结构还会产生「点不动、编辑不了」的死块。绑一次即可。
+      document.addEventListener("paste", (event) => {
+        const el = event.target;
+        if (!el || !el.closest || !el.closest('[contenteditable="true"]')) return;
+        event.preventDefault();
+        const text = (event.clipboardData || window.clipboardData).getData("text/plain");
+        document.execCommand("insertText", false, text);
+      });
 
       toggleBtn.addEventListener("click", () => {
         editing = !editing;
@@ -395,6 +654,40 @@
       });
     })();
   </script>
+
+
+
+
+
+
+  <script>
+    // 媒体图块 hover 播放视频（与一级页一致）：进入播放、离开暂停归零。
+    // CSS 已负责 hover 时把视频层显现，这里补上「真正播放」。
+    (() => {
+      document.querySelectorAll(".m-tile").forEach((tile) => {
+        if (tile.classList.contains("is-autoplay")) return;   // 自动循环的格子不走 hover 逻辑
+        const video = tile.querySelector("video");
+        if (!video) return;
+        tile.addEventListener("mouseenter", () => {
+          video.currentTime = 0;
+          video.play().catch(() => {});
+        });
+        tile.addEventListener("mouseleave", () => {
+          video.pause();
+          video.currentTime = 0;
+        });
+      });
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
 
 
 </body></html>

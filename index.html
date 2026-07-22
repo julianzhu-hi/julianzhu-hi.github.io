@@ -53,6 +53,23 @@
         box-sizing: border-box;
       }
 
+      /* 自托管字体：正文英文 Space Grotesk（SIL OFL），Hero 大标题 Clash Display（Fontshare 免费商用）。
+         同源加载，访客与本机看到的一致，不再依赖本机是否装了这两款字体。 */
+      @font-face {
+        font-family: "Inter";
+        font-style: normal;
+        font-weight: 300 700;
+        font-display: swap;
+        src: url("assets/fonts/inter-latin-var.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "Clash Display";
+        font-style: normal;
+        font-weight: 700 900;
+        font-display: swap;
+        src: url("assets/fonts/clash-display-700.woff2") format("woff2");
+      }
+
       html {
         background: var(--page);
         scroll-behavior: smooth;
@@ -63,7 +80,7 @@
         min-width: 320px;
         background: var(--page);
         color: var(--text);
-        font-family: Bauhaus, "Arial Rounded MT Bold", "Trebuchet MS", Arial, sans-serif;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
       }
 
       html:not(.local-editing) .settings-toggle,
@@ -201,6 +218,7 @@
         font-family: "Clash Display", Impact, Haettenschweiler, "Arial Black", sans-serif;
         font-size: var(--hero-size);
         font-weight: 900;
+        text-transform: capitalize;
         line-height: 0.96;
         letter-spacing: 0;
         white-space: nowrap;
@@ -335,7 +353,7 @@
         backdrop-filter: blur(18px);
         -webkit-backdrop-filter: blur(18px);
         box-shadow: 0 18px 45px rgba(0, 0, 0, 0.38);
-        font-family: Bauhaus, "Arial Rounded MT Bold", "Trebuchet MS", Arial, sans-serif;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
         opacity: 0;
         pointer-events: none;
         transform: translateY(12px) scale(0.98);
@@ -487,7 +505,7 @@
       }
 
       .settings-toggle-label {
-        font-family: Bauhaus, "Arial Rounded MT Bold", "Trebuchet MS", Arial, sans-serif;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
         font-size: 13px;
         line-height: 1;
       }
