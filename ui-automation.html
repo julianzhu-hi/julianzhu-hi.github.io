@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh" class=""><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>UI 自动化 — Julian Zhu</title>
+  <script>
+    // 与主站同一套判定：只有本地(localhost/127.0.0.1/file:)才开编辑模式，线上自动隐藏编辑面板
+    (() => {
+      const localHosts = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
+      const localEditing = window.location.protocol === "file:" || localHosts.has(window.location.hostname);
+      document.documentElement.classList.toggle("local-editing", localEditing);
+    })();
+  </script>
+  <style>
+    /* 自托管字体：英文用 Space Grotesk（SIL OFL），Hero 用 Clash Display（Fontshare 免费商用）。
+       同源加载，访客与本机看到的一致，不再依赖本机是否装了这两款字体。 */
+    @font-face {
+      font-family: "Inter";
+      font-style: normal;
+      font-weight: 300 700;
+      font-display: swap;
+      src: url("assets/fonts/inter-latin-var.woff2") format("woff2");
+    }
+
+    /* 设计变量与主站 index.html 保持一致 */
+    :root {
+      --page: #F5F5F9;
+      --panel-solid: #FFFFFF;
+      --text-panel-opacity: 0.98;
+      --text-panel-blur: 12.5px;
+      --muted: #585A6E;
+      --text: #2B2C3C;
+      --gap: 5px;
+      --canvas: 1280px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--page);
+      color: var(--text);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+    .panel {
+      background: rgba(255, 255, 255, var(--text-panel-opacity));
+      border-radius: 10px;
+      backdrop-filter: blur(var(--text-panel-blur));
+      -webkit-backdrop-filter: blur(var(--text-panel-blur));
+    }
+
+    /* ---- 顶部返回 ---- */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: var(--page);
+      padding: 14px 10px;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 24px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 20px;
+      text-decoration: none;
+      transition: background 220ms ease, color 220ms ease;
+    }
+    .back-link:hover, .back-link:focus-visible {
+      background: rgba(43, 44, 60, 0.08);
+      color: var(--text);
+      outline: 0;
+    }
+    /* 左向箭头：横线 + 45°箭头头（与主站箭头同一套画法，方向相反） */
+    .back-arrow { position: relative; width: 22px; height: 12px; flex: 0 0 auto; transition: width 240ms ease, transform 240ms ease; }
+    .back-arrow::before, .back-arrow::after { content: ""; position: absolute; left: 0; top: 50%; background: currentColor; }
+    .back-arrow::before { width: 100%; height: 2px; transform: translateY(-50%); }
+    .back-arrow::after {
+      width: 8px; height: 8px; background: transparent;
+      border-bottom: 2px solid currentColor; border-left: 2px solid currentColor;
+      transform: translateY(-50%) rotate(45deg);
+    }
+    .back-link:hover .back-arrow { width: 34px; transform: translateX(-6px); }
+
+    /* ---- 主体 ---- */
+    .case {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap);
+      width: 100%;
+      max-width: var(--canvas);
+      margin: 0 auto;
+      padding: 0 10px 60px;
+    }
+    .case-hero { padding: 60px 30px; }
+    .case-kicker { margin: 0 0 16px; color: var(--muted); font-size: 18px; letter-spacing: 0.04em; }
+    .case-title { margin: 0; font-size: 56px; line-height: 1.2; font-weight: 400; }
+    .case-lead { margin: 20px 0 0; color: var(--muted); font-size: 20px; line-height: 1.9; }
+
+    /* 项目详情：角色/时间/团队/标签 */
+    .case-meta { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
+    .meta-item { padding: 24px 30px; }
+    .meta-item h3 { margin: 0 0 8px; color: var(--muted); font-size: 15px; font-weight: 400; letter-spacing: 0.06em; }
+    .meta-item p { margin: 0; font-size: 19px; line-height: 1.6; }
+
+    /* 案例拆解区块 */
+    .case-block { padding: 44px 30px; }
+    .case-block h2 { margin: 0 0 6px; font-size: 30px; font-weight: 400; }
+    .case-block .en { margin: 0 0 22px; color: var(--muted); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .case-block p { margin: 0 0 16px; color: var(--muted); font-size: 19px; line-height: 2.1; }
+    .case-block p:last-child { margin-bottom: 0; }
+
+    /* 普通搜 vs AI 搜 对比表 */
+    .vs-block { margin-top: 28px; }
+    .vs-block h3 { margin: 0 0 16px; font-size: 20px; font-weight: 400; color: var(--text); }
+    .vs-scroll { overflow-x: auto; }
+    .vs-table { width: 100%; min-width: 620px; border-collapse: collapse; table-layout: fixed; }
+    .vs-table .vs-col-dim { width: 150px; }   /* 首列固定，剩余由普通搜/AI搜两列等分 */
+    .vs-table th, .vs-table td { text-align: left; padding: 14px 16px; vertical-align: top; line-height: 1.7; }
+    .vs-table thead th { font-size: 15px; font-weight: 400; letter-spacing: 0.02em; border-bottom: 1px solid rgba(43, 44, 60, 0.12); }
+    .vs-table thead .vs-dim { color: var(--muted); }
+    .vs-table thead .vs-normal { color: #2F49FF; }
+    .vs-table thead .vs-ai { color: #0F8B8B; }
+    .vs-table tbody th { width: 118px; color: #2B2C3C; font-weight: 600; white-space: nowrap; }
+    .vs-table tbody td { color: #585A6E; font-size: 16px; }
+    .vs-table tbody tr { border-top: 1px solid rgba(43, 44, 60, 0.07); }
+    .vs-table tbody tr:first-child { border-top: 0; }
+    .vs-table tr.vs-essence { border-top: 2px solid rgba(43, 44, 60, 0.18); }
+    .vs-table tr.vs-essence td { color: #2B2C3C; }
+
+    /* 背景后的三个小结：问题 / 业务目标 / 设计目标 */
+    .case-subgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); margin-top: 8px; }
+    .case-subitem { padding: 20px 22px; background: rgba(43, 44, 60, 0.03); border: 1px solid rgba(43, 44, 60, 0.08); border-radius: 10px; }
+    .case-subitem h3 { margin: 0 0 10px; color: var(--muted); font-size: 14px; font-weight: 400; letter-spacing: 0.06em; text-transform: uppercase; }
+    .case-subitem p { margin: 0; max-width: none; font-size: 17px; line-height: 1.8; color: var(--muted); }
+
+    /* 占位提示：内容填好后把 .todo 去掉即可 */
+    .todo {
+      display: inline-block;
+      padding: 2px 10px;
+      border: 1px dashed rgba(43, 44, 60, 0.25);
+      border-radius: 6px;
+      color: rgba(43, 44, 60, 0.5);
+      font-size: 16px;
+    }
+
+    /* 前台/后台流程图：AI 独立搜的用户行为 × 后台判断链路 */
+    .flow-diagram { display: flex; flex-direction: column; gap: 20px; margin-bottom: 20px; }
+    .flow-row { display: flex; flex-direction: column; gap: 12px; }
+    .flow-tag {
+      align-self: flex-start;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+    }
+    .flow-tag-front { background: rgba(47, 73, 255, 0.12); color: #2F49FF; }
+    .flow-tag-back { background: rgba(15, 139, 139, 0.12); color: #0F8B8B; }
+    .flow-chain { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .flow-box {
+      padding: 12px 18px;
+      background: rgba(43, 44, 60, 0.03);
+      border: 1px solid rgba(43, 44, 60, 0.12);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.5;
+      text-align: center;
+    }
+    .flow-box small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+    .flow-box-highlight { border-color: rgba(15, 139, 139, 0.55); background: rgba(32, 231, 231, 0.12); }
+    .flow-arrow { color: var(--muted); font-size: 18px; flex: 0 0 auto; }
+    .flow-note { font-size: 16px !important; color: rgba(43, 44, 60, 0.45) !important; }
+
+    /* 过程 & 架构：两张独立卡片左右并列 */
+    .modules-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); align-items: stretch; }
+    .modules-row > .case-block { margin: 0; }
+    .vlanes { margin-top: 8px; margin-bottom: 26px; }
+    .arch-stack { margin-top: 8px; }
+
+    /* 通用竖向盒子/箭头（过程 + 架构共用） */
+    .v-box {
+      width: 100%;
+      padding: 11px 12px;
+      background: rgba(43, 44, 60, 0.03);
+      border: 1px solid rgba(43, 44, 60, 0.12);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.45;
+      text-align: center;
+    }
+    .v-box small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+    .v-box-hl { border-color: rgba(15, 139, 139, 0.55); background: rgba(32, 231, 231, 0.12); }
+    .v-down { color: rgba(43, 44, 60, 0.4); font-size: 13px; letter-spacing: 0.04em; text-align: center; line-height: 1.3; }
+
+    /* 旅程：前台分流 + 后台 AI 数据基建 */
+    .stage-label { display: block; text-align: center; font-size: 13px; letter-spacing: 0.04em; color: var(--muted); margin: 22px 0 10px; }
+    .data-base + .flow-note { margin-top: 22px; }
+    .journey { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
+    .journey .v-box { font-size: 14px; }
+    .journey > .v-box { width: auto; min-width: 62%; }
+    .journey .arch-2 { gap: 10px; }
+    .journey .arch-2 .v-box { width: 100%; }
+
+    /* 后台 · AI 数据基建（分组盒 + 内部 chips） */
+    .data-base { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+    .db-group { padding: 11px 13px; background: rgba(43, 44, 60, 0.03); border: 1px solid rgba(43, 44, 60, 0.12); border-radius: 10px; }
+    .db-title { display: block; margin-bottom: 8px; font-size: 13.5px; color: var(--text); }
+    .db-title small { color: var(--muted); font-size: 11px; margin-left: 4px; }
+    .db-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .db-chips span { padding: 5px 10px; background: var(--panel-solid); border: 1px solid rgba(43, 44, 60, 0.12); border-radius: 6px; font-size: 12.5px; color: var(--muted); }
+
+    /* 四个回答范式：等宽四列，高度随图片内容自适应 */
+    .paradigms { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap); align-items: stretch; }
+    .p-tile { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+    .p-media { flex: 0 0 auto; overflow: hidden; border-radius: 10px; background: var(--panel-solid); }
+    .p-media img { display: block; width: 100%; height: auto; }
+    .p-media[data-empty] { aspect-ratio: 3 / 5; display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(43, 44, 60, 0.25); color: rgba(43, 44, 60, 0.4); font-size: 13px; text-align: center; }
+    .p-desc { flex: 1 1 auto; margin: 0; display: flex; align-items: center; justify-content: center; padding: 16px; background: var(--panel-solid); border-radius: 10px; font-size: 14px; line-height: 1.6; color: var(--muted); text-align: center; }
+    @media (max-width: 900px) { .paradigms { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .paradigms { grid-template-columns: 1fr; } }
+
+    /* 架构：竖向分层 */
+    .arch-stack { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
+    .arch-row { display: flex; justify-content: center; gap: 10px; width: 100%; }
+    .arch-row .v-box { width: auto; min-width: 62%; font-size: 14px; }
+    .arch-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+    .arch-skills { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+    .arch-skills .v-box { font-size: 13.5px; padding: 9px 8px; }
+    .arch-note-inline {
+      width: 100%;
+      margin: 2px 0;
+      padding: 8px 12px;
+      background: rgba(43, 44, 60, 0.03);
+      border: 1px dashed rgba(43, 44, 60, 0.14);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+      text-align: center;
+    }
+    .arch-note-inline b { color: var(--text); font-weight: 500; }
+
+    /* 媒体展示：沿用主站图块的观感（图为底，hover 播视频） */
+    .case-media { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); align-items: start; }
+    .m-tile {
+      position: relative;
+      aspect-ratio: 307.5 / 665.8;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--panel-solid);
+    }
+    .m-tile img, .m-tile video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .m-tile video { opacity: 0; transition: opacity 220ms ease; }
+    .m-tile:hover video { opacity: 1; }
+    /* 媒体上方与图同宽的标签 */
+    .media-item { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+    .media-tag { padding: 10px 12px; background: var(--panel-solid); border-radius: 999px; text-align: center; font-size: 14px; line-height: 1.4; color: var(--text); }
+    .m-tile.is-empty { display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(43, 44, 60, 0.25); background: var(--panel-solid); color: rgba(43, 44, 60, 0.4); font-size: 13px; text-align: center; }
+    .m-tile.is-autoplay video { opacity: 1; }   /* 无首图、视频常显自动循环 */
+    /* 无首图但不自动播：靠 preload=metadata 显示首帧，hover 才播（省带宽） */
+    .m-tile.is-poster video { opacity: 1; }
+    /* UI 自动化演示：横屏大画幅，每个占满整行 */
+    .uiauto-media { grid-template-columns: 1fr; gap: 18px; }
+    /* 方形 gif：缩放 80%、四周等宽留白(padding% 按宽度算)、模块高度 hug 成正方形 */
+    .m-tile.is-gif { aspect-ratio: auto; padding: 10%; }
+    .m-tile.is-gif img { position: static; inset: auto; display: block; width: 100%; height: auto; object-fit: contain; }
+    /* 模块4列：上下两格等高，整列撑到与其他列等高 */
+    .col4-stack { align-self: stretch; display: flex; flex-direction: column; gap: var(--gap); }
+    .col4-stack .stack-cell { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; gap: 8px; }
+    .col4-stack .stack-cell .m-tile { flex: 1 1 0; min-height: 0; aspect-ratio: auto; }
+    .col4-stack .m-tile.is-gif { padding: 0; display: flex; align-items: center; justify-content: center; }
+    .col4-stack .m-tile.is-gif img { width: auto; height: auto; max-width: 80%; max-height: 80%; }
+    /* 合并的大模块：跨 2 列，撑到与其他列等高 */
+    .media-item.merged { align-self: stretch; }
+    .media-item.merged .m-tile { flex: 1 1 auto; min-height: 0; aspect-ratio: auto; }
+    .media-item.merged .m-tile video { object-fit: contain; }   /* 宽扁视频完整显示，不裁切 */
+
+    /* ---- 页内文字编辑面板（仅本地可见；线上 html 没有 local-editing 类，整条隐藏）---- */
+    html:not(.local-editing) .edit-bar { display: none; }
+    .edit-bar {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(43, 44, 60, 0.15);
+      border-radius: 999px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .edit-bar button {
+      padding: 6px 18px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(43, 44, 60, 0.08);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 180ms ease;
+    }
+    .edit-bar button:hover { background: rgba(43, 44, 60, 0.16); }
+    .edit-bar button.primary { background: #2B2C3C; color: #ffffff; }
+    .edit-bar .edit-status { min-width: 70px; color: var(--muted); font-size: 14px; }
+    /* 编辑态：可编辑块加虚线框提示 */
+    html.is-editing [contenteditable="true"] { outline: 1px dashed rgba(32, 231, 231, 0.5); outline-offset: 3px; border-radius: 4px; }
+    html.is-editing [contenteditable="true"]:focus { outline-style: solid; }
+
+    /* ---- 响应式 ---- */
+    @media (max-width: 900px) {
+      .case-title { font-size: 40px; }
+      .case-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .case-media { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .case-subgrid { grid-template-columns: 1fr; }
+      .case-hero { padding: 40px 24px; }
+      .case-block { padding: 32px 24px; }
+      .modules-row { grid-template-columns: 1fr; gap: var(--gap); }
+    }
+    @media (max-width: 480px) {
+      .case-title { font-size: 32px; }
+      .case-meta { grid-template-columns: 1fr; }
+    }
+  </style>
+<style id="accent-trial">.flow-tag-front{background:rgba(216,27,96,.12)!important;color:#D81B60!important}.vs-table thead .vs-normal{color:#D81B60!important}.flow-tag-back{background:rgba(2,153,153,.12)!important;color:#029999!important}.vs-table thead .vs-ai{color:#029999!important}.flow-box-highlight{border-color:rgba(2,153,153,.55)!important}</style></head>
+<body>
+  <header class="site-header">
+    <a class="back-link" href="index.html"><span class="back-arrow" aria-hidden="true"></span><span>返回作品集</span></a>
+  </header>
+
+    <!-- 项目详情 -->
+    <section class="case-hero panel">
+      <p class="case-kicker">SELECTED PROJECTS · 效率工具 / 得物 APP</p>
+      <h1 class="case-title">UI 自动化</h1>
+    </section>
+
+    <section class="case-meta">
+      <article class="meta-item panel"><h3>角色 ROLE</h3><p>UI&amp;UX 设计师</p></article>
+      <article class="meta-item panel"><h3>时间 TIMELINE</h3><p><span class="todo">待填</span></p></article>
+      <article class="meta-item panel"><h3>团队 TEAM</h3><p><span class="todo">待填</span></p></article>
+      <article class="meta-item panel"><h3>标签 TAGS</h3><p>UX&amp;UI · Design System</p></article>
+    </section>
+
+    <!-- 背景 -->
+    <section class="case-block panel">
+      <h2>背景</h2>
+      <p class="en">Background</p>
+      <p><span class="todo">待填：为什么要做 UI 自动化 —— 大屏适配的人力成本、重复劳动、一致性问题等。</span></p>
+    </section>
+
+    <!-- 过程 -->
+    <section class="case-block panel">
+      <h2>过程</h2>
+      <p class="en">Process</p>
+      <p><span class="todo">待填：怎么做的 —— 规则抽象、组件约束、自动生成链路。</span></p>
+    </section>
+
+    <!-- 三个演示模块 -->
+    <section class="case-media uiauto-media">
+      <figure class="media-item">
+        <span class="media-tag">列表页大屏适配</span>
+        <article class="m-tile is-poster" style="aspect-ratio: 3438 / 1912;">
+          <video muted loop playsinline preload="metadata" src="assets/uploads/uiauto-content-1-video.mp4"></video>
+        </article>
+      </figure>
+      <figure class="media-item">
+        <span class="media-tag">复杂页面大屏适配</span>
+        <article class="m-tile is-poster" style="aspect-ratio: 3438 / 1912;">
+          <video muted loop playsinline preload="metadata" src="assets/uploads/uiauto-content-2-video.mp4"></video>
+        </article>
+      </figure>
+      <figure class="media-item">
+        <span class="media-tag">UI 自动化生成</span>
+        <article class="m-tile is-poster" style="aspect-ratio: 1920 / 1338;">
+          <video muted loop playsinline preload="metadata" src="assets/uploads/uiauto-content-3-video.mp4"></video>
+        </article>
+      </figure>
+    </section>
+
+    <!-- 结果 -->
+    <section class="case-block panel">
+      <h2>结果</h2>
+      <p class="en">Result</p>
+      <p><span class="todo">待填：效率提升数据、覆盖页面数、节省人力等。</span></p>
+    </section>
+
+    <footer class="site-header" style="position: static; padding: 40px 10px 0;">
+      <a class="back-link" href="index.html"><span class="back-arrow" aria-hidden="true"></span><span>返回作品集</span></a>
+    </footer>
+  </main>
+
+  <div class="edit-bar" aria-label="页面文字编辑">
+    <span class="edit-status" data-edit-status="">编辑中</span>
+    <button type="button" data-edit-toggle="">退出编辑</button>
+    <button type="button" class="primary" data-edit-save="">保存</button>
+  </div>
+
+  <script>
+    // 二级页轻量文字编辑器：仅 local-editing 时可用。
+    // 「开始编辑」给正文文本块开 contenteditable，「保存」把清理后的整页 HTML
+    // POST 到 save-server(127.0.0.1:3219)/save-page 写回磁盘上的本文件。
+    (() => {
+      if (!document.documentElement.classList.contains("local-editing")) return;
+      const PAGE = location.pathname.split("/").pop() || "ai-search.html";
+      // 可编辑的文本块（只开文字，不开布局容器，避免误改结构）
+      const EDITABLE = [
+        ".case-kicker", ".case-title", ".case-lead",
+        ".meta-item h3", ".meta-item p",
+        ".case-block h2", ".case-block .en", ".case-block > p",
+        ".case-subitem h3", ".case-subitem p",
+        ".flow-box", ".flow-note", ".flow-tag", ".arch-note-inline",
+        ".v-box", ".v-down", ".lane-label", ".stage-label", ".db-title", ".db-chips span",
+        ".p-cap", ".p-desc", ".media-tag",
+        ".vs-table th", ".vs-table td"   // 对比表:表头 + 每个单元格可编辑
+      ].join(",");
+
+      const toggleBtn = document.querySelector("[data-edit-toggle]");
+      const saveBtn = document.querySelector("[data-edit-save]");
+      const statusEl = document.querySelector("[data-edit-status]");
+      let editing = false;
+
+      const setStatus = (msg) => {
+        statusEl.textContent = msg;
+        clearTimeout(setStatus.t);
+        setStatus.t = setTimeout(() => { statusEl.textContent = editing ? "编辑中" : "本地编辑"; }, 2000);
+      };
+
+      // 粘贴时只保留纯文本 —— 否则富文本会带进 <div>/<span style> 等非法嵌套，
+      // 破坏结构还会产生「点不动、编辑不了」的死块。绑一次即可。
+      document.addEventListener("paste", (event) => {
+        const el = event.target;
+        if (!el || !el.closest || !el.closest('[contenteditable="true"]')) return;
+        event.preventDefault();
+        const text = (event.clipboardData || window.clipboardData).getData("text/plain");
+        document.execCommand("insertText", false, text);
+      });
+
+      toggleBtn.addEventListener("click", () => {
+        editing = !editing;
+        document.documentElement.classList.toggle("is-editing", editing);
+        document.querySelectorAll(EDITABLE).forEach((el) => {
+          if (editing) el.setAttribute("contenteditable", "true");
+          else el.removeAttribute("contenteditable");
+        });
+        toggleBtn.textContent = editing ? "退出编辑" : "开始编辑";
+        saveBtn.hidden = !editing;
+        statusEl.textContent = editing ? "编辑中" : "本地编辑";
+      });
+
+      saveBtn.addEventListener("click", async () => {
+        // 克隆整份文档并清理编辑器痕迹，得到干净的可保存 HTML
+        const clone = document.documentElement.cloneNode(true);
+        clone.classList.remove("local-editing", "is-editing");
+        clone.querySelectorAll("[contenteditable]").forEach((el) => el.removeAttribute("contenteditable"));
+        const html = "<!DOCTYPE html>\n" + clone.outerHTML + "\n";
+        setStatus("保存中…");
+        try {
+          const res = await fetch("http://127.0.0.1:3219/save-page", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ page: PAGE, html })
+          });
+          const out = await res.json();
+          setStatus(out.ok ? "已保存 ✓" : `失败：${out.error || res.status}`);
+        } catch (e) {
+          setStatus("保存失败：save-server 未启动？");
+        }
+      });
+    })();
+  </script>
+
+
+
+
+
+
+  <script>
+    // 媒体图块 hover 播放视频（与一级页一致）：进入播放、离开暂停归零。
+    // CSS 已负责 hover 时把视频层显现，这里补上「真正播放」。
+    (() => {
+      document.querySelectorAll(".m-tile").forEach((tile) => {
+        if (tile.classList.contains("is-autoplay")) return;   // 自动循环的格子不走 hover 逻辑
+        const video = tile.querySelector("video");
+        if (!video) return;
+        tile.addEventListener("mouseenter", () => {
+          video.currentTime = 0;
+          video.play().catch(() => {});
+        });
+        tile.addEventListener("mouseleave", () => {
+          video.pause();
+          video.currentTime = 0;
+        });
+      });
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+</body></html>
