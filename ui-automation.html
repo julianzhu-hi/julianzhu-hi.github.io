@@ -387,8 +387,17 @@
     .agent-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);align-items:start;margin-top:8px}
     .agent-tree{align-self:stretch;background:rgba(43,44,60,.03);border:1px solid rgba(43,44,60,.1);border-radius:12px;overflow:hidden}
     .agent-tree .tree-head{display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(43,44,60,.04);border-bottom:1px solid rgba(43,44,60,.08);color:var(--muted);font-size:13px}
-    .agent-tree .dots{display:inline-flex;gap:6px}
-    .agent-tree .dots i{width:9px;height:9px;border-radius:50%;background:rgba(43,44,60,.18)}
+    .agent-tree .dots,.prompt-skel .dots{display:inline-flex;gap:6px}
+    .agent-tree .dots i,.prompt-skel .dots i{width:9px;height:9px;border-radius:50%;background:rgba(43,44,60,.18)}
+    /* 需求输入 · prompt 骨架（只展示结构，非全文） */
+    .prompt-skel{margin-top:18px;background:rgba(43,44,60,.03);border:1px solid rgba(43,44,60,.1);border-radius:12px;overflow:hidden}
+    .prompt-skel .ps-head{display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(43,44,60,.04);border-bottom:1px solid rgba(43,44,60,.08);color:var(--muted);font-size:13px}
+    .prompt-skel .ps-body{padding:20px;display:flex;flex-direction:column;gap:16px}
+    .ps-sec .ps-t{color:#028E8F;font-size:12.5px;font-weight:600;letter-spacing:.02em;margin-bottom:7px}
+    .ps-sec p{margin:0;font-size:14.5px;line-height:1.85;color:var(--text)}
+    .ps-sec p .mut{color:var(--muted)}
+    .ps-sec p b{font-weight:600}
+    .prompt-skel .ps-note{margin:0;padding:12px 20px;border-top:1px solid rgba(43,44,60,.07);background:rgba(1,194,195,.04);color:var(--muted);font-size:13px;line-height:1.6}
     .agent-tree .tree-body{padding:18px 16px;display:flex;flex-direction:column;gap:13px}
     .t-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px;line-height:1.5}
     .t-row.t-2{padding-left:26px}
@@ -541,6 +550,33 @@
           <h4><span class="idx">02</span>用 PRD 生成「AI 可用的需求文档」</h4>
           <p class="cap">先别急着画：把 PRD + 原型喂给 AI，让它产出一份结构化需求文档——把要素按「能不能改」分成 [硬] 不可改 / [参考] 可优化 / [待拍板] 需先定 三档。</p>
           <img class="shot" loading="lazy" decoding="async" alt="前置输入 → 示例 → 输出需求文档" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/uiauto-step-01.jpg">
+
+          <div class="prompt-skel">
+            <div class="ps-head"><span class="dots"><i></i><i></i><i></i></span>需求文档生成 · prompt 骨架</div>
+            <div class="ps-body">
+              <div class="ps-sec">
+                <div class="ps-t">角色 &amp; 目标</div>
+                <p>资深产品需求分析：把 <b>PRD + 原型</b> 整理成一份「设计可直接消费的需求文档 .md」，<span class="mut">严格按方法执行，最终只输出一个 .md。</span></p>
+              </div>
+              <div class="ps-sec">
+                <div class="ps-t">我的输入 · 5 项</div>
+                <p>① PRD　② 原型（Figma 带 node-id / 截图）　③ 竞品参考（可选）　④ 本次范围（只做一条路径）　⑤ 设计系统文档（可选）</p>
+              </div>
+              <div class="ps-sec">
+                <div class="ps-t">执行步骤 · A–H</div>
+                <p><b>A</b> 通读 PRD　<b>B</b> 逐屏拆原型（<span class="mut">字段穷举 / 联动变体 / 状态机 / 空态</span>）　<b>C</b> 范围纪律　<b>D</b> 三色标注 <span class="mut">[硬]/[参考]/[待拍板]</span>　<b>E</b> PRD ↔ 原型交叉核对（<span class="mut">冲突/缺失/多出 → 全列 [待拍板]</span>）　<b>F</b> 术语与指标口径对齐　<b>G</b> 竞品只借方法论　<b>H</b> 组件清单与缺口（<span class="mut">只到通用类型</span>）</p>
+              </div>
+              <div class="ps-sec">
+                <div class="ps-t">硬规则</div>
+                <p><span class="mut">只用真实信息 · 字段穷举不含糊 · 结构性决策先停下标 [待拍板] · 不虚构设计系统数值 · 组件不写死（componentKey / 变体留给设计系统绑）· 只交付一个 .md。</span></p>
+              </div>
+              <div class="ps-sec">
+                <div class="ps-t">输出结构 · 0–8</div>
+                <p><span class="mut">0 使用边界 · 1 路径概述 · 2 信息架构 · 3 页面清单 · 4 逐页详述 · 5 术语指标对齐 · 6 竞品借鉴 · 7 待拍板汇总 · 8 组件清单与缺口 · 附 原型节点索引</span></p>
+              </div>
+            </div>
+            <p class="ps-note">📌 完整 prompt 略——此处只展示<b>骨架</b>：用固定结构约束 AI，从源头保证产出的需求文档结构化、可被设计直接消费。</p>
+          </div>
         </div>
         <div class="wf-slide">
           <h4><span class="idx">03</span>把需求文档交给它画，你来判断</h4>
