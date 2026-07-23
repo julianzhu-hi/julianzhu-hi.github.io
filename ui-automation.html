@@ -332,66 +332,214 @@
       .case-meta { grid-template-columns: 1fr; }
     }
   </style>
-<style id="accent-trial">.flow-tag-front{background:rgba(216,27,96,.12)!important;color:#D81B60!important}.vs-table thead .vs-normal{color:#D81B60!important}.flow-tag-back{background:rgba(2,153,153,.12)!important;color:#029999!important}.vs-table thead .vs-ai{color:#029999!important}.flow-box-highlight{border-color:rgba(2,153,153,.55)!important}</style></head>
+<style id="ui-auto-styles">
+    /* 主色：品牌青绿 #01C2C3 */
+    .hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+    .hero-tags span{padding:6px 14px;background:rgba(43,44,60,.04);border:1px solid rgba(43,44,60,.1);border-radius:999px;font-size:14px;color:var(--muted)}
+    .hero-tags .accent{border-color:rgba(1,194,195,.45);color:#028E8F;background:rgba(1,194,195,.08)}
+    .skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);margin-top:8px}
+    .skill-card{padding:24px;background:rgba(43,44,60,.03);border:1px solid rgba(43,44,60,.08);border-radius:12px}
+    .skill-card .role{display:inline-block;margin-bottom:12px;padding:3px 12px;border-radius:999px;background:rgba(1,194,195,.12);color:#028E8F;font-size:13px}
+    .skill-card h3{margin:0 0 4px;font-size:20px;font-weight:500}
+    .skill-card p{margin:8px 0 0;font-size:16px;line-height:1.7;color:var(--muted)}
+    .compare{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+    .compare-row{display:grid;grid-template-columns:1fr 40px 1fr;align-items:center;gap:8px}
+    .compare .bad,.compare .good{padding:16px 20px;border-radius:12px;font-size:16px;line-height:1.6}
+    .compare .bad{background:rgba(216,27,96,.05);border:1px solid rgba(216,27,96,.14);color:var(--muted)}
+    .compare .good{background:rgba(1,194,195,.07);border:1px solid rgba(1,194,195,.24);color:var(--text)}
+    .compare .arr{text-align:center;color:#028E8F;font-size:20px}
+    .num-cards{display:flex;flex-direction:column;gap:12px;margin:8px 0 20px}
+    .num-card{display:grid;grid-template-columns:34px 1fr;gap:16px;padding:20px 22px;background:rgba(43,44,60,.03);border:1px solid rgba(43,44,60,.08);border-radius:12px}
+    .num-card .n{width:30px;height:30px;border-radius:8px;background:#2B2C3C;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px}
+    .num-card.hl .n{background:#01C2C3}
+    .num-card h3{margin:2px 0 6px;font-size:18px;font-weight:500}
+    .num-card p{margin:0;font-size:16px;line-height:1.75;color:var(--muted)}
+    .fail-chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+    .fail-chips span{padding:5px 12px;background:rgba(216,27,96,.06);border:1px solid rgba(216,27,96,.2);border-radius:8px;font-size:13.5px;color:#B0164E}
+    .chk-table{width:100%;border-collapse:collapse;margin-top:6px;font-size:15px}
+    .chk-table th,.chk-table td{text-align:left;padding:12px 14px;border-top:1px solid rgba(43,44,60,.08)}
+    .chk-table thead th{color:var(--muted);font-weight:400;font-size:14px;border-top:0}
+    .chk-table td code{font-size:13.5px}
+    .v-pass{color:#028E8F;font-weight:600}
+    .v-fail{color:#D81B60;font-weight:600}
+    .cover-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--gap);margin-top:8px}
+    .wf-chain{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 6px}
+    .wf-step{flex:1 1 150px;min-width:140px;display:flex;flex-direction:column;gap:6px;padding:14px 16px;background:rgba(43,44,60,.03);border:1px solid rgba(43,44,60,.1);border-radius:10px}
+    .wf-step .s{font-size:13px;color:#028E8F}
+    .wf-step .t{font-size:15.5px;color:var(--text);line-height:1.4}
+    .wf-detail{margin-top:30px;display:flex;flex-direction:column;gap:38px}
+    .wf-slide h4{margin:0 0 5px;font-size:20px;font-weight:500;color:var(--text)}
+    .wf-slide h4 .idx{color:#028E8F;font-size:15px;margin-right:10px}
+    .wf-slide .cap{margin:0 0 14px;font-size:16px;line-height:1.75;color:var(--muted)}
+    .wf-slide .shot,.showcase-shot{display:block;width:100%;height:auto;box-sizing:border-box;background:#fff;padding:10px;border-radius:12px}
+    .showcase-shot{margin-top:8px}
+    /* 图示面板重建（文字→HTML，真截图→切图，箭头→CSS） */
+    .io-row{display:grid;grid-template-columns:1fr 32px 1.25fr 32px 1fr;align-items:center;gap:10px;margin-top:8px}
+    .io-col{display:flex;flex-direction:column;gap:10px;align-self:stretch}
+    .io-col .io-h{font-size:16px;font-weight:500;color:var(--text);margin-bottom:2px}
+    .io-item{padding:12px 15px;background:rgba(1,194,195,.05);border:1px solid rgba(1,194,195,.22);border-radius:10px;font-size:15px;color:var(--text);line-height:1.5}
+    .io-item small{color:var(--muted)}
+    .io-arrow{color:#028E8F;font-size:22px;text-align:center}
+    .io-shot img{display:block;width:100%;height:auto;border-radius:10px}
+    @media (max-width:760px){.io-row{grid-template-columns:1fr;gap:6px}.io-arrow{transform:rotate(90deg)}}
+    @media (max-width:760px){.skill-grid,.cover-grid{grid-template-columns:1fr}.compare-row{grid-template-columns:1fr;gap:4px}.compare .arr{transform:rotate(90deg)}}
+  </style></head>
 <body>
   <header class="site-header">
     <a class="back-link" href="index.html"><span class="back-arrow" aria-hidden="true"></span><span>返回作品集</span></a>
   </header>
 
+  <main class="case">
     <!-- 项目详情 -->
     <section class="case-hero panel">
-      <p class="case-kicker">SELECTED PROJECTS · 效率工具 / 得物 APP</p>
-      <h1 class="case-title">UI 自动化</h1>
+      <p class="case-kicker">SKILL PACKAGE · v1.7.121 · 得物 AI 体验设计</p>
+      <h1 class="case-title">让 AI 按得物设计规范出图，而不是「看起来差不多」。</h1>
+      <p class="case-lead">dewu-PC-design 把得物 PC 端的设计系统——token、控件、组件、场景、协作原则——装进 Codex，让它生成的界面像素级贴规范，并在出图后强制自检。</p>
+      <div class="hero-tags">
+        <span>2 个 Skill</span><span>29 个组件</span><span>商家端 PC</span><span>Figma → 代码</span><span class="accent">主色 #01C2C3</span>
+      </div>
     </section>
 
     <section class="case-meta">
-      <article class="meta-item panel"><h3>角色 ROLE</h3><p>UI&amp;UX 设计师</p></article>
-      <article class="meta-item panel"><h3>时间 TIMELINE</h3><p><span class="todo">待填</span></p></article>
-      <article class="meta-item panel"><h3>团队 TEAM</h3><p><span class="todo">待填</span></p></article>
-      <article class="meta-item panel"><h3>标签 TAGS</h3><p>UX&amp;UI · Design System</p></article>
+      <article class="meta-item panel"><h3>角色 ROLE</h3><p>设计系统 / AI 体验设计</p></article>
+      <article class="meta-item panel"><h3>平台 PLATFORM</h3><p>得物商家端 PC</p></article>
+      <article class="meta-item panel"><h3>规模 SCALE</h3><p>2 个 Skill · 29 个组件</p></article>
+      <article class="meta-item panel"><h3>主色 ACCENT</h3><p>品牌青绿 #01C2C3</p></article>
     </section>
 
-    <!-- 背景 -->
+    <!-- 01 这是什么 -->
     <section class="case-block panel">
-      <h2>背景</h2>
-      <p class="en">Background</p>
-      <p><span class="todo">待填：为什么要做 UI 自动化 —— 大屏适配的人力成本、重复劳动、一致性问题等。</span></p>
+      <h2>这是什么</h2>
+      <p class="en">What it is</p>
+      <p>一个 Figma → 代码的技能包。把「设计系统」翻译成 AI 能直接遵守的规则，让它替你出符合得物规范的商家端 PC 界面——而不是"看起来差不多"的近似稿。包内含两个协同的 Skill：</p>
+      <div class="skill-grid">
+        <article class="skill-card">
+          <span class="role">组件文档生成 / 校验</span>
+          <h3>dewudesign-component</h3>
+          <p>从 Figma 规范页反推出得物设计系统的组件 Markdown，并做一致性校验。相当于给设计系统建一本 AI 能查的"字典"。</p>
+        </article>
+        <article class="skill-card">
+          <span class="role">商家端 UI 生成</span>
+          <h3>dewu-seller-pc</h3>
+          <p>为得物商家 PC 后台生成页面与组件：读规范 → 明确需求 → 出图 → 自检。列表页、表单页、数据页都能覆盖。</p>
+        </article>
+      </div>
     </section>
 
-    <!-- 过程 -->
+    <!-- 02 为什么需要它 -->
     <section class="case-block panel">
-      <h2>过程</h2>
-      <p class="en">Process</p>
-      <p><span class="todo">待填：怎么做的 —— 规则抽象、组件约束、自动生成链路。</span></p>
+      <h2>为什么需要它</h2>
+      <p class="en">Why</p>
+      <p>让 AI 直接画 PC 后台，问题从来不是"画不出"，而是画出来"不合规"——然后人从头纠。这个包把纠错前置成规则。</p>
+      <div class="compare">
+        <div class="compare-row"><div class="bad">AI 自由发挥：原生控件顶组件、自绘图标 / 圆点、乱配色、瞎猜间距</div><div class="arr">→</div><div class="good">唯一真相来源：数值 / 组件必须有出处，找不到出处即违规</div></div>
+        <div class="compare-row"><div class="bad">每次都要人从头对规范、逐个纠</div><div class="arr">→</div><div class="good">规范内置 + 出图后强制自检，返工大幅下降</div></div>
+        <div class="compare-row"><div class="bad">不同人 / 不同页面风格各走各的</div><div class="arr">→</div><div class="good">同一套 token / 组件，跨人跨页保持一致</div></div>
+        <div class="compare-row"><div class="bad">对没对上规范，好坏靠感觉</div><div class="arr">→</div><div class="good">结构化自检报告 + 人眼三查，一致性有据可查</div></div>
+      </div>
     </section>
 
-    <!-- 三个演示模块 -->
-    <section class="case-media uiauto-media">
-      <figure class="media-item">
-        <span class="media-tag">列表页大屏适配</span>
-        <article class="m-tile is-poster" style="aspect-ratio: 3438 / 1912;">
-          <video muted loop playsinline preload="metadata" src="assets/uploads/uiauto-content-1-video.mp4"></video>
-        </article>
-      </figure>
-      <figure class="media-item">
-        <span class="media-tag">复杂页面大屏适配</span>
-        <article class="m-tile is-poster" style="aspect-ratio: 3438 / 1912;">
-          <video muted loop playsinline preload="metadata" src="assets/uploads/uiauto-content-2-video.mp4"></video>
-        </article>
-      </figure>
-      <figure class="media-item">
-        <span class="media-tag">UI 自动化生成</span>
-        <article class="m-tile is-poster" style="aspect-ratio: 1920 / 1338;">
-          <video muted loop playsinline preload="metadata" src="assets/uploads/uiauto-content-3-video.mp4"></video>
-        </article>
-      </figure>
-    </section>
-
-    <!-- 结果 -->
+    <!-- 03 它靠什么保证质量 -->
     <section class="case-block panel">
-      <h2>结果</h2>
-      <p class="en">Result</p>
-      <p><span class="todo">待填：效率提升数据、覆盖页面数、节省人力等。</span></p>
+      <h2>它靠什么保证质量</h2>
+      <p class="en">Quality control</p>
+      <p>三层防线，从"生成前"堵到"生成后"。第三层是这个包最独特的地方——一套专门对付 AI"自己给自己盖章通过"的机制。</p>
+      <div class="num-cards">
+        <div class="num-card"><div class="n">1</div><div><h3>唯一真相来源</h3><p>token / 组件 / 场景 / patterns 是唯一依据。色值、字号、间距必须能指到出处，禁止 AI 自行发明；文档没写明的，它停下来问，而不是瞎编。</p></div></div>
+        <div class="num-card"><div class="n">2</div><div><h3>生成前组件清点</h3><p>画之前先把每个 UI 元素列一遍 → 逐个查有没有对应组件 → 有就用组件、没有才标兜底。从源头堵住随手用原生 &lt;input type=date&gt; 这类偷懒。</p></div></div>
+        <div class="num-card hl"><div class="n">3</div><div><h3>生成后强制自检（反盖章）</h3><p>基础 4 项 C1–C4 + 深度 7 项 C5–C11 自动跑。要点：校验是证伪不是确认、必须重新读产物（grep 代码 / inspect 节点，不许凭记忆）、"通过"必须填逐控件证据表。下面是命中即判 FAIL 的硬性触发器：</p>
+          <div class="fail-chips"><span>F1 原生 date input</span><span>F2 裸 select/checkbox</span><span>F3 浏览器默认图标</span><span>F4 自绘图标/序号</span><span>F5 硬编码 hex/px</span><span>F6 模块间距非 token</span><span>F7 label padding 硬补对齐</span></div>
+          <table class="chk-table">
+            <thead><tr><th>元素</th><th>实际实现</th><th>组件映射</th><th>判定</th></tr></thead>
+            <tbody>
+              <tr><td>日期选择</td><td>&lt;input type=date&gt;</td><td>无——原生控件</td><td class="v-fail">FAIL · F1</td></tr>
+              <tr><td>标题序号</td><td>.section-index 自绘圆点</td><td>无对应组件</td><td class="v-fail">FAIL · F4</td></tr>
+              <tr><td>上传按钮</td><td>Button instance</td><td>Button / Default</td><td class="v-pass">PASS</td></tr>
+            </tbody>
+          </table>
+          <p class="flow-note" style="margin-top:12px">指不出"组件 + 变体"的行判 FAIL。只要有一行 FAIL，就不许写"全部通过"。</p>
+        </div></div>
+      </div>
+    </section>
+
+    <!-- 04 覆盖了哪些东西 -->
+    <section class="case-block panel">
+      <h2>覆盖了哪些东西</h2>
+      <p class="en">Coverage</p>
+      <div class="cover-grid">
+        <article class="case-subitem"><h3>原子组件</h3><p>29 个商家端 Figma 资产：Button / Input / Select / DatePicker 等，每个含变体规格。</p></article>
+        <article class="case-subitem"><h3>场景模式</h3><p>patterns：搜索 / 筛选表单 SearchForm、编辑 / 详情表单 EditForm，把常见页面结构固化成模板。</p></article>
+        <article class="case-subitem"><h3>商品预填</h3><p>50 条真实商品 SPU（真实商品名 / 图），禁止"示例商品 1"这类占位，出图即接近真实。</p></article>
+        <article class="case-subitem"><h3>全局规范</h3><p>PRINCIPLES 协作原则、token（NI/F2 色阶 + spacing）、guidelines，统一约束所有生成。</p></article>
+      </div>
+    </section>
+
+    <!-- 07 从 0 到设计交付稿 -->
+    <section class="case-block panel">
+      <h2>从 0 到设计交付稿</h2>
+      <p class="en">Workflow</p>
+      <p>一条固定流程，从需求输入到出可交互 HTML、直至转回 Figma 交付。关键是——让它先读设计系统，再动手。</p>
+      <div class="wf-chain">
+        <div class="wf-step"><span class="s">01</span><span class="t">输入 PRD / 原型 / 竞品</span></div>
+        <div class="wf-step"><span class="s">02</span><span class="t">生成结构化需求文档</span></div>
+        <div class="wf-step"><span class="s">03</span><span class="t">一句 prompt 交给它画</span></div>
+        <div class="wf-step"><span class="s">04</span><span class="t">生成第一版 + 自检</span></div>
+        <div class="wf-step"><span class="s">05</span><span class="t">反校验生成第二版</span></div>
+        <div class="wf-step"><span class="s">06</span><span class="t">微调生成交付稿</span></div>
+        <div class="wf-step"><span class="s">07</span><span class="t">HTML 转回 Figma</span></div>
+      </div>
+
+      <div class="wf-detail">
+        <div class="wf-slide">
+          <h4><span class="idx">02</span>用 PRD 生成「AI 可用的需求文档」</h4>
+          <p class="cap">先别急着画：把 PRD + 原型喂给 AI，让它产出一份结构化需求文档——把要素按「能不能改」分成 [硬] 不可改 / [参考] 可优化 / [待拍板] 需先定 三档。</p>
+          <img class="shot" loading="lazy" decoding="async" alt="前置输入 → 示例 → 输出需求文档" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/uiauto-step-01.jpg">
+        </div>
+        <div class="wf-slide">
+          <h4><span class="idx">03</span>把需求文档交给它画，你来判断</h4>
+          <p class="cap">一句 prompt 交给它。需求里标了 [待拍板] 的结构性决策，AI 不自作主张——先列出来让你选，你定了再画。这就是「文档没提清楚的地方，它停下来问」。</p>
+          <img class="shot" loading="lazy" decoding="async" alt="AI 列出待拍板项，等设计师决策" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/uiauto-step-1.jpg">
+        </div>
+        <div class="wf-slide">
+          <h4><span class="idx">04</span>一轮：生成页面 &amp; 自检</h4>
+          <p class="cap">AI 出静态 + 交互两版页面，边生成边自检——比如自己发现某个联动变体横向溢出、配额表用错了 table-layout，当场改掉，再完整跑一遍 C1–C11 自查。</p>
+          <img class="shot" loading="lazy" decoding="async" alt="组件映射 → 生成后自检证据表 → 一轮页面效果" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/uiauto-step-2.jpg">
+        </div>
+        <div class="wf-slide">
+          <h4><span class="idx">05</span>二轮：反校验，AI 也会偷懒</h4>
+          <p class="cap">人工要求它针对显著问题再做一轮深度自检，防止它盲目判定自己生成的没问题。这一轮重新读产物、逐控件出证据表（PASS / FAIL），把一轮漏掉的图标、颜色继承等细节揪出来。</p>
+          <img class="shot" loading="lazy" decoding="async" alt="深度自检：逐控件证据表 + 二轮页面效果" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/uiauto-step-3.jpg">
+        </div>
+        <div class="wf-slide">
+          <h4><span class="idx">06</span>微调生成交付稿</h4>
+          <p class="cap">剩下的个别细节——活动时间模块标题与控件对齐、选中态图标改用组件库里的真实 SVG——用 Codex 的注释功能选中并评论让它改，定稿。</p>
+          <img class="shot" loading="lazy" decoding="async" alt="用注释功能微调 → 最终交付效果" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/uiauto-step-4.jpg">
+        </div>
+        <div class="wf-slide">
+          <h4><span class="idx">07</span>html 转 figma</h4>
+          <p class="cap">稿子在 HTML 里定下来后，最后一步把页面转回 Figma——通过浏览器打开静态 HTML，用 Web to Figma 扩展转成 Figma 设计稿，完美带回图标。到这里，一条从需求到 Figma 交付稿的完整链路才算走完。</p>
+          <img class="shot" loading="lazy" decoding="async" alt="浏览器打开 → Web to Figma 扩展 → Figma 设计稿" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/uiauto-step-5.jpg">
+        </div>
+      </div>
+    </section>
+
+    <!-- 成果展示 -->
+    <section class="case-block panel">
+      <h2>成果展示</h2>
+      <p class="en">Showcase</p>
+      <p>PC 端案例 · 星枢 starhub 流量与供给智控平台。从需求输入到出可交互 HTML、再转回 Figma，全流程按得物规范生成的核心页面（活动管理列表页、新建活动表单等）。</p>
+      <img class="showcase-shot" loading="lazy" decoding="async" alt="星枢 starhub 核心页面：活动管理列表页 / 新建活动表单 / 青绿 DatePicker / 弹窗" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/uiauto-step-00.jpg">
+    </section>
+
+    <!-- 09 边界 -->
+    <section class="case-block panel">
+      <h2>它的边界（诚实说）</h2>
+      <p class="en">Honest limits</p>
+      <div class="cover-grid">
+        <article class="case-subitem"><h3>机器不替代人</h3><p>同一个模型既生成又自检，会带着生成时的盲点，"盖章"只能大幅降低、不能根除，人工复核仍是最后一道。</p></article>
+        <article class="case-subitem"><h3>像素以 Figma 为准</h3><p>文档里标"待 Figma 核"的数值，需回源实测填入，不靠目测猜。</p></article>
+        <article class="case-subitem"><h3>不是万能生成器</h3><p>文档里没有的组件 / 规则，AI 会停下询问，而不是自由发挥——这是特性，不是 bug。</p></article>
+      </div>
     </section>
 
     <footer class="site-header" style="position: static; padding: 40px 10px 0;">
