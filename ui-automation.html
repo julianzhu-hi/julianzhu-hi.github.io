@@ -334,9 +334,10 @@
   </style>
 <style id="ui-auto-styles">
     /* 主色：品牌青绿 #01C2C3 */
+    /* Hero 标签：复刻 Figma —— JetBrains Mono 等宽、混排字重/字色、#E6E6EE 描边、胶囊、无投影 */
     .hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
-    .hero-tags span{padding:6px 14px;background:rgba(43,44,60,.04);border:1px solid rgba(43,44,60,.1);border-radius:999px;font-size:14px;color:var(--muted)}
-    .hero-tags .accent{border-color:rgba(1,194,195,.45);color:#028E8F;background:rgba(1,194,195,.08)}
+    .hero-tags span{display:inline-flex;padding:8px 14px;background:#fff;border:1px solid #E6E6EE;border-radius:100px;font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",-apple-system,sans-serif;font-size:13px;line-height:20px;font-weight:500;color:#585A6E;white-space:nowrap}
+    .hero-tags b{font-weight:600;color:#2B2C3C}
     .skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);margin-top:8px}
     .skill-card{padding:24px;background:rgba(43,44,60,.03);border:1px solid rgba(43,44,60,.08);border-radius:12px}
     .skill-card .role{display:inline-block;margin-bottom:12px;padding:3px 12px;border-radius:999px;background:rgba(1,194,195,.12);color:#028E8F;font-size:13px}
@@ -351,7 +352,6 @@
     .num-cards{display:flex;flex-direction:column;gap:12px;margin:8px 0 20px}
     .num-card{display:grid;grid-template-columns:34px 1fr;gap:16px;padding:20px 22px;background:rgba(43,44,60,.03);border:1px solid rgba(43,44,60,.08);border-radius:12px}
     .num-card .n{width:30px;height:30px;border-radius:8px;background:#2B2C3C;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px}
-    .num-card.hl .n{background:#01C2C3}
     .num-card h3{margin:2px 0 6px;font-size:18px;font-weight:500}
     .num-card p{margin:0;font-size:16px;line-height:1.75;color:var(--muted)}
     .fail-chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
@@ -383,6 +383,27 @@
     .io-shot img{display:block;width:100%;height:auto;border-radius:10px}
     @media (max-width:760px){.io-row{grid-template-columns:1fr;gap:6px}.io-arrow{transform:rotate(90deg)}}
     @media (max-width:760px){.skill-grid,.cover-grid{grid-template-columns:1fr}.compare-row{grid-template-columns:1fr;gap:4px}.compare .arr{transform:rotate(90deg)}}
+    /* 设计 Agent 四块内容：左文件树 + 右四卡 */
+    .agent-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);align-items:start;margin-top:8px}
+    .agent-tree{align-self:stretch;background:rgba(43,44,60,.03);border:1px solid rgba(43,44,60,.1);border-radius:12px;overflow:hidden}
+    .agent-tree .tree-head{display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(43,44,60,.04);border-bottom:1px solid rgba(43,44,60,.08);color:var(--muted);font-size:13px}
+    .agent-tree .dots{display:inline-flex;gap:6px}
+    .agent-tree .dots i{width:9px;height:9px;border-radius:50%;background:rgba(43,44,60,.18)}
+    .agent-tree .tree-body{padding:18px 16px;display:flex;flex-direction:column;gap:13px}
+    .t-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px;line-height:1.5}
+    .t-row.t-2{padding-left:26px}
+    .t-branch{color:rgba(43,44,60,.32)}
+    .t-name{color:var(--text);font-weight:600}
+    .t-cmt{color:rgba(43,44,60,.42);font-size:12.5px}
+    .t-pill{padding:2px 11px;border:1px solid rgba(1,194,195,.4);border-radius:999px;color:#028E8F;font-size:12px;line-height:1.7}
+    .agent-cards{display:flex;flex-direction:column;gap:10px}
+    .agent-card{display:grid;grid-template-columns:auto 1fr;gap:18px;padding:18px 20px;background:rgba(43,44,60,.03);border:1px solid rgba(43,44,60,.08);border-radius:12px;align-items:start}
+    .agent-card .code{justify-self:start;padding:5px 12px;background:rgba(1,194,195,.12);color:#028E8F;border-radius:8px;font-size:13px;white-space:nowrap}
+    .agent-card .code.dark{background:#2B2C3C;color:#fff}
+    .agent-card h3{margin:0 0 6px;font-size:18px;font-weight:500;color:var(--text)}
+    .agent-card .ac-body p{margin:0;font-size:15px;line-height:1.7;color:var(--muted)}
+    .agent-card .ac-body b{color:var(--text);font-weight:600}
+    @media (max-width:820px){.agent-row{grid-template-columns:1fr}.agent-card{grid-template-columns:1fr;gap:10px}}
   </style></head>
 <body>
   <header class="site-header">
@@ -396,7 +417,7 @@
       <h1 class="case-title">让 AI 按得物设计规范出图，而不是「看起来差不多」。</h1>
       <p class="case-lead">dewu-PC-design 把得物 PC 端的设计系统——token、控件、组件、场景、协作原则——装进 Codex，让它生成的界面像素级贴规范，并在出图后强制自检。</p>
       <div class="hero-tags">
-        <span>2 个 Skill</span><span>29 个组件</span><span>商家端 PC</span><span>Figma → 代码</span><span class="accent">主色 #01C2C3</span>
+        <span><b>2</b> 个 Skill</span><span><b>29</b> 个组件</span><span>商家端 PC</span><span>Figma → 代码</span><span>主色 <b>#01C2C3</b></span>
       </div>
     </section>
 
@@ -459,6 +480,32 @@
           </table>
           <p class="flow-note" style="margin-top:12px">指不出"组件 + 变体"的行判 FAIL。只要有一行 FAIL，就不许写"全部通过"。</p>
         </div></div>
+      </div>
+    </section>
+
+    <!-- 基础概念：设计 Agent 由四块内容组成 -->
+    <section class="case-block panel">
+      <h2>设计 Agent 由四块内容组成</h2>
+      <p class="en">Foundation</p>
+      <p>Workflows 编排流程，Skills 完成具体动作，Design.md 提供规范，Assets 提供素材。</p>
+      <div class="agent-row">
+        <div class="agent-tree">
+          <div class="tree-head"><span class="dots"><i></i><i></i><i></i></span>design-agent /</div>
+          <div class="tree-body">
+            <div class="t-row"><span class="t-name">design-agent/</span></div>
+            <div class="t-row"><span class="t-branch">├─</span><span class="t-name">agent/</span><span class="t-cmt"># Agent 主体 · 工作流编排</span><span class="t-pill">项目经理</span></div>
+            <div class="t-row t-2"><span class="t-branch">└─</span><span class="t-name">workflows/</span><span class="t-cmt"># 理解 → HTML → Figma</span></div>
+            <div class="t-row"><span class="t-branch">├─</span><span class="t-name">skills/</span><span class="t-cmt"># 设计技能 · 原子能力</span><span class="t-pill">水电工、瓦匠、木工、油漆工…</span></div>
+            <div class="t-row"><span class="t-branch">├─</span><span class="t-name">design.md</span><span class="t-cmt"># 设计规范 · Token / 原子 / 业务组件</span><span class="t-pill">施工手册、施工图、材料清单…</span></div>
+            <div class="t-row"><span class="t-branch">└─</span><span class="t-name">assets/</span><span class="t-cmt"># 资产 · 图标 / 插画 / 图片</span><span class="t-pill">水泥、油漆、电线、木材…</span></div>
+          </div>
+        </div>
+        <div class="agent-cards">
+          <div class="agent-card"><span class="code">agent /</span><div class="ac-body"><h3>Agent（Workflows）</h3><p>编排<b>三阶段主流程</b>：需求理解 → HTML → Figma。定义每一步由谁执行、什么时候停下来等等人。</p></div></div>
+          <div class="agent-card"><span class="code">skills /</span><div class="ac-body"><h3>设计 Skills</h3><p>独立可调用的<b>原子能力</b>：解析需求、匹配规范、自检、导出 Figma 等。由 Workflow 按需调用，单一职责。</p></div></div>
+          <div class="agent-card"><span class="code">design.md</span><div class="ac-body"><h3>Design.md · 设计规范</h3><p>沉淀 Token、原子组件、业务组件。AI 生成 UI 时只能从这里取材，保证规范一致。</p></div></div>
+          <div class="agent-card"><span class="code dark">assets /</span><div class="ac-body"><h3>资产</h3><p>图标、插画、占位图等<b>静态素材</b>。供 Skills 在生成 HTML / Figma 时直接引用。</p></div></div>
+        </div>
       </div>
     </section>
 
