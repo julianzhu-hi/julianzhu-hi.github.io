@@ -335,13 +335,15 @@
 <style id="ui-auto-styles">
     /* 主色：品牌青绿 #01C2C3 */
     /* Hero 标签：复刻 Figma —— JetBrains Mono 等宽、混排字重/字色、#E6E6EE 描边、胶囊、无投影 */
-    .hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+    .hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0}
     .hero-tags span{display:inline-flex;padding:8px 14px;background:#fff;border:1px solid #E6E6EE;border-radius:100px;font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",-apple-system,sans-serif;font-size:13px;line-height:20px;font-weight:500;color:#585A6E;white-space:nowrap}
     .hero-tags b{font-weight:600;color:#2B2C3C}
-    .skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);margin-top:8px}
-    .skill-card{padding:24px;background:#FCFCFD;border:1px solid rgba(43,44,60,.08);border-radius:12px}
+    .skill-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin-top:8px}
+    /* 小标题：字体规格与工作流序号 .wf-slide h4 .idx 一致（15px / 500 / #028E8F） */
+    .grid-label{margin:var(--gap) 0 10px;font-size:15px;font-weight:500;color:#028E8F;text-align:left}
+    .skill-card{padding:24px;background:#FCFCFD;border:1px solid rgba(43,44,60,.08);border-radius:12px;min-width:0}
     .skill-card .role{display:inline-block;margin-bottom:12px;padding:3px 12px;border-radius:999px;background:rgba(1,194,195,.12);color:#028E8F;font-size:13px}
-    .skill-card h3{margin:0 0 4px;font-size:20px;font-weight:500}
+    .skill-card h3{margin:0 0 4px;font-size:20px;font-weight:500;overflow-wrap:anywhere}
     .skill-card p{margin:8px 0 0;font-size:16px;line-height:1.7;color:var(--muted)}
     .compare{display:flex;flex-direction:column;gap:12px;margin-top:8px}
     .compare-row{display:grid;grid-template-columns:1fr 40px 1fr;align-items:center;gap:8px}
@@ -368,8 +370,10 @@
     .wf-step .s{font-size:13px;color:#028E8F}
     .wf-step .t{font-size:15.5px;color:var(--text);line-height:1.4}
     .wf-detail{margin-top:30px;display:flex;flex-direction:column;gap:38px}
-    .wf-slide h4{margin:0 0 5px;font-size:20px;font-weight:500;color:var(--text)}
-    .wf-slide h4 .idx{color:#028E8F;font-size:15px;margin-right:10px}
+    /* 序号与标题纵向堆叠：Step N 单独一行，黑色标题另起一行、整体左对齐 */
+    .wf-slide h4{margin:0 0 5px;font-size:20px;font-weight:500;color:var(--text);display:flex;flex-direction:column;align-items:flex-start;gap:var(--gap)}
+    .wf-slide h4 .idx{color:#028E8F;font-size:15px;white-space:nowrap}
+    .wf-slide h4 .ttl{min-width:0}
     .wf-slide .cap{margin:0 0 14px;font-size:16px;line-height:1.75;color:var(--muted)}
     .wf-slide .shot,.showcase-shot{display:block;width:100%;height:auto;box-sizing:border-box;background:#fff;padding:10px;border-radius:12px}
     .showcase-shot{margin-top:8px}
@@ -383,6 +387,12 @@
     .io-shot img{display:block;width:100%;height:auto;border-radius:10px}
     @media (max-width:760px){.io-row{grid-template-columns:1fr;gap:6px}.io-arrow{transform:rotate(90deg)}}
     @media (max-width:760px){.skill-grid,.cover-grid{grid-template-columns:1fr}.compare-row{grid-template-columns:1fr;gap:4px}.compare .arr{transform:rotate(90deg)}}
+    /* 覆盖区：两组独立栅格，各自带一个 .grid-label 小标题（一排三 / 一排二）
+       不复用 .cover-grid，避免影响「它的边界」那个栅格 */
+    .cover-3,.cover-2{display:grid;gap:var(--gap);margin-top:0}
+    .cover-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .cover-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    @media (max-width:760px){.cover-3,.cover-2{grid-template-columns:1fr}}
     /* 设计 Agent 四块内容：左文件树 + 右四卡 */
     .agent-row{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);align-items:start;margin-top:8px}
     .agent-tree{align-self:stretch;background:#FCFCFD;border:1px solid #E6E6EB;border-radius:8px;overflow:hidden;box-shadow:0 2px 6px rgba(20,21,26,.03)}
@@ -422,50 +432,24 @@
   <main class="case">
     <!-- 项目详情 -->
     <section class="case-hero panel">
-      <p class="case-kicker">SKILL PACKAGE · v1.7.121 · 得物 AI 体验设计</p>
+      <p class="case-kicker">Design Skills Package · 得物 UI 自动化</p>
       <h1 class="case-title">让 AI 按得物设计规范出图，而不是「看起来差不多」。</h1>
-      <p class="case-lead">dewu-PC-design 把得物 PC 端的设计系统——token、控件、组件、场景、协作原则——装进 Codex，让它生成的界面像素级贴规范，并在出图后强制自检。</p>
-      <div class="hero-tags">
-        <span><b>2</b> 个 Skill</span><span><b>29</b> 个组件</span><span>商家端 PC</span><span>Figma → 代码</span><span>主色 <b>#01C2C3</b></span>
-      </div>
     </section>
 
     <section class="case-meta">
-      <article class="meta-item panel"><h3>角色 ROLE</h3><p>设计系统 / AI 体验设计</p></article>
+      <article class="meta-item panel"><h3>角色 ROLE</h3><p>设计技能包搭建</p></article>
       <article class="meta-item panel"><h3>平台 PLATFORM</h3><p>得物商家端 PC</p></article>
-      <article class="meta-item panel"><h3>规模 SCALE</h3><p>2 个 Skill · 29 个组件</p></article>
-      <article class="meta-item panel"><h3>主色 ACCENT</h3><p>品牌青绿 #01C2C3</p></article>
+      <article class="meta-item panel"><h3>规模 SCALE</h3><p>0→1 独立构建</p></article>
+      <article class="meta-item panel"><h3>类型 TYPE</h3><p>设计系统工程化</p></article>
     </section>
 
     <!-- 01 这是什么 -->
     <section class="case-block panel">
       <h2>这是什么</h2>
       <p class="en">What it is</p>
-      <p>一个 Figma → 代码的技能包。把「设计系统」翻译成 AI 能直接遵守的规则，让它替你出符合得物规范的商家端 PC 界面——而不是"看起来差不多"的近似稿。包内含两个协同的 Skill：</p>
-      <div class="skill-grid">
-        <article class="skill-card">
-          <span class="role">组件文档生成 / 校验</span>
-          <h3>dewudesign-component</h3>
-          <p>从 Figma 规范页反推出得物设计系统的组件 Markdown，并做一致性校验。相当于给设计系统建一本 AI 能查的"字典"。</p>
-        </article>
-        <article class="skill-card">
-          <span class="role">商家端 UI 生成</span>
-          <h3>dewu-seller-pc</h3>
-          <p>为得物商家 PC 后台生成页面与组件：读规范 → 明确需求 → 出图 → 自检。列表页、表单页、数据页都能覆盖。</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- 02 为什么需要它 -->
-    <section class="case-block panel">
-      <h2>为什么需要它</h2>
-      <p class="en">Why</p>
-      <p>让 AI 直接画 PC 后台，问题从来不是"画不出"，而是画出来"不合规"——然后人从头纠。这个包把纠错前置成规则。</p>
-      <div class="compare">
-        <div class="compare-row"><div class="bad">AI 自由发挥：原生控件顶组件、自绘图标 / 圆点、乱配色、瞎猜间距</div><div class="arr">→</div><div class="good">唯一真相来源：数值 / 组件必须有出处，找不到出处即违规</div></div>
-        <div class="compare-row"><div class="bad">每次都要人从头对规范、逐个纠</div><div class="arr">→</div><div class="good">规范内置 + 出图后强制自检，返工大幅下降</div></div>
-        <div class="compare-row"><div class="bad">不同人 / 不同页面风格各走各的</div><div class="arr">→</div><div class="good">同一套 token / 组件，跨人跨页保持一致</div></div>
-        <div class="compare-row"><div class="bad">对没对上规范，好坏靠感觉</div><div class="arr">→</div><div class="good">结构化自检报告 + 人眼三查，一致性有据可查</div></div>
+      <p>一个能被 AI 直接执行的设计系统 - 把「设计系统&amp;设计技能&amp;协作原则」转译成 AI 能读懂的语言，让它替你画符合得物规范的界面——而不是"看起来差不多"的草稿。</p>
+      <div class="hero-tags">
+        <span><font color="#2b2c3c"><b>14 条协作原则</b></font></span><span><b>3 个 Skill</b></span><span>8 类 design token&nbsp;</span><span>29&nbsp;个组件&nbsp;</span><span>7 种布局</span>
       </div>
     </section>
 
@@ -473,12 +457,12 @@
     <section class="case-block panel">
       <h2>它靠什么保证质量</h2>
       <p class="en">Quality control</p>
-      <p>三层防线，从"生成前"堵到"生成后"。第三层是这个包最独特的地方——一套专门对付 AI"自己给自己盖章通过"的机制。</p>
+      <p>三层防线，「生成前」建立标尺 → 「生成中」精准路由 → 「生成后」校验盖章。</p>
       <div class="num-cards">
-        <div class="num-card"><div class="n">1</div><div><h3>设计规范为基准</h3><p>token / 组件 / 场景 / 业务组件 是唯一依据。色值、字号、间距必须能指到出处，禁止 AI 自行发明；文档没写明的，它停下来问，而不是瞎编。</p></div></div>
+        <div class="num-card"><div class="n">1</div><div><h3>设计规范为基准</h3><p>design token / 组件 / 布局 是唯一依据。色值、字号、间距必须能指到出处，禁止 AI 自行发明；文档没写明的，它停下来问，而不是瞎编。</p></div></div>
         <div class="num-card"><div class="n">2</div><div><h3>生成前组件映射</h3><p>画之前先把每个 UI 元素列一遍 → 逐个查有没有对应组件 → 有就用组件、没有才标兜底。从源头堵住"随手用浏览器原生组件"这类偷懒。</p></div></div>
         <div class="num-card hl"><div class="n">3</div><div><h3>生成后强制自检</h3><p>共计有 13 项自检原则。下面这些是命中即判 FAIL 的硬性触发器：</p>
-          <div class="fail-chips"><span>1 视觉属性有出处</span><span>2 不用原生控件</span><span>3 图标正确引用</span><span>4 不自绘节点</span><span>5 间距走 token</span><span>6 遵循对齐原则</span><span>7 文本不溢出</span><span>8 位置检验</span><span>9 布局符合场景规范</span><span>10 商品用真实资料</span><span>11 覆盖需求文档</span><span>12 信息架构合理</span></div>
+          <div class="fail-chips"><span>1 视觉属性有出处</span><span>2 不用浏览原生控件</span><span>3 图标正确引用</span><span>4 不自绘节点</span><span>5 间距走 token</span><span>6 遵循对齐原则</span><span>7 文本不溢出</span><span>8 位置检验</span><span>9 布局符合场景规范</span><span>10 商品用真实资料</span><span>11 覆盖需求文档</span><span>12 信息架构合理</span></div>
           <table class="chk-table">
             <thead><tr><th>元素</th><th>实际实现</th><th>组件映射</th><th>判定</th></tr></thead>
             <tbody>
@@ -487,33 +471,34 @@
               <tr><td>上传按钮</td><td>Button instance</td><td>Button / Default</td><td class="v-pass">PASS</td></tr>
             </tbody>
           </table>
-          <p class="flow-note" style="margin-top:12px">指不出"组件 + 变体"的行判 FAIL。只要有一行 FAIL，就不许写"全部通过"。</p>
         </div></div>
       </div>
     </section>
 
-    <!-- 基础概念：设计 Agent 由四块内容组成 -->
+    <!-- 基础概念：它由四块内容组成 -->
     <section class="case-block panel">
-      <h2>设计 Agent 由四块内容组成</h2>
+      <h2>它由五部分组成</h2>
       <p class="en">Foundation</p>
-      <p>Workflows 编排流程，Skills 完成具体动作，Design.md 提供规范，Assets 提供素材。</p>
+      <p>Agent.md 编排流程，Principles 约束协作原则，Skills 完成具体动作，Design.md 提供规范，Assets 提供素材。</p>
       <div class="agent-row">
         <div class="agent-tree">
-          <div class="tree-head"><span class="dots"><i></i><i></i><i></i></span>design-agent /</div>
+          <div class="tree-head"><span class="dots"><i></i><i></i><i></i></span>design-skills-package /</div>
           <div class="tree-body">
-            <div class="t-row"><span class="t-name">design-agent/</span></div>
-            <div class="t-row"><span class="t-branch">├─</span><span class="t-name">agent/</span><span class="t-cmt"># Agent 主体 · 工作流编排</span><span class="t-pill">项目经理</span></div>
-            <div class="t-row t-2"><span class="t-branch">└─</span><span class="t-name">workflows/</span><span class="t-cmt"># 理解 → HTML → Figma</span></div>
+            <div class="t-row"><span class="t-name">design-skills-package/</span></div>
+            <div class="t-row"><span class="t-branch">├─</span><span class="t-name">agent.md/</span><span class="t-cmt"># 编排层 · 工作流</span><span class="t-pill">项目经理</span></div>
+            <div class="t-row t-2"><span class="t-branch">└─</span><span class="t-name">workflow/</span><span class="t-cmt"># 需求理解 → 生成页面</span></div>
+            <div class="t-row"><span class="t-branch">├─</span><span class="t-name">principles/</span><span class="t-cmt"># 约束层 · 最高全局协作原则</span><span class="t-pill">建筑法规、安全红线</span></div>
             <div class="t-row"><span class="t-branch">├─</span><span class="t-name">skills/</span><span class="t-cmt"># 设计技能 · 原子能力</span><span class="t-pill">水电工、瓦匠、木工、油漆工…</span></div>
             <div class="t-row"><span class="t-branch">├─</span><span class="t-name">design.md</span><span class="t-cmt"># 设计规范 · Token / 原子 / 业务组件</span><span class="t-pill">施工手册、施工图、材料清单…</span></div>
             <div class="t-row"><span class="t-branch">└─</span><span class="t-name">assets/</span><span class="t-cmt"># 资产 · 图标 / 插画 / 图片</span><span class="t-pill">水泥、油漆、电线、木材…</span></div>
           </div>
         </div>
         <div class="agent-cards">
-          <div class="agent-card"><span class="code">agent /</span><div class="ac-body"><h3>Agent（Workflows）</h3><p>编排<b>三阶段主流程</b>：需求理解 → HTML → Figma。定义每一步由谁执行、什么时候停下来等等人。</p></div></div>
+          <div class="agent-card"><span class="code">agent /</span><div class="ac-body"><h3>编排层（Workflow）</h3><p>编排<b>主流程</b>：需求理解 → 生成页面。定义每一步由谁执行、什么时候停下来等等人。它是"开工须知"，唤醒任务对应的skill。</p></div></div>
+          <div class="agent-card"><span class="code">principles /</span><div class="ac-body"><h3>约束层（Principles）</h3><p><b>全局协作原则</b>：规定 AI 什么不许做、又必须做什么，要求交付前强制自检。先立规矩，再动手。</p></div></div>
           <div class="agent-card"><span class="code">skills /</span><div class="ac-body"><h3>设计 Skills</h3><p>独立可调用的<b>原子能力</b>：解析需求、匹配规范、自检、导出 Figma 等。由 Workflow 按需调用，单一职责。</p></div></div>
-          <div class="agent-card"><span class="code">design.md</span><div class="ac-body"><h3>Design.md · 设计规范</h3><p>沉淀 Token、原子组件、业务组件。AI 生成 UI 时只能从这里取材，保证规范一致。</p></div></div>
-          <div class="agent-card"><span class="code dark">assets /</span><div class="ac-body"><h3>资产</h3><p>图标、插画、占位图等<b>静态素材</b>。供 Skills 在生成 HTML / Figma 时直接引用。</p></div></div>
+          <div class="agent-card"><span class="code">design.md</span><div class="ac-body"><h3>Design.md · 设计规范</h3><p>Design Token、原子组件、业务组件、页面布局。AI 生成 UI 时只能从这里取材，保证规范一致。</p></div></div>
+          <div class="agent-card"><span class="code dark">assets /</span><div class="ac-body"><h3>资产</h3><p>图标、插画、占位图等<b>静态素材</b>。供 Skills 在生成页面时直接引用。</p></div></div>
         </div>
       </div>
     </section>
@@ -522,11 +507,34 @@
     <section class="case-block panel">
       <h2>覆盖了哪些东西</h2>
       <p class="en">Coverage</p>
-      <div class="cover-grid">
-        <article class="case-subitem"><h3>原子组件</h3><p>29 个商家端 Figma 资产：Button / Input / Select / DatePicker 等，每个含变体规格。</p></article>
-        <article class="case-subitem"><h3>场景模式</h3><p>patterns：搜索 / 筛选表单 SearchForm、编辑 / 详情表单 EditForm，把常见页面结构固化成模板。</p></article>
-        <article class="case-subitem"><h3>商品预填</h3><p>50 条真实商品 SPU（真实商品名 / 图），禁止"示例商品 1"这类占位，出图即接近真实。</p></article>
-        <article class="case-subitem"><h3>全局规范</h3><p>PRINCIPLES 协作原则、token（NI/F2 色阶 + spacing）、guidelines，统一约束所有生成。</p></article>
+      <h3 class="grid-label">3 Skills</h3>
+      <div class="skill-grid">
+        <article class="skill-card">
+          <span class="role">组件文档生成</span>
+          <h3>component.skill</h3>
+          <p>从 Figma 规范页反推出得物设计系统的组件 Markdown，逐个登记进组件树状图。相当于给设计系统建一本 AI 能查的"字典"。入库动作：设计系统从这里长大。</p>
+        </article>
+        <article class="skill-card">
+          <span class="role">商家端 UI 生成</span>
+          <h3>page_builder.skill</h3>
+          <p>生成页面：大量翻 token.md 找色值、翻 button.md 找状态、翻 scenario.md 找编排规则。用已有的规则，搭出符合得物设计规范的页面。消费动作：把规范用出去。</p>
+        </article>
+        <article class="skill-card">
+          <span class="role">设计规范校验</span>
+          <h3>checker.skill</h3>
+          <p>比对「规范说的」和「实际做的」，揪出不一致，输出差异报告——哪个色值不在 token 表，并附修复建议。守门动作，防止规范和实现漂移。</p>
+        </article>
+      </div>
+      <h3 class="grid-label">34 Design.md</h3>
+      <div class="cover-3">
+        <article class="skill-card"><h3>Design Token</h3><p>8 类 design token：色彩 / 字体 / 间距 / 尺寸 / 圆角 等，附命名与语义规则，是所有取值的唯一来源。</p></article>
+        <article class="skill-card"><h3>原子组件</h3><p>26 个商家端组件资产：Button / Input / Select / DatePicker 等，每个含变体规格、使用场景、树状决策图。</p></article>
+        <article class="skill-card"><h3>业务布局</h3><p>7 个页面布局模版 + 业务组件（搜索 / 筛选表单、编辑 / 详情表单），把常见页面结构固化成模板。</p></article>
+      </div>
+      <h3 class="grid-label">Assets</h3>
+      <div class="cover-2">
+        <article class="skill-card"><h3>商品预填</h3><p>50 条真实商品 SPU（真实商品名 / 图），禁止"示例商品 1"这类占位，出图即接近真实。</p></article>
+        <article class="skill-card"><h3>素材库</h3><p>378 个通用功能图标、6 个品牌标识 logo、位图素材（头像 / 空态图）。出图直接引用，不自绘、不外找。</p></article>
       </div>
     </section>
 
@@ -534,7 +542,7 @@
     <section class="case-block panel">
       <h2>从 0 到设计交付稿</h2>
       <p class="en">Workflow</p>
-      <p>一条固定流程，从需求输入到出可交互 HTML、直至转回 Figma 交付。关键是——让它先读设计系统，再动手。</p>
+      <p>一条固定流程，从需求输入到出可交互 HTML、直至转回 Figma 交付。</p>
       <div class="wf-chain">
         <div class="wf-step"><span class="s">01</span><span class="t">输入 PRD / 原型 / 竞品</span></div>
         <div class="wf-step"><span class="s">02</span><span class="t">生成结构化需求文档</span></div>
@@ -547,7 +555,7 @@
 
       <div class="wf-detail">
         <div class="wf-slide">
-          <h4><span class="idx">02</span>用 PRD 生成「AI 可用的需求文档」</h4>
+          <h4><span class="idx">Step 1</span><span class="ttl">用 PRD 生成「AI 可用的需求文档」</span></h4>
           <p class="cap">先别急着画：把 PRD + 原型喂给 AI，让它产出一份结构化需求文档——把要素按「能不能改」分成 [硬] 不可改 / [参考] 可优化 / [待拍板] 需先定 三档。</p>
           <img class="shot" loading="lazy" decoding="async" alt="前置输入 → 示例 → 输出需求文档" src="assets/uploads/uiauto-step-01.jpg?v=2">
 
@@ -579,29 +587,19 @@
           </div>
         </div>
         <div class="wf-slide">
-          <h4><span class="idx">03</span>把需求文档交给它画，你来判断</h4>
+          <h4><span class="idx">Step 2</span><span class="ttl">把需求文档交给它画，你来判断</span></h4>
           <p class="cap">一句 prompt 交给它。需求里标了 [待拍板] 的结构性决策，AI 不自作主张——先列出来让你选，你定了再画。这就是「文档没提清楚的地方，它停下来问」。</p>
           <img class="shot" loading="lazy" decoding="async" alt="AI 列出待拍板项，等设计师决策" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/uiauto-step-1.jpg">
         </div>
         <div class="wf-slide">
-          <h4><span class="idx">04</span>一轮：生成页面 &amp; 自检</h4>
+          <h4><span class="idx">Step 3</span><span class="ttl">一轮：生成页面 &amp; 自检</span></h4>
           <p class="cap">AI 出静态 + 交互两版页面，边生成边自检——比如自己发现某个联动变体横向溢出、配额表用错了 table-layout，当场改掉，再完整跑一遍 C1–C11 自查。</p>
           <img class="shot" loading="lazy" decoding="async" alt="组件映射 → 生成后自检证据表 → 一轮页面效果" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/uiauto-step-2.jpg">
         </div>
         <div class="wf-slide">
-          <h4><span class="idx">05</span>二轮：反校验，AI 也会偷懒</h4>
+          <h4><span class="idx">Step 4</span><span class="ttl">二轮：反校验，AI 也会偷懒</span></h4>
           <p class="cap">人工要求它针对显著问题再做一轮深度自检，防止它盲目判定自己生成的没问题。这一轮重新读产物、逐控件出证据表（PASS / FAIL），把一轮漏掉的图标、颜色继承等细节揪出来。</p>
           <img class="shot" loading="lazy" decoding="async" alt="深度自检：逐控件证据表 + 二轮页面效果" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/uiauto-step-3.jpg">
-        </div>
-        <div class="wf-slide">
-          <h4><span class="idx">06</span>微调生成交付稿</h4>
-          <p class="cap">剩下的个别细节——活动时间模块标题与控件对齐、选中态图标改用组件库里的真实 SVG——用 Codex 的注释功能选中并评论让它改，定稿。</p>
-          <img class="shot" loading="lazy" decoding="async" alt="用注释功能微调 → 最终交付效果" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/uiauto-step-4.jpg">
-        </div>
-        <div class="wf-slide">
-          <h4><span class="idx">07</span>html 转 figma</h4>
-          <p class="cap">稿子在 HTML 里定下来后，最后一步把页面转回 Figma——通过浏览器打开静态 HTML，用 Web to Figma 扩展转成 Figma 设计稿，完美带回图标。到这里，一条从需求到 Figma 交付稿的完整链路才算走完。</p>
-          <img class="shot" loading="lazy" decoding="async" alt="浏览器打开 → Web to Figma 扩展 → Figma 设计稿" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/uiauto-step-5.jpg">
         </div>
       </div>
     </section>
@@ -616,11 +614,10 @@
 
     <!-- 09 边界 -->
     <section class="case-block panel">
-      <h2>它的边界（诚实说）</h2>
+      <h2>它的边界</h2>
       <p class="en">Honest limits</p>
       <div class="cover-grid">
         <article class="case-subitem"><h3>机器不替代人</h3><p>同一个模型既生成又自检，会带着生成时的盲点，"盖章"只能大幅降低、不能根除，人工复核仍是最后一道。</p></article>
-        <article class="case-subitem"><h3>像素以 Figma 为准</h3><p>文档里标"待 Figma 核"的数值，需回源实测填入，不靠目测猜。</p></article>
         <article class="case-subitem"><h3>不是万能生成器</h3><p>文档里没有的组件 / 规则，AI 会停下询问，而不是自由发挥——这是特性，不是 bug。</p></article>
       </div>
     </section>
@@ -652,7 +649,18 @@
         ".flow-box", ".flow-note", ".flow-tag", ".arch-note-inline",
         ".v-box", ".v-down", ".lane-label", ".stage-label", ".db-title", ".db-chips span",
         ".p-cap", ".p-desc", ".media-tag",
-        ".vs-table th", ".vs-table td"   // 对比表:表头 + 每个单元格可编辑
+        ".vs-table th", ".vs-table td",   // 对比表:表头 + 每个单元格可编辑
+        // ↓ 后加的新模块文本块（只开文字叶子，不开外层布局容器）
+        ".hero-tags span",                                   // Hero 胶囊标签
+        ".grid-label",                                       // 栅格小标题(skills 等)
+        ".skill-card .role", ".skill-card h3", ".skill-card p",   // 这是什么·两个 skill 卡
+        ".compare .bad", ".compare .good",                   // 为什么需要它·对比行
+        ".num-card h3", ".num-card p", ".fail-chips span",   // 质量·自检三卡 + 12 chip
+        ".chk-table th", ".chk-table td",                    // 质量·13 项自检表
+        ".agent-tree .t-name", ".agent-tree .t-cmt", ".agent-tree .t-pill",  // 四块内容·文件树
+        ".agent-card .code", ".agent-card h3", ".agent-card p",              // 四块内容·四张卡
+        ".wf-step .t", ".wf-slide h4", ".wf-slide .cap",     // 工作流·链条步骤 + 每屏详解
+        ".ps-head", ".ps-t", ".ps-sec p", ".ps-note"         // prompt 骨架
       ].join(",");
 
       const toggleBtn = document.querySelector("[data-edit-toggle]");
@@ -734,6 +742,20 @@
       });
     })();
   </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
