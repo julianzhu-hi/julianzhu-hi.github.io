@@ -445,10 +445,10 @@
       <p class="en">Quality control</p>
       <p>三层防线，从"生成前"堵到"生成后"。第三层是这个包最独特的地方——一套专门对付 AI"自己给自己盖章通过"的机制。</p>
       <div class="num-cards">
-        <div class="num-card"><div class="n">1</div><div><h3>唯一真相来源</h3><p>token / 组件 / 场景 / patterns 是唯一依据。色值、字号、间距必须能指到出处，禁止 AI 自行发明；文档没写明的，它停下来问，而不是瞎编。</p></div></div>
-        <div class="num-card"><div class="n">2</div><div><h3>生成前组件清点</h3><p>画之前先把每个 UI 元素列一遍 → 逐个查有没有对应组件 → 有就用组件、没有才标兜底。从源头堵住随手用原生 &lt;input type=date&gt; 这类偷懒。</p></div></div>
-        <div class="num-card hl"><div class="n">3</div><div><h3>生成后强制自检（反盖章）</h3><p>基础 4 项 C1–C4 + 深度 7 项 C5–C11 自动跑。要点：校验是证伪不是确认、必须重新读产物（grep 代码 / inspect 节点，不许凭记忆）、"通过"必须填逐控件证据表。下面是命中即判 FAIL 的硬性触发器：</p>
-          <div class="fail-chips"><span>F1 原生 date input</span><span>F2 裸 select/checkbox</span><span>F3 浏览器默认图标</span><span>F4 自绘图标/序号</span><span>F5 硬编码 hex/px</span><span>F6 模块间距非 token</span><span>F7 label padding 硬补对齐</span></div>
+        <div class="num-card"><div class="n">1</div><div><h3>设计规范为基准</h3><p>token / 组件 / 场景 / 业务组件 是唯一依据。色值、字号、间距必须能指到出处，禁止 AI 自行发明；文档没写明的，它停下来问，而不是瞎编。</p></div></div>
+        <div class="num-card"><div class="n">2</div><div><h3>生成前组件映射</h3><p>画之前先把每个 UI 元素列一遍 → 逐个查有没有对应组件 → 有就用组件、没有才标兜底。从源头堵住"随手用浏览器原生组件"这类偷懒。</p></div></div>
+        <div class="num-card hl"><div class="n">3</div><div><h3>生成后强制自检</h3><p>共计有 13 项自检原则。下面这些是命中即判 FAIL 的硬性触发器：</p>
+          <div class="fail-chips"><span>1 视觉属性有出处</span><span>2 不用原生控件</span><span>3 图标正确引用</span><span>4 不自绘节点</span><span>5 间距走 token</span><span>6 遵循对齐原则</span><span>7 文本不溢出</span><span>8 位置检验</span><span>9 布局符合场景规范</span><span>10 商品用真实资料</span><span>11 覆盖需求文档</span><span>12 信息架构合理</span></div>
           <table class="chk-table">
             <thead><tr><th>元素</th><th>实际实现</th><th>组件映射</th><th>判定</th></tr></thead>
             <tbody>
