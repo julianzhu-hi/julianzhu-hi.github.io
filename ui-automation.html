@@ -425,6 +425,13 @@
     @media (max-width:820px){.agent-row{grid-template-columns:1fr}.agent-card{grid-template-columns:1fr;gap:10px}}
     /* prompt 骨架进左右两栏后：去掉自带上边距，让左右两栏在各自小标题下对齐起始 */
     .agent-row .prompt-skel{margin-top:0}
+    /* Step 1 的 prompt 两栏等高：两栏拉伸到同一高度，左侧代码窗正文区、右侧卡片吸收多余空间 */
+    .prompt-row{align-items:stretch}
+    .prompt-row > div{display:flex;flex-direction:column;min-width:0}
+    .prompt-row .prompt-skel{flex:1;display:flex;flex-direction:column}
+    .prompt-row .prompt-skel .ps-body{flex:1}
+    .prompt-row .agent-cards{flex:1}
+    .prompt-row .agent-cards > .agent-card{flex:1}
   </style></head>
 <body>
   <header class="site-header">
@@ -561,7 +568,7 @@
           <p class="cap">先别急着画：把 PRD + 原型喂给 AI，让它产出一份结构化需求文档——把要素按「能不能改」分成 [硬] 不可改 / [参考] 可优化 / [待拍板] 需先定 三档。</p>
           <img class="shot" loading="lazy" decoding="async" alt="前置输入 → 示例 → 输出需求文档" src="assets/uploads/uiauto-step-01.jpg?v=2">
 
-          <div class="agent-row">
+          <div class="agent-row prompt-row">
           <div>
           <h5 class="grid-label">prompt 内容</h5>
           <div class="prompt-skel">
