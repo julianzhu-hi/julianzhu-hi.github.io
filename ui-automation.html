@@ -375,7 +375,10 @@
     .wf-slide h4 .idx{color:#028E8F;font-size:15px;white-space:nowrap}
     .wf-slide h4 .ttl{min-width:0}
     .wf-slide .cap{margin:0 0 14px;font-size:16px;line-height:1.75;color:var(--muted)}
-    .wf-slide .shot,.showcase-shot{display:block;width:100%;height:auto;box-sizing:border-box;background:#fff;padding:10px;border-radius:12px}
+    .wf-slide .shot,.showcase-shot{display:block;width:100%;height:auto;box-sizing:border-box}
+    /* 切图上方的输入/输出标签：原本烤在图里，改为真 HTML（青色描边胶囊） */
+    .shot-tags{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+    .shot-tags span{display:inline-flex;padding:6px 14px;border:1px solid rgba(1,194,195,.45);border-radius:999px;font-size:13px;line-height:20px;color:#028E8F;white-space:nowrap}
     .showcase-shot{margin-top:8px}
     /* 图示面板重建（文字→HTML，真截图→切图，箭头→CSS） */
     .io-row{display:grid;grid-template-columns:1fr 32px 1.25fr 32px 1fr;align-items:center;gap:10px;margin-top:8px}
@@ -565,8 +568,8 @@
       <div class="wf-detail">
         <div class="wf-slide">
           <h4><span class="idx">Step 1</span><span class="ttl">用 PRD 生成「AI 可用的需求文档」</span></h4>
-          <p class="cap">先别急着画：把 PRD + 原型喂给 AI，让它产出一份结构化需求文档——把要素按「能不能改」分成 [硬] 不可改 / [参考] 可优化 / [待拍板] 需先定 三档。</p>
-          <img class="shot" loading="lazy" decoding="async" alt="前置输入 → 示例 → 输出需求文档" src="assets/uploads/uiauto-step-01.jpg?v=2">
+          <p class="cap">把 PRD + 原型喂给 AI，让它产出一份结构化需求文档——把要素按「能不能改」分成 [硬] 不可改 / [参考] 可优化 / [待拍板] 需先定 三档。</p>
+          <img class="shot" loading="lazy" decoding="async" alt="前置输入 → 示例 → 输出需求文档" src="assets/uploads/uiauto-step-01.jpg?v=3">
 
           <div class="agent-row prompt-row">
           <div>
@@ -576,7 +579,7 @@
             <div class="ps-body">
               <div class="ps-sec">
                 <div class="ps-t">角色 &amp; 目标</div>
-                <p>你是资深 C 端 B 端后台产品设计的需求分析。我要把一份 PRD + 一个原型,整理成一份【设计可直接消费的需求文档 .md】。请严格按下面的方法和规则执行,最终只输出一个 .md 文件。</p>
+                <p>你是资深 B 端后台产品设计的需求分析。我要把一份 PRD + 一个原型，整理成一份【设计可直接消费的需求文档 .md】。请严格按下面的方法和规则执行，最终只输出一个 .md 文件。</p>
               </div>
               <div class="ps-sec">
                 <div class="ps-t">我的输入 · 5 项</div>
@@ -599,31 +602,32 @@
           </div>
           </div>
           <div>
-          <h5 class="grid-label">prompt 结构 · 调优方法</h5>
+          <h5 class="grid-label">prompt 结构</h5>
           <div class="agent-cards">
-            <div class="agent-card"><span class="code">1</span><div class="ac-body"><h3>设定角色 / 人设</h3><p>先给 AI 一个明确身份（如<b>资深产品需求分析</b>），输出口径、专业度、取舍标准都由这一句锚定。</p></div></div>
-            <div class="agent-card"><span class="code">2</span><div class="ac-body"><h3>告知背景</h3><p>把手上的材料一次交代清楚：PRD、原型、竞品、本次范围、设计系统文档，并标明<b>哪些必给、哪些可选</b>。</p></div></div>
+            <div class="agent-card"><span class="code">1</span><div class="ac-body"><h3>设定角色 / 人设</h3><p>先给 AI 一个明确身份，明确输出口径、取舍标准。</p></div></div>
+            <div class="agent-card"><span class="code">2</span><div class="ac-body"><h3>告知背景</h3><p>把手上的材料一次交代清楚：PRD、原型、竞品、本次范围、设计系统文档。</p></div></div>
             <div class="agent-card"><span class="code">3</span><div class="ac-body"><h3>告知任务</h3><p>两层：① <b>明确要求</b>，减少上下文歧义；② <b>精细化逐步引导</b>，分点阐述，让它按固定步骤走而不是自由发挥。</p></div></div>
-            <div class="agent-card"><span class="code">4</span><div class="ac-body"><h3>输出规范</h3><p>规定交付物的形态与结构（只输出一个 .md、章节固定 0–8），保证产出能被下游<b>直接消费</b>。</p></div></div>
-            <div class="agent-card"><span class="code">5</span><div class="ac-body"><h3>输出示例</h3><p>给出目标格式的样例。<b>示例比描述更能压住格式漂移</b>——它照着抄，比读十行要求更准。</p></div></div>
-            <div class="agent-card"><span class="code">6</span><div class="ac-body"><h3>负向输出限定</h3><p>明确「<b>不许做什么</b>」：不虚构设计系统数值、组件不写死、不含糊带过，把常见跑偏提前堵死。</p></div></div>
+            <div class="agent-card"><span class="code">4</span><div class="ac-body"><h3>输出规范</h3><p>规定交付物的形态与结构（只输出一个 .md），保证产出能被下游<b>直接消费</b>。</p></div></div>
+            <div class="agent-card"><span class="code">5</span><div class="ac-body"><h3>输出示例</h3><p>给出目标格式的样例。<b>示例比描述更能压住格式漂移</b>。</p></div></div>
+            <div class="agent-card"><span class="code">6</span><div class="ac-body"><h3>负向输出限定</h3><p>明确「<b>不许做什么</b>」：不虚构设计系统数值、组件不写死，把常见跑偏提前堵死。</p></div></div>
           </div>
           </div>
           </div>
         </div>
         <div class="wf-slide">
           <h4><span class="idx">Step 2</span><span class="ttl">把需求文档交给它画，你来判断</span></h4>
-          <p class="cap">一句 prompt 交给它。需求里标了 [待拍板] 的结构性决策，AI 不自作主张——先列出来让你选，你定了再画。这就是「文档没提清楚的地方，它停下来问」。</p>
+          <p class="cap">一句 prompt 交给它。AI 不自作主张——先列出来让你选，你定了再画。</p>
+          <div class="shot-tags"><span>推理模型：高（建议）</span><span>/skill 名称–引用对应技能</span><span>需求文档</span><span>静态和可交互页面</span><span>html</span></div>
           <img class="shot" loading="lazy" decoding="async" alt="AI 列出待拍板项，等设计师决策" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/uiauto-step-1.jpg">
         </div>
         <div class="wf-slide">
           <h4><span class="idx">Step 3</span><span class="ttl">一轮：生成页面 &amp; 自检</span></h4>
-          <p class="cap">AI 出静态 + 交互两版页面，边生成边自检——比如自己发现某个联动变体横向溢出、配额表用错了 table-layout，当场改掉，再完整跑一遍 C1–C11 自查。</p>
+          <p class="cap">AI 出静态 + 交互两版页面，边生成边自检——比如自己发现某个联动变体横向溢出、配额表用错了 table-layout，当场改掉，再完整跑一遍自检项。</p>
           <img class="shot" loading="lazy" decoding="async" alt="组件映射 → 生成后自检证据表 → 一轮页面效果" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/uiauto-step-2.jpg">
         </div>
         <div class="wf-slide">
           <h4><span class="idx">Step 4</span><span class="ttl">二轮：反校验，AI 也会偷懒</span></h4>
-          <p class="cap">人工要求它针对显著问题再做一轮深度自检，防止它盲目判定自己生成的没问题。这一轮重新读产物、逐控件出证据表（PASS / FAIL），把一轮漏掉的图标、颜色继承等细节揪出来。</p>
+          <p class="cap">AI可能会为了快速生成直接套用浏览器原生组件，也为防止它盲目判定自己生成的没问题 - 人工要求它针对显著问题做一轮深度自检。</p>
           <img class="shot" loading="lazy" decoding="async" alt="深度自检：逐控件证据表 + 二轮页面效果" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/uiauto-step-3.jpg">
         </div>
       </div>
@@ -678,6 +682,7 @@
         // ↓ 后加的新模块文本块（只开文字叶子，不开外层布局容器）
         ".hero-tags span",                                   // Hero 胶囊标签
         ".grid-label",                                       // 栅格小标题(skills 等)
+        ".shot-tags span",                                   // 切图上方的输入/输出标签
         ".skill-card .role", ".skill-card h3", ".skill-card p",   // 这是什么·两个 skill 卡
         ".compare .bad", ".compare .good",                   // 为什么需要它·对比行
         ".num-card h3", ".num-card p", ".fail-chips span",   // 质量·自检三卡 + 12 chip
@@ -767,6 +772,7 @@
       });
     })();
   </script>
+
 
 
 
