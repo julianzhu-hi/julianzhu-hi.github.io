@@ -423,6 +423,8 @@
     .agent-card .ac-body p{margin:0;font-size:15px;line-height:1.7;color:var(--muted)}
     .agent-card .ac-body b{color:var(--text);font-weight:600}
     @media (max-width:820px){.agent-row{grid-template-columns:1fr}.agent-card{grid-template-columns:1fr;gap:10px}}
+    /* prompt 骨架进左右两栏后：去掉自带上边距，让左右两栏在各自小标题下对齐起始 */
+    .agent-row .prompt-skel{margin-top:0}
   </style></head>
 <body>
   <header class="site-header">
@@ -559,20 +561,23 @@
           <p class="cap">先别急着画：把 PRD + 原型喂给 AI，让它产出一份结构化需求文档——把要素按「能不能改」分成 [硬] 不可改 / [参考] 可优化 / [待拍板] 需先定 三档。</p>
           <img class="shot" loading="lazy" decoding="async" alt="前置输入 → 示例 → 输出需求文档" src="assets/uploads/uiauto-step-01.jpg?v=2">
 
+          <div class="agent-row">
+          <div>
+          <h5 class="grid-label">prompt 内容</h5>
           <div class="prompt-skel">
             <div class="ps-head"><span class="dots"><i></i><i></i><i></i></span>需求文档生成 · prompt 骨架</div>
             <div class="ps-body">
               <div class="ps-sec">
                 <div class="ps-t">角色 &amp; 目标</div>
-                <p>资深产品需求分析：把 <b>PRD + 原型</b> 整理成一份「设计可直接消费的需求文档 .md」，<span class="mut">严格按方法执行，最终只输出一个 .md。</span></p>
+                <p>你是资深 C 端 B 端后台产品设计的需求分析。我要把一份 PRD + 一个原型,整理成一份【设计可直接消费的需求文档 .md】。请严格按下面的方法和规则执行,最终只输出一个 .md 文件。</p>
               </div>
               <div class="ps-sec">
                 <div class="ps-t">我的输入 · 5 项</div>
-                <p>① PRD　② 原型（Figma 带 node-id / 截图）　③ 竞品参考（可选）　④ 本次范围（只做一条路径）　⑤ 设计系统文档（可选）</p>
+                <p>① PRD　② 原型（Figma 带 node-id / 截图）　③ 竞品参考&nbsp; &nbsp;④ 本次范围　⑤ 设计系统文档</p>
               </div>
               <div class="ps-sec">
                 <div class="ps-t">执行步骤 · A–H</div>
-                <p><b>A</b> 通读 PRD　<b>B</b> 逐屏拆原型（<span class="mut">字段穷举 / 联动变体 / 状态机 / 空态</span>）　<b>C</b> 范围纪律　<b>D</b> 三色标注 <span class="mut">[硬]/[参考]/[待拍板]</span>　<b>E</b> PRD ↔ 原型交叉核对（<span class="mut">冲突/缺失/多出 → 全列 [待拍板]</span>）　<b>F</b> 术语与指标口径对齐　<b>G</b> 竞品只借方法论　<b>H</b> 组件清单与缺口（<span class="mut">只到通用类型</span>）</p>
+                <p><b>A</b> 通读 PRD　<b>B</b> 逐屏拆原型（<span class="mut">字段穷举 / 联动变体 / 状态机 / 空态</span>）　<b>C</b> 范围纪律　<b>D</b> 三色标注 <span class="mut">[硬]/[参考]/[待拍板]</span>　<b>E</b> PRD ↔ 原型交叉核对（<span class="mut">冲突/缺失/多出 → 全列 [待拍板]</span>）　<b>F</b> 术语与指标口径对齐　<b>G</b> 竞品只借方法论，不要照搬；点明与本产品定位的差异　<b>H</b> 组件清单与缺口：把页面元素映射到组件</p>
               </div>
               <div class="ps-sec">
                 <div class="ps-t">硬规则</div>
@@ -580,10 +585,23 @@
               </div>
               <div class="ps-sec">
                 <div class="ps-t">输出结构 · 0–8</div>
-                <p><span class="mut">0 使用边界 · 1 路径概述 · 2 信息架构 · 3 页面清单 · 4 逐页详述 · 5 术语指标对齐 · 6 竞品借鉴 · 7 待拍板汇总 · 8 组件清单与缺口 · 附 原型节点索引</span></p>
+                <p><span class="mut">0 使用边界 · 1 路径概述 · 2 信息架构 · 3 页面清单 · 4 逐页详述 · 5 术语指标对齐 · 6 竞品借鉴点 · 7 待拍板汇总 · 8 组件清单与缺口</span></p>
               </div>
             </div>
             <p class="ps-note">📌 完整 prompt 略——此处只展示<b>骨架</b>：用固定结构约束 AI，从源头保证产出的需求文档结构化、可被设计直接消费。</p>
+          </div>
+          </div>
+          <div>
+          <h5 class="grid-label">prompt 结构 · 调优方法</h5>
+          <div class="agent-cards">
+            <div class="agent-card"><span class="code">1</span><div class="ac-body"><h3>设定角色 / 人设</h3><p>先给 AI 一个明确身份（如<b>资深产品需求分析</b>），输出口径、专业度、取舍标准都由这一句锚定。</p></div></div>
+            <div class="agent-card"><span class="code">2</span><div class="ac-body"><h3>告知背景</h3><p>把手上的材料一次交代清楚：PRD、原型、竞品、本次范围、设计系统文档，并标明<b>哪些必给、哪些可选</b>。</p></div></div>
+            <div class="agent-card"><span class="code">3</span><div class="ac-body"><h3>告知任务</h3><p>两层：① <b>明确要求</b>，减少上下文歧义；② <b>精细化逐步引导</b>，分点阐述，让它按固定步骤走而不是自由发挥。</p></div></div>
+            <div class="agent-card"><span class="code">4</span><div class="ac-body"><h3>输出规范</h3><p>规定交付物的形态与结构（只输出一个 .md、章节固定 0–8），保证产出能被下游<b>直接消费</b>。</p></div></div>
+            <div class="agent-card"><span class="code">5</span><div class="ac-body"><h3>输出示例</h3><p>给出目标格式的样例。<b>示例比描述更能压住格式漂移</b>——它照着抄，比读十行要求更准。</p></div></div>
+            <div class="agent-card"><span class="code">6</span><div class="ac-body"><h3>负向输出限定</h3><p>明确「<b>不许做什么</b>」：不虚构设计系统数值、组件不写死、不含糊带过，把常见跑偏提前堵死。</p></div></div>
+          </div>
+          </div>
           </div>
         </div>
         <div class="wf-slide">
@@ -742,6 +760,8 @@
       });
     })();
   </script>
+
+
 
 
 
