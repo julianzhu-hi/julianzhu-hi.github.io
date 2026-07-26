@@ -191,8 +191,17 @@
       line-height: 1.45;
       text-align: center;
     }
-    .v-box small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+    .v-box small { display: block; margin-top: 3px; color: rgba(43, 44, 60, 0.5); font-size: 12px; }
     .v-box-hl { border-color: rgba(15, 139, 139, 0.55); background: rgba(32, 231, 231, 0.12); }
+    /* 对话状态管理：旁路记忆，用虚线弱化，表示它是被各步骤读写的状态存储、不是串行环节 */
+    .v-mem { background: transparent; border-style: dashed; border-color: rgba(43, 44, 60, 0.28); }
+    .v-mem small { color: rgba(43, 44, 60, 0.5); }
+    /* 对话记忆放到图左侧，作为贯穿全流程的旁路侧栏（与右侧主干等高） */
+    .arch-layout { display: grid; grid-template-columns: 108px 1fr; gap: 10px; align-items: stretch; width: 100%; margin-top: 32px; }
+    .arch-side { display: flex; }
+    .arch-side .v-mem { width: 100%; align-self: stretch; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-size: 13px; line-height: 1.4; padding: 12px 8px; }
+    .arch-side .v-mem small { margin-top: 8px; font-size: 11px; line-height: 1.5; }
+    @media (max-width: 480px) { .arch-layout { grid-template-columns: 1fr; } }
     .v-down { color: rgba(43, 44, 60, 0.4); font-size: 13px; letter-spacing: 0.04em; text-align: center; line-height: 1.3; }
 
     /* 旅程：前台分流 + 后台 AI 数据基建 */
@@ -242,6 +251,17 @@
       text-align: center;
     }
     .arch-note-inline b { color: var(--text); font-weight: 500; }
+    /* 意图理解 agent：内含「自然语义解析 → 结构化 query 输出」子流程 */
+    .ia-agent { width: 100%; border: 1px solid rgba(43,44,60,.18); border-radius: 10px; padding: 10px 12px 12px; background: rgba(43,44,60,.02); }
+    .ia-agent .ia-t { text-align: center; font-size: 12.5px; color: var(--muted); margin-bottom: 8px; }
+    .ia-sub { display: flex; align-items: center; gap: 8px; }
+    .ia-sub .v-box { margin: 0; flex: 1; }
+    .ia-arr { flex: 0 0 auto; color: rgba(43,44,60,.4); font-size: 13px; }
+    /* 编排 agent（orchestrator）：把各 skill 包进一个 agent 容器 */
+    .orch { width: 100%; border: 1px solid rgba(43,44,60,.18); border-radius: 10px; padding: 10px 12px 12px; background: rgba(43,44,60,.02); }
+    .orch .orch-t { text-align: center; font-size: 13px; color: var(--text); font-weight: 500; }
+    .orch .orch-d { text-align: center; font-size: 12px; color: var(--muted); margin: 2px 0 10px; }
+    .orch .arch-skills { margin: 0; }
 
     /* 媒体展示：沿用主站图块的观感（图为底，hover 播视频） */
     .case-media { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); align-items: start; }
@@ -326,6 +346,52 @@
     @media (max-width: 480px) {
       .case-title { font-size: 32px; }
       .case-meta { grid-template-columns: 1fr; }
+    }
+
+    /* ===== AI 产品架构：四层横向架构图（整页宽） ===== */
+    .ai-arch { display: flex; flex-direction: column; gap: var(--gap); margin-top: 8px; }
+    .ail-row { display: grid; grid-template-columns: 96px 1fr 220px; gap: 14px; align-items: center; }
+    .ail-name { font-size: 17px; font-weight: 500; color: var(--text); text-align: center; }
+    .ail-note { font-size: 13px; color: var(--muted); line-height: 1.65; }
+    .ail-note b { display: block; color: var(--text); font-weight: 600; margin-bottom: 4px; }
+    .ail-note ul { margin: 4px 0 0; padding-left: 16px; }
+    /* 中间主体：按层配色的圆角容器 */
+    .ail-body { border: 1px solid; border-radius: 12px; padding: 14px; }
+    .ail-ui   .ail-body,
+    .ail-req  .ail-body { background: rgba(124, 92, 214, 0.05); border-color: rgba(124, 92, 214, 0.22); }
+    .ail-svc  .ail-body { background: rgba(216, 27, 96, 0.045); border-color: rgba(216, 27, 96, 0.20); }
+    .ail-data .ail-body { background: rgba(47, 73, 255, 0.045); border-color: rgba(47, 73, 255, 0.18); }
+    /* 顶部横条 / 路由中心 */
+    .ail-band { text-align: center; padding: 11px 14px; border-radius: 8px; background: var(--panel-solid); border: 1px solid rgba(43, 44, 60, 0.12); font-size: 14.5px; font-weight: 500; color: var(--text); }
+    .ail-band small { display: block; margin-top: 3px; font-size: 12px; font-weight: 400; color: var(--muted); }
+    .ail-router { background: rgba(216, 27, 96, 0.07); border-color: rgba(216, 27, 96, 0.30); color: #B0164E; }
+    .ail-router small { color: rgba(176, 22, 78, 0.7); }
+    /* 分组盒 */
+    .ail-cols { display: grid; gap: 10px; margin-top: 10px; }
+    .ail-group { border: 1px solid rgba(43, 44, 60, 0.10); border-radius: 8px; padding: 10px 10px 11px; background: rgba(255, 255, 255, 0.55); }
+    .ail-gt { font-size: 13px; font-weight: 600; color: var(--text); text-align: center; margin-bottom: 8px; }
+    .ail-gt small { font-weight: 400; color: var(--muted); font-size: 12px; }
+    .ail-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .ail-chips.vert { flex-direction: column; }
+    .ail-chips span { padding: 7px 11px; border: 1px solid rgba(43, 44, 60, 0.20); border-radius: 6px; font-size: 12.5px; color: var(--muted); background: var(--panel-solid); text-align: center; }
+    /* 请求层：意图理解 agent 横向流 */
+    .ail-flow { display: flex; align-items: stretch; gap: 8px; margin-top: 10px; }
+    .ail-box { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; justify-content: center; text-align: center; padding: 11px 10px; border-radius: 8px; background: var(--panel-solid); border: 1px solid rgba(43, 44, 60, 0.16); font-size: 13px; color: var(--text); }
+    .ail-box small { display: block; margin-top: 3px; font-size: 11px; color: var(--muted); }
+    .ail-arrow { flex: 0 0 auto; align-self: center; color: rgba(43, 44, 60, 0.4); font-size: 15px; }
+    /* 服务层：三组 skill（通识 | 站内服务 | 追问） */
+    .ail-skills { display: grid; grid-template-columns: minmax(150px, 1fr) 2.6fr minmax(130px, 1fr); gap: 10px; margin-top: 10px; align-items: start; }
+    .ail-skill-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .ail-skill-grid .ail-box.sm { justify-content: center; }
+    /* 响应式：窄屏整行堆叠 */
+    @media (max-width: 860px) {
+      .ail-row { grid-template-columns: 1fr; gap: 6px; }
+      .ail-name { text-align: left; padding-left: 2px; }
+      .ail-note { padding-left: 2px; }
+      .ail-skills { grid-template-columns: 1fr; }
+      .ail-skill-grid { grid-template-columns: repeat(2, 1fr); }
+      .ail-flow { flex-wrap: wrap; }
+      .ail-flow .ail-box { flex-basis: calc(50% - 16px); }
     }
   </style>
 <style id="accent-trial">.flow-tag-front{background:rgba(216,27,96,.12)!important;color:#D81B60!important}.vs-table thead .vs-normal{color:#D81B60!important}.flow-tag-back{background:rgba(2,153,153,.12)!important;color:#029999!important}.vs-table thead .vs-ai{color:#029999!important}.flow-box-highlight{border-color:rgba(2,153,153,.55)!important}</style></head>
@@ -476,37 +542,118 @@
       <section class="case-block panel">
         <h2>架构</h2>
         <p class="en">Architecture</p>
-        <p>四段式链路：多轮对话意图识别 → Query 改写 → 生成总结 → 商品召回与排序。</p>
+        <p>四段式链路：意图理解 Agent → 编排 agent 调度各 skill → 召回排序 + 回答范式生成 → 后置校验与结果呈现。</p>
+        <div class="arch-layout">
+        <aside class="arch-side"><div class="v-box v-mem">对话状态管理 · 多轮记忆<small>存储多轮结构化需求，贯穿全链路读写（旁路，非串行环节）</small></div></aside>
         <div class="arch-stack">
           <div class="arch-row"><div class="v-box">用户 Query 输入</div></div>
           <div class="v-down">↓</div>
-          <div class="arch-2">
-            <div class="v-box">预处理 Agent<small>清洗 / 分流 / 归一</small></div>
-            <div class="v-box">对话状态管理 Agent<small>存储多轮结构化需求</small></div>
+          <div class="ia-agent">
+            <div class="ia-t">意图理解 Agent</div>
+            <div class="ia-sub">
+              <div class="v-box">自然语义解析<small>清洗 / 分流 / 归一</small></div>
+              <span class="ia-arr">→</span>
+              <div class="v-box">结构化 query 输出</div>
+            </div>
           </div>
           <div class="v-down">↓</div>
-          <div class="arch-row"><div class="v-box">意图理解 Agent<small>输出标准化结构化需求</small></div></div>
-          <div class="v-down">↓ 按意图分流到多个 skill ↓</div>
-          <div class="arch-skills">
-            <div class="v-box v-box-hl">商品查找 skill</div>
-            <div class="v-box">比价决策 skill</div>
-            <div class="v-box">穿搭搭配类 skill</div>
-            <div class="v-box">攻略咨询类 skill</div>
-            <div class="v-box">售后咨询类 skill</div>
-            <div class="v-box">闲聊无关类 skill</div>
+          <div class="orch">
+            <div class="orch-t">编排 agent（orchestrator）</div>
+            <div class="orch-d">负责路由分发、多 skill 命中裁决、组合处理</div>
+            <div class="arch-skills">
+              <div class="v-box v-box-hl">商品查找 skill</div>
+              <div class="v-box v-box-hl">对比决策 skill</div>
+              <div class="v-box">穿搭搭配类 skill</div>
+              <div class="v-box">攻略咨询类 skill</div>
+              <div class="v-box">售后咨询类 skill</div>
+              <div class="v-box v-box-hl">闲聊无关类 skill</div>
+            </div>
           </div>
-          <div class="arch-note-inline">商品查找 skill 再细分为 <b>精准 / 较精准 / 泛商品意图</b>，分别匹配不同回答范式</div>
-          <div class="v-down">↓ 汇入 不同回答范式 ↓</div>
-          <div class="arch-row"><div class="v-box">Query 改写 · 摘要输出</div></div>
           <div class="v-down">↓</div>
-          <div class="arch-row"><div class="v-box">传统召排 + 生成式召排<small>商品 + 内容</small></div></div>
+          <div class="arch-row"><div class="v-box">传统召排 + 生成式召排<small>前者靠关键词检索，后者用大模型来做召回，补传统召回的短板：理解模糊、描述性、长尾语义 query；且支持跨"商品 + 内容"统一召回</small></div></div>
+          <div class="v-down">↓</div>
+          <div class="arch-row"><div class="v-box">回答范式生成<small>按 精准 / 较精准 / 泛意图 套用不同回答范式</small></div></div>
           <div class="v-down">↓</div>
           <div class="arch-row"><div class="v-box">后置校验 Agent<small>合规 / 格式 / 兜底等</small></div></div>
           <div class="v-down">↓</div>
-          <div class="arch-row"><div class="v-box v-box-hl">最终结果呈现</div></div>
+          <div class="arch-row"><div class="v-box">最终结果呈现</div></div>
+        </div>
         </div>
       </section>
     </div>
+
+    <!-- AI 产品架构：四层横向架构图（新版，approach 3）。先隐藏（去掉 hidden 即恢复显示） -->
+    <section class="case-block panel" hidden>
+      <h2>AI 产品架构</h2>
+      <p class="en">AI Product Architecture</p>
+      <div class="ai-arch">
+        <!-- 交互层 -->
+        <div class="ail-row ail-ui">
+          <div class="ail-name">交互层</div>
+          <div class="ail-body">
+            <div class="ail-band">统一得物特色元素的品牌化 AI 交互设计和规范</div>
+            <div class="ail-cols" style="grid-template-columns:2.4fr 1fr">
+              <div class="ail-group"><div class="ail-gt">主端 / 其他入口设计</div><div class="ail-chips"><span>主端入口</span><span>探索 tab 入口</span><span>商详 / 社区内容 or 其他</span></div></div>
+              <div class="ail-group"><div class="ail-gt">搜推内<small>（follow 统一规范）</small></div><div class="ail-chips"><span>入口 + query 引导设计</span></div></div>
+            </div>
+          </div>
+          <div class="ail-note"><b>入口侧</b>交互设计 for：<ul><li>产品心智</li><li>用户规模</li><li>引导策略</li></ul></div>
+        </div>
+        <!-- 请求层 -->
+        <div class="ail-row ail-req">
+          <div class="ail-name">请求层</div>
+          <div class="ail-body">
+            <div class="ail-gt" style="margin-bottom:0">意图理解 agent</div>
+            <div class="ail-flow">
+              <div class="ail-box">自然语意解析<small>清洗 / 分流 / 归一</small></div>
+              <span class="ail-arrow">→</span>
+              <div class="ail-box">对话状态管理<small>多轮 / 结构化上下文解析</small></div>
+              <span class="ail-arrow">→</span>
+              <div class="ail-box">结构化 query 请求输出</div>
+              <span class="ail-arrow">→</span>
+              <div class="ail-box">引导性 query / 信息生成</div>
+            </div>
+          </div>
+          <div class="ail-note"><b>服务侧</b>统一模型调用及引导输出</div>
+        </div>
+        <!-- 服务层 -->
+        <div class="ail-row ail-svc">
+          <div class="ail-name">服务层</div>
+          <div class="ail-body">
+            <div class="ail-band ail-router">skills + 动态路由中心<small>路由分发 / 多 skill 命中裁决 / 组合处理 / 结构化输出</small></div>
+            <div class="ail-skills">
+              <div class="ail-group"><div class="ail-gt">通识 skill<small>（自建）</small></div><div class="ail-chips vert"><span>知识 / 常识</span><span>闲聊</span><span>拒绝 / 边界类 case</span></div></div>
+              <div class="ail-group"><div class="ail-gt">站内服务 skills<small>（自建 + 业务共建可插接）</small></div>
+                <div class="ail-skill-grid">
+                  <div class="ail-box">泛意图 skill<small>需求拆解 / 品类检索 / 推荐理由</small></div>
+                  <div class="ail-box">精准意图 skill<small>商品在售状态 / 商品解读</small></div>
+                  <div class="ail-box">比价优惠 skill<small>大促 / 活动状态 / 价格动态 / 权益信息</small></div>
+                  <div class="ail-box">穿搭攻略 skill<small>潮流内容解读 / 达人推荐 / 种草帖子</small></div>
+                  <div class="ail-box sm">鉴别 skill</div>
+                  <div class="ail-box sm">客服 skill</div>
+                  <div class="ail-box sm">订单 / 履约 skill</div>
+                  <div class="ail-box sm">……</div>
+                </div>
+              </div>
+              <div class="ail-group"><div class="ail-gt">追问 skill<small>（自建）</small></div><div class="ail-chips vert"><span>需求细化</span><span>意图延展</span><span>正负向反馈</span></div></div>
+            </div>
+          </div>
+          <div class="ail-note"><b>对话交互形态</b>涉及 skill 调用和结构化输出策略；由 AI 组负责，follow 整体 kv 规范</div>
+        </div>
+        <!-- AI 数据基建层 -->
+        <div class="ail-row ail-data">
+          <div class="ail-name">AI 数据基建层</div>
+          <div class="ail-body">
+            <div class="ail-cols" style="grid-template-columns:1fr 2.4fr 1.1fr">
+              <div class="ail-group"><div class="ail-gt">用户画像</div><div class="ail-chips"><span>离线画像</span><span>实时行为</span></div></div>
+              <div class="ail-group"><div class="ail-gt">平台知识 AI 体系</div><div class="ail-chips"><span>商品信息（基础 / 解读）</span><span>社区内容信息</span><span>用户评价 / 评论</span><span>商品站外信息</span><span>品类 / 品牌知识</span><span>鉴别工艺解读</span></div></div>
+              <div class="ail-group"><div class="ail-gt">世界知识查询<small>（外部 api 调用）</small></div><div class="ail-chips"><span>小红书 / 百度 / 外部专业模型调用</span></div></div>
+            </div>
+          </div>
+          <div class="ail-note">统一底层数据训练</div>
+        </div>
+      </div>
+    </section>
 
     <!-- 四个回答范式（等宽四列，图片高度自适应；占位待放图） -->
     <section class="paradigms">
