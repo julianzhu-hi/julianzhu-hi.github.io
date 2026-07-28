@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh" class=""><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>年度商家颁奖会 — Julian Zhu</title>
+  <script>
+    // 与主站同一套判定：只有本地(localhost/127.0.0.1/file:)才开编辑模式，线上自动隐藏编辑面板
+    (() => {
+      const localHosts = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
+      const localEditing = window.location.protocol === "file:" || localHosts.has(window.location.hostname);
+      document.documentElement.classList.toggle("local-editing", localEditing);
+    })();
+  </script>
+  <style>
+    /* 自托管字体：英文用 Space Grotesk（SIL OFL），Hero 用 Clash Display（Fontshare 免费商用）。
+       同源加载，访客与本机看到的一致，不再依赖本机是否装了这两款字体。 */
+    @font-face {
+      font-family: "Inter";
+      font-style: normal;
+      font-weight: 300 700;
+      font-display: swap;
+      src: url("assets/fonts/inter-latin-var.woff2") format("woff2");
+    }
+
+    /* 设计变量与主站 index.html 保持一致 */
+    :root {
+      --page: #F5F5F9;
+      --panel-solid: #FFFFFF;
+      --text-panel-opacity: 0.98;
+      --text-panel-blur: 12.5px;
+      --muted: #585A6E;
+      --text: #2B2C3C;
+      --gap: 5px;
+      --canvas: 1280px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--page);
+      color: var(--text);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+    .panel {
+      background: rgba(255, 255, 255, var(--text-panel-opacity));
+      border-radius: 10px;
+      backdrop-filter: blur(var(--text-panel-blur));
+      -webkit-backdrop-filter: blur(var(--text-panel-blur));
+    }
+
+    /* ---- 顶部返回 ---- */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: var(--page);
+      padding: 14px 10px;
+    }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 24px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 20px;
+      text-decoration: none;
+      transition: background 220ms ease, color 220ms ease;
+    }
+    .back-link:hover, .back-link:focus-visible {
+      background: rgba(43, 44, 60, 0.08);
+      color: var(--text);
+      outline: 0;
+    }
+    /* 左向箭头：横线 + 45°箭头头（与主站箭头同一套画法，方向相反） */
+    .back-arrow { position: relative; width: 22px; height: 12px; flex: 0 0 auto; transition: width 240ms ease, transform 240ms ease; }
+    .back-arrow::before, .back-arrow::after { content: ""; position: absolute; left: 0; top: 50%; background: currentColor; }
+    .back-arrow::before { width: 100%; height: 2px; transform: translateY(-50%); }
+    .back-arrow::after {
+      width: 8px; height: 8px; background: transparent;
+      border-bottom: 2px solid currentColor; border-left: 2px solid currentColor;
+      transform: translateY(-50%) rotate(45deg);
+    }
+    .back-link:hover .back-arrow { width: 34px; transform: translateX(-6px); }
+
+    /* ---- 主体 ---- */
+    .case {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap);
+      width: 100%;
+      max-width: var(--canvas);
+      margin: 0 auto;
+      padding: 0 10px 60px;
+    }
+    .case-hero { padding: 60px 30px; }
+    .case-kicker { margin: 0 0 16px; color: var(--muted); font-size: 18px; letter-spacing: 0.04em; }
+    .case-title { margin: 0; font-size: 56px; line-height: 1.2; font-weight: 400; }
+    .case-lead { margin: 20px 0 0; color: var(--muted); font-size: 20px; line-height: 1.9; }
+
+    /* 项目详情：角色/时间/团队/标签 */
+    .case-meta { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
+    .meta-item { padding: 24px 30px; }
+    .meta-item h3 { margin: 0 0 8px; color: var(--muted); font-size: 15px; font-weight: 400; letter-spacing: 0.06em; }
+    .meta-item p { margin: 0; font-size: 19px; line-height: 1.6; }
+
+    /* 案例拆解区块 */
+    .case-block { padding: 44px 30px; }
+    .case-block h2 { margin: 0 0 6px; font-size: 30px; font-weight: 400; }
+    .case-block .en { margin: 0 0 22px; color: var(--muted); font-size: 15px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .case-block p { margin: 0 0 16px; color: var(--muted); font-size: 19px; line-height: 2.1; }
+    .case-block p:last-child { margin-bottom: 0; }
+
+    /* 普通搜 vs AI 搜 对比表 */
+    .vs-block { margin-top: 28px; }
+    .vs-block h3 { margin: 0 0 16px; font-size: 20px; font-weight: 400; color: var(--text); }
+    .vs-scroll { overflow-x: auto; }
+    .vs-table { width: 100%; min-width: 620px; border-collapse: collapse; table-layout: fixed; }
+    .vs-table .vs-col-dim { width: 150px; }   /* 首列固定，剩余由普通搜/AI搜两列等分 */
+    .vs-table th, .vs-table td { text-align: left; padding: 14px 16px; vertical-align: top; line-height: 1.7; }
+    .vs-table thead th { font-size: 15px; font-weight: 400; letter-spacing: 0.02em; border-bottom: 1px solid rgba(43, 44, 60, 0.12); }
+    .vs-table thead .vs-dim { color: var(--muted); }
+    .vs-table thead .vs-normal { color: #2F49FF; }
+    .vs-table thead .vs-ai { color: #0F8B8B; }
+    .vs-table tbody th { width: 118px; color: #2B2C3C; font-weight: 600; white-space: nowrap; }
+    .vs-table tbody td { color: #585A6E; font-size: 16px; }
+    .vs-table tbody tr { border-top: 1px solid rgba(43, 44, 60, 0.07); }
+    .vs-table tbody tr:first-child { border-top: 0; }
+    .vs-table tr.vs-essence { border-top: 2px solid rgba(43, 44, 60, 0.18); }
+    .vs-table tr.vs-essence td { color: #2B2C3C; }
+
+    /* 背景后的三个小结：问题 / 业务目标 / 设计目标 */
+    .case-subgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); margin-top: 8px; }
+    .case-subitem { padding: 20px 22px; background: rgba(43, 44, 60, 0.03); border: 1px solid rgba(43, 44, 60, 0.08); border-radius: 10px; }
+    .case-subitem h3 { margin: 0 0 10px; color: var(--muted); font-size: 14px; font-weight: 400; letter-spacing: 0.06em; text-transform: uppercase; }
+    .case-subitem p { margin: 0; max-width: none; font-size: 17px; line-height: 1.8; color: var(--muted); }
+
+    /* 占位提示：内容填好后把 .todo 去掉即可 */
+    .todo {
+      display: inline-block;
+      padding: 2px 10px;
+      border: 1px dashed rgba(43, 44, 60, 0.25);
+      border-radius: 6px;
+      color: rgba(43, 44, 60, 0.5);
+      font-size: 16px;
+    }
+
+    /* 前台/后台流程图：AI 独立搜的用户行为 × 后台判断链路 */
+    .flow-diagram { display: flex; flex-direction: column; gap: 20px; margin-bottom: 20px; }
+    .flow-row { display: flex; flex-direction: column; gap: 12px; }
+    .flow-tag {
+      align-self: flex-start;
+      padding: 4px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+    }
+    .flow-tag-front { background: rgba(47, 73, 255, 0.12); color: #2F49FF; }
+    .flow-tag-back { background: rgba(15, 139, 139, 0.12); color: #0F8B8B; }
+    .flow-chain { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .flow-box {
+      padding: 12px 18px;
+      background: rgba(43, 44, 60, 0.03);
+      border: 1px solid rgba(43, 44, 60, 0.12);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.5;
+      text-align: center;
+    }
+    .flow-box small { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; }
+    .flow-box-highlight { border-color: rgba(15, 139, 139, 0.55); background: rgba(32, 231, 231, 0.12); }
+    .flow-arrow { color: var(--muted); font-size: 18px; flex: 0 0 auto; }
+    .flow-note { font-size: 16px !important; color: rgba(43, 44, 60, 0.45) !important; }
+
+    /* 过程 & 架构：两张独立卡片左右并列 */
+    .modules-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--gap); align-items: stretch; }
+    .modules-row > .case-block { margin: 0; }
+    .vlanes { margin-top: 8px; margin-bottom: 26px; }
+    .arch-stack { margin-top: 8px; }
+
+    /* 通用竖向盒子/箭头（过程 + 架构共用） */
+    .v-box {
+      width: 100%;
+      padding: 11px 12px;
+      background: rgba(43, 44, 60, 0.03);
+      border: 1px solid rgba(43, 44, 60, 0.12);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.45;
+      text-align: center;
+    }
+    .v-box small { display: block; margin-top: 3px; color: rgba(43, 44, 60, 0.5); font-size: 12px; }
+    .v-box-hl { border-color: rgba(15, 139, 139, 0.55); background: rgba(32, 231, 231, 0.12); }
+    /* 对话状态管理：旁路记忆，用虚线弱化，表示它是被各步骤读写的状态存储、不是串行环节 */
+    .v-mem { background: transparent; border-style: dashed; border-color: rgba(43, 44, 60, 0.28); }
+    .v-mem small { color: rgba(43, 44, 60, 0.5); }
+    /* 对话记忆放到图左侧，作为贯穿全流程的旁路侧栏（与右侧主干等高） */
+    .arch-layout { display: grid; grid-template-columns: 108px 1fr; gap: 10px; align-items: stretch; width: 100%; margin-top: 32px; }
+    .arch-side { display: flex; }
+    .arch-side .v-mem { width: 100%; align-self: stretch; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-size: 13px; line-height: 1.4; padding: 12px 8px; }
+    .arch-side .v-mem small { margin-top: 8px; font-size: 11px; line-height: 1.5; }
+    @media (max-width: 480px) { .arch-layout { grid-template-columns: 1fr; } }
+    .v-down { color: rgba(43, 44, 60, 0.4); font-size: 13px; letter-spacing: 0.04em; text-align: center; line-height: 1.3; }
+
+    /* 旅程：前台分流 + 后台 AI 数据基建 */
+    .stage-label { display: block; text-align: center; font-size: 13px; letter-spacing: 0.04em; color: var(--muted); margin: 22px 0 10px; }
+    .data-base + .flow-note { margin-top: 22px; }
+    .journey { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
+    .journey .v-box { font-size: 14px; }
+    .journey > .v-box { width: auto; min-width: 62%; }
+    .journey .arch-2 { gap: 10px; }
+    .journey .arch-2 .v-box { width: 100%; }
+
+    /* 后台 · AI 数据基建（分组盒 + 内部 chips） */
+    .data-base { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+    .db-group { padding: 11px 13px; background: rgba(43, 44, 60, 0.03); border: 1px solid rgba(43, 44, 60, 0.12); border-radius: 10px; }
+    .db-title { display: block; margin-bottom: 8px; font-size: 13.5px; color: var(--text); }
+    .db-title small { color: var(--muted); font-size: 11px; margin-left: 4px; }
+    .db-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .db-chips span { padding: 5px 10px; background: var(--panel-solid); border: 1px solid rgba(43, 44, 60, 0.12); border-radius: 6px; font-size: 12.5px; color: var(--muted); }
+
+    /* 四个回答范式：等宽四列，高度随图片内容自适应 */
+    .paradigms { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap); align-items: stretch; }
+    .p-tile { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+    .p-media { flex: 0 0 auto; overflow: hidden; border-radius: 10px; background: var(--panel-solid); }
+    .p-media img { display: block; width: 100%; height: auto; }
+    .p-media[data-empty] { aspect-ratio: 3 / 5; display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(43, 44, 60, 0.25); color: rgba(43, 44, 60, 0.4); font-size: 13px; text-align: center; }
+    .p-desc { flex: 1 1 auto; margin: 0; display: flex; align-items: center; justify-content: center; padding: 16px; background: var(--panel-solid); border-radius: 10px; font-size: 14px; line-height: 1.6; color: var(--muted); text-align: center; }
+    @media (max-width: 900px) { .paradigms { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .paradigms { grid-template-columns: 1fr; } }
+
+    /* 架构：竖向分层 */
+    .arch-stack { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
+    .arch-row { display: flex; justify-content: center; gap: 10px; width: 100%; }
+    .arch-row .v-box { width: auto; min-width: 62%; font-size: 14px; }
+    .arch-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+    .arch-skills { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; }
+    .arch-skills .v-box { font-size: 13.5px; padding: 9px 8px; }
+    .arch-note-inline {
+      width: 100%;
+      margin: 2px 0;
+      padding: 8px 12px;
+      background: rgba(43, 44, 60, 0.03);
+      border: 1px dashed rgba(43, 44, 60, 0.14);
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+      text-align: center;
+    }
+    .arch-note-inline b { color: var(--text); font-weight: 500; }
+    /* 意图理解 agent：内含「自然语义解析 → 结构化 query 输出」子流程 */
+    .ia-agent { width: 100%; border: 1px solid rgba(43,44,60,.18); border-radius: 10px; padding: 10px 12px 12px; background: rgba(43,44,60,.02); }
+    .ia-agent .ia-t { text-align: center; font-size: 12.5px; color: var(--muted); margin-bottom: 8px; }
+    .ia-sub { display: flex; align-items: center; gap: 8px; }
+    .ia-sub .v-box { margin: 0; flex: 1; }
+    .ia-arr { flex: 0 0 auto; color: rgba(43,44,60,.4); font-size: 13px; }
+    /* 编排 agent（orchestrator）：把各 skill 包进一个 agent 容器 */
+    .orch { width: 100%; border: 1px solid rgba(43,44,60,.18); border-radius: 10px; padding: 10px 12px 12px; background: rgba(43,44,60,.02); }
+    .orch .orch-t { text-align: center; font-size: 13px; color: var(--text); font-weight: 500; }
+    .orch .orch-d { text-align: center; font-size: 12px; color: var(--muted); margin: 2px 0 10px; }
+    .orch .arch-skills { margin: 0; }
+
+    /* 媒体展示：沿用主站图块的观感（图为底，hover 播视频） */
+    .case-media { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); align-items: start; }
+    .m-tile {
+      position: relative;
+      aspect-ratio: 307.5 / 665.8;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--panel-solid);
+    }
+    .m-tile img, .m-tile video {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .m-tile video { opacity: 0; transition: opacity 220ms ease; }
+    .m-tile:hover video { opacity: 1; }
+    /* 媒体上方与图同宽的标签 */
+    .media-item { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+    .media-tag { padding: 10px 12px; background: var(--panel-solid); border-radius: 999px; text-align: center; font-size: 14px; line-height: 1.4; color: var(--text); }
+    .m-tile.is-empty { display: flex; align-items: center; justify-content: center; border: 1px dashed rgba(43, 44, 60, 0.25); background: var(--panel-solid); color: rgba(43, 44, 60, 0.4); font-size: 13px; text-align: center; }
+    .m-tile.is-autoplay video { opacity: 1; }   /* 无首图、视频常显自动循环 */
+    /* 方形 gif：缩放 80%、四周等宽留白(padding% 按宽度算)、模块高度 hug 成正方形 */
+    .m-tile.is-gif { aspect-ratio: auto; padding: 10%; }
+    .m-tile.is-gif img { position: static; inset: auto; display: block; width: 100%; height: auto; object-fit: contain; }
+    /* 模块4列：上下两格等高，整列撑到与其他列等高 */
+    .col4-stack { align-self: stretch; display: flex; flex-direction: column; gap: var(--gap); }
+    .col4-stack .stack-cell { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; gap: 8px; }
+    .col4-stack .stack-cell .m-tile { flex: 1 1 0; min-height: 0; aspect-ratio: auto; }
+    .col4-stack .m-tile.is-gif { padding: 0; display: flex; align-items: center; justify-content: center; }
+    .col4-stack .m-tile.is-gif img { width: auto; height: auto; max-width: 80%; max-height: 80%; }
+    /* 合并的大模块：跨 2 列，撑到与其他列等高 */
+    .media-item.merged { align-self: stretch; }
+    .media-item.merged .m-tile { flex: 1 1 auto; min-height: 0; aspect-ratio: auto; }
+    .media-item.merged .m-tile video { object-fit: contain; }   /* 宽扁视频完整显示，不裁切 */
+
+    /* ---- 页内文字编辑面板（仅本地可见；线上 html 没有 local-editing 类，整条隐藏）---- */
+    html:not(.local-editing) .edit-bar { display: none; }
+    .edit-bar {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(43, 44, 60, 0.15);
+      border-radius: 999px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .edit-bar button {
+      padding: 6px 18px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(43, 44, 60, 0.08);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 180ms ease;
+    }
+    .edit-bar button:hover { background: rgba(43, 44, 60, 0.16); }
+    .edit-bar button.primary { background: #2B2C3C; color: #ffffff; }
+    .edit-bar .edit-status { min-width: 70px; color: var(--muted); font-size: 14px; }
+    /* 编辑态：可编辑块加虚线框提示 */
+    html.is-editing [contenteditable="true"] { outline: 1px dashed rgba(32, 231, 231, 0.5); outline-offset: 3px; border-radius: 4px; }
+    html.is-editing [contenteditable="true"]:focus { outline-style: solid; }
+
+    /* ---- 响应式 ---- */
+    @media (max-width: 900px) {
+      .case-title { font-size: 40px; }
+      .case-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .case-media { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .case-subgrid { grid-template-columns: 1fr; }
+      .case-hero { padding: 40px 24px; }
+      .case-block { padding: 32px 24px; }
+      .modules-row { grid-template-columns: 1fr; gap: var(--gap); }
+    }
+    @media (max-width: 480px) {
+      .case-title { font-size: 32px; }
+      .case-meta { grid-template-columns: 1fr; }
+    }
+
+    /* ===== AI 产品架构：四层横向架构图（整页宽） ===== */
+    .ai-arch { display: flex; flex-direction: column; gap: var(--gap); margin-top: 8px; }
+    .ail-row { display: grid; grid-template-columns: 96px 1fr 220px; gap: 14px; align-items: center; }
+    .ail-name { font-size: 17px; font-weight: 500; color: var(--text); text-align: center; }
+    .ail-note { font-size: 13px; color: var(--muted); line-height: 1.65; }
+    .ail-note b { display: block; color: var(--text); font-weight: 600; margin-bottom: 4px; }
+    .ail-note ul { margin: 4px 0 0; padding-left: 16px; }
+    /* 中间主体：按层配色的圆角容器 */
+    .ail-body { border: 1px solid; border-radius: 12px; padding: 14px; }
+    .ail-ui   .ail-body,
+    .ail-req  .ail-body { background: rgba(124, 92, 214, 0.05); border-color: rgba(124, 92, 214, 0.22); }
+    .ail-svc  .ail-body { background: rgba(216, 27, 96, 0.045); border-color: rgba(216, 27, 96, 0.20); }
+    .ail-data .ail-body { background: rgba(47, 73, 255, 0.045); border-color: rgba(47, 73, 255, 0.18); }
+    /* 顶部横条 / 路由中心 */
+    .ail-band { text-align: center; padding: 11px 14px; border-radius: 8px; background: var(--panel-solid); border: 1px solid rgba(43, 44, 60, 0.12); font-size: 14.5px; font-weight: 500; color: var(--text); }
+    .ail-band small { display: block; margin-top: 3px; font-size: 12px; font-weight: 400; color: var(--muted); }
+    .ail-router { background: rgba(216, 27, 96, 0.07); border-color: rgba(216, 27, 96, 0.30); color: #B0164E; }
+    .ail-router small { color: rgba(176, 22, 78, 0.7); }
+    /* 分组盒 */
+    .ail-cols { display: grid; gap: 10px; margin-top: 10px; }
+    .ail-group { border: 1px solid rgba(43, 44, 60, 0.10); border-radius: 8px; padding: 10px 10px 11px; background: rgba(255, 255, 255, 0.55); }
+    .ail-gt { font-size: 13px; font-weight: 600; color: var(--text); text-align: center; margin-bottom: 8px; }
+    .ail-gt small { font-weight: 400; color: var(--muted); font-size: 12px; }
+    .ail-chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .ail-chips.vert { flex-direction: column; }
+    .ail-chips span { padding: 7px 11px; border: 1px solid rgba(43, 44, 60, 0.20); border-radius: 6px; font-size: 12.5px; color: var(--muted); background: var(--panel-solid); text-align: center; }
+    /* 请求层：意图理解 agent 横向流 */
+    .ail-flow { display: flex; align-items: stretch; gap: 8px; margin-top: 10px; }
+    .ail-box { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; justify-content: center; text-align: center; padding: 11px 10px; border-radius: 8px; background: var(--panel-solid); border: 1px solid rgba(43, 44, 60, 0.16); font-size: 13px; color: var(--text); }
+    .ail-box small { display: block; margin-top: 3px; font-size: 11px; color: var(--muted); }
+    .ail-arrow { flex: 0 0 auto; align-self: center; color: rgba(43, 44, 60, 0.4); font-size: 15px; }
+    /* 服务层：三组 skill（通识 | 站内服务 | 追问） */
+    .ail-skills { display: grid; grid-template-columns: minmax(150px, 1fr) 2.6fr minmax(130px, 1fr); gap: 10px; margin-top: 10px; align-items: start; }
+    .ail-skill-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .ail-skill-grid .ail-box.sm { justify-content: center; }
+    /* 响应式：窄屏整行堆叠 */
+    @media (max-width: 860px) {
+      .ail-row { grid-template-columns: 1fr; gap: 6px; }
+      .ail-name { text-align: left; padding-left: 2px; }
+      .ail-note { padding-left: 2px; }
+      .ail-skills { grid-template-columns: 1fr; }
+      .ail-skill-grid { grid-template-columns: repeat(2, 1fr); }
+      .ail-flow { flex-wrap: wrap; }
+      .ail-flow .ail-box { flex-basis: calc(50% - 16px); }
+    }
+    /* ===== 年度商家颁奖会：切图行 + hover 视频图块 ===== */
+    .ma-shots { display: grid; gap: 10px; margin: 8px 0 4px; }
+    .ma-shots.ma-2 { grid-template-columns: repeat(2, 1fr); }
+    .ma-shots.ma-3 { grid-template-columns: repeat(3, 1fr); }
+    .ma-shots > img { display: block; width: 100%; height: auto; border-radius: 10px; }
+    @media (max-width: 760px) { .ma-shots.ma-2, .ma-shots.ma-3 { grid-template-columns: 1fr; } }
+    /* 小标题（流程说明 / 核心页面） */
+    .ma-sub { margin: 24px 0 8px; font-size: 15px; letter-spacing: 0.02em; color: var(--muted); }
+    .ma-storyboard { display: block; width: 100%; height: auto; border-radius: 10px; }
+    /* hover 视频图块 */
+    .ma-tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--gap); margin-top: 8px; }
+    @media (max-width: 900px) { .ma-tiles { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 560px) { .ma-tiles { grid-template-columns: repeat(2, 1fr); } }
+    .ma-tile { margin: 0; }
+    .ma-solo { max-width: 300px; }
+    .ma-tile-box { position: relative; border-radius: 12px; overflow: hidden; background: var(--panel-solid); }
+    .ma-tile-box > img { display: block; width: 100%; height: auto; }
+    .ma-tile-box > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 240ms ease; }
+    .ma-tile:hover .ma-tile-box > video { opacity: 1; }
+    .ma-cap { margin: 8px 0 0; text-align: center; font-size: 13px; color: var(--muted); }
+    .ma-compare { display: flex; flex-wrap: wrap; gap: 16px; margin: 8px 0 4px; }
+    .ma-compare .ma-tile { width: 200px; }
+    .ma-placeholder { aspect-ratio: 9 / 19.5; border: 1px dashed rgba(43, 44, 60, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: rgba(43, 44, 60, 0.4); font-size: 13px; }
+  </style>
+<style id="accent-trial">.flow-tag-front{background:rgba(216,27,96,.12)!important;color:#D81B60!important}.vs-table thead .vs-normal{color:#D81B60!important}.flow-tag-back{background:rgba(2,153,153,.12)!important;color:#029999!important}.vs-table thead .vs-ai{color:#029999!important}.flow-box-highlight{border-color:rgba(2,153,153,.55)!important}</style></head>
+<body>
+  <header class="site-header">
+    <a class="back-link" href="index.html"><span class="back-arrow" aria-hidden="true"></span><span>返回作品集</span></a>
+  </header>
+
+  <main class="case">
+    <!-- 项目详情 -->
+    <section class="case-hero panel">
+      <p class="case-kicker">SELECTED PROJECTS · 活动设计 / 得物 APP</p>
+      <h1 class="case-title">年度商家颁奖会</h1>
+    </section>
+
+    <section class="case-meta">
+      <article class="meta-item panel"><h3>角色 ROLE</h3><p>（待补充）</p></article>
+      <article class="meta-item panel"><h3>时间 TIMELINE</h3><p>（待补充）</p></article>
+      <article class="meta-item panel"><h3>团队 TEAM</h3><p>（待补充）</p></article>
+      <article class="meta-item panel"><h3>标签 TAGS</h3><p>（待补充）</p></article>
+    </section>
+
+    <!-- 背景 & 目标 -->
+    <section class="case-block panel">
+      <h2>探索商家视觉风格，挑战 AI 生成强视觉</h2>
+      <p class="en">Design Innovation · 商家年度颁奖视频 &amp; 报告</p>
+      <p>背景：为增强企卖商家的经营信心，满足商家对年度经营数据的了解诉求，并将年度颁奖视频作为外宣渠道</p>
+      <p>目标：提升商家荣誉感与归属感，体现得物商家专属风格，提高商家分享率</p>
+    </section>
+
+    <!-- 难点1 -->
+    <section class="case-block panel">
+      <h2>难点1：商家专属风格难定义，荣誉感难塑造</h2>
+      <p class="en">Challenge 1</p>
+      <p>设计行动：</p>
+      <p>1）年度颁奖视频-通过对风格探索、质感以及立体压印效果的塑造，确定开箱作为入场动效，结合贺卡的意向，营造惊喜感与荣誉感</p>
+      <div class="ma-shots ma-3">
+        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-style-light.png" alt="视觉风格-轻量浅色更符合整体调性">
+        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-texture.png" alt="质感-纸的材质更细腻，突出商品">
+        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-layout.png" alt="排版-简约清晰，突出品牌&公司">
+      </div>
+      <p>2）年度报告-通过视觉风格的尝试，确定礼物&amp;仪式感的调性；对于主视觉元素，避免太抽象/具象，选择更简约直观的风格，动效避免太过活泼，追求平稳，体现商家专属轻量通透、简约专业的视觉风格</p>
+      <div class="ma-shots ma-2">
+        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-gift.png" alt="视觉风格-接收一份专属的年度礼物">
+        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-element-light.png" alt="视觉元素-轻量通透、简约专业">
+      </div>
+      <div class="ma-compare">
+        <figure class="ma-tile"><div class="ma-placeholder">视频占位</div><figcaption class="ma-cap">太活泼❌</figcaption></figure>
+        <figure class="ma-tile"><div class="ma-placeholder">视频占位</div><figcaption class="ma-cap">平稳✅</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- 难点2 -->
+    <section class="case-block panel">
+      <h2>难点2：有想法缺少 AI 落地能力，没有成熟的 AI 交付流程</h2>
+      <p class="en">Challenge 2</p>
+      <p>设计行动：</p>
+      <p>1）短时间快速学习 AI 生图生视频的技能，首次尝试完全由 AI 生成画面及动效，沉淀 AI 视频生产流程</p>
+      <div class="ma-shots ma-3">
+        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-material.png" alt="素材生成-有细节、有质感">
+        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-element-tone.png" alt="视觉元素-调性统一、有平台心智">
+        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-aivideo.png" alt="AI生成视频-组织画面内元素的动态效果、调整视频细节">
+      </div>
+      <p>2）项目节奏快，缺少全页面 AI 动态素材适配开发的参考，快速找到适用于开发的 AI 素材格式，两周内产出设计方案并交付开发上线</p>
+      <div class="ma-shots ma-2">
+        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-deliver1.png" alt="交付1-解决素材边缘生硬问题">
+        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-deliver2.png" alt="交付2-分图层交付动态素材、把控细节还原">
+      </div>
+    </section>
+
+    <!-- 设计成果1：年度颁奖视频 -->
+    <section class="case-block panel">
+      <h2>设计成果1：年度颁奖视频</h2>
+      <p class="en">Result 1</p>
+      <figure class="ma-tile ma-solo">
+        <div class="ma-tile-box">
+          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-13-image.png" alt="年度颁奖视频">
+          <video src="assets/uploads/content-13-video.mp4" muted loop playsinline preload="metadata"></video>
+        </div>
+        <figcaption class="ma-cap">年度颁奖视频 · hover 播放</figcaption>
+      </figure>
+      <p class="ma-sub">流程说明</p>
+      <img class="ma-storyboard" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-storyboard.png" alt="开箱动效分镜：进度加载 → 点击立即开启 → 箱子打开，得物 logo 跟随箱子一侧，镜头推进，同时箱子向右旋转，卡片上升，飘带摆动加扫光效果">
+    </section>
+
+    <!-- 设计成果2：商家年度报告 -->
+    <section class="case-block panel">
+      <h2>设计成果2：商家年度报告</h2>
+      <p class="en">Result 2</p>
+      <p class="ma-sub">核心页面 · hover 播放动效</p>
+      <div class="ma-tiles">
+        <figure class="ma-tile"><div class="ma-tile-box"><img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-9-image.png" alt="开屏"><video src="assets/uploads/content-9-video.mp4" muted loop playsinline preload="metadata"></video></div><figcaption class="ma-cap">开屏</figcaption></figure>
+        <figure class="ma-tile"><div class="ma-tile-box"><img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-10-image.png" alt="入驻旅程"><video src="assets/uploads/content-10-video.mp4" muted loop playsinline preload="metadata"></video></div><figcaption class="ma-cap">入驻旅程</figcaption></figure>
+        <figure class="ma-tile"><div class="ma-tile-box"><img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-11-image.png" alt="销售里程碑"><video src="assets/uploads/content-11-video.mp4" muted loop playsinline preload="metadata"></video></div><figcaption class="ma-cap">销售里程碑</figcaption></figure>
+        <figure class="ma-tile"><div class="ma-tile-box"><img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-12-image.png" alt="物流成就卡"><video src="assets/uploads/content-12-video.mp4" muted loop playsinline preload="metadata"></video></div><figcaption class="ma-cap">物流成就卡</figcaption></figure>
+        <figure class="ma-tile"><div class="ma-tile-box"><img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-13-image.png" alt="曝光卡"><video src="assets/uploads/content-13-video.mp4" muted loop playsinline preload="metadata"></video></div><figcaption class="ma-cap">曝光卡</figcaption></figure>
+      </div>
+    </section>
+
+    <!-- 项目结果 -->
+    <section class="case-block panel">
+      <h2>项目结果</h2>
+      <p class="en">Impact</p>
+      <p>覆盖 34,509 家商家，视频触达率 84.7%（访问/曝光），分享率 50%，新增 2 项设计专利。</p>
+      <p>不设限，挑战一下，就能提升自己的创新思维和视觉表现力。</p>
+    </section>
+
+    <footer class="site-header" style="position: static; padding: 40px 10px 0;">
+      <a class="back-link" href="index.html"><span class="back-arrow" aria-hidden="true"></span><span>返回作品集</span></a>
+    </footer>
+  </main>
+
+  <div class="edit-bar" aria-label="页面文字编辑">
+    <span class="edit-status" data-edit-status="">已保存 ✓</span>
+    <button type="button" data-edit-toggle="">退出编辑</button>
+    <button type="button" class="primary" data-edit-save="">保存</button>
+  </div>
+
+  <script>
+    // 二级页轻量文字编辑器：仅 local-editing 时可用。
+    // 「开始编辑」给正文文本块开 contenteditable，「保存」把清理后的整页 HTML
+    // POST 到 save-server(127.0.0.1:3219)/save-page 写回磁盘上的本文件。
+    (() => {
+      if (!document.documentElement.classList.contains("local-editing")) return;
+      const PAGE = location.pathname.split("/").pop() || "ai-search.html";
+      // 可编辑的文本块（只开文字，不开布局容器，避免误改结构）
+      const EDITABLE = [
+        ".case-kicker", ".case-title", ".case-lead",
+        ".meta-item h3", ".meta-item p",
+        ".case-block h2", ".case-block .en", ".case-block > p",
+        ".case-subitem h3", ".case-subitem p",
+        ".flow-box", ".flow-note", ".flow-tag", ".arch-note-inline",
+        ".v-box", ".v-down", ".lane-label", ".stage-label", ".db-title", ".db-chips span",
+        ".p-cap", ".p-desc", ".media-tag",
+        ".vs-table th", ".vs-table td",   // 对比表:表头 + 每个单元格可编辑
+        ".ma-cap", ".ma-sub"             // 颁奖会:图块标注 + 小标题
+      ].join(",");
+
+      const toggleBtn = document.querySelector("[data-edit-toggle]");
+      const saveBtn = document.querySelector("[data-edit-save]");
+      const statusEl = document.querySelector("[data-edit-status]");
+      let editing = false;
+
+      const setStatus = (msg) => {
+        statusEl.textContent = msg;
+        clearTimeout(setStatus.t);
+        setStatus.t = setTimeout(() => { statusEl.textContent = editing ? "编辑中" : "本地编辑"; }, 2000);
+      };
+
+      // 粘贴时只保留纯文本 —— 否则富文本会带进 <div>/<span style> 等非法嵌套，
+      // 破坏结构还会产生「点不动、编辑不了」的死块。绑一次即可。
+      document.addEventListener("paste", (event) => {
+        const el = event.target;
+        if (!el || !el.closest || !el.closest('[contenteditable="true"]')) return;
+        event.preventDefault();
+        const text = (event.clipboardData || window.clipboardData).getData("text/plain");
+        document.execCommand("insertText", false, text);
+      });
+
+      toggleBtn.addEventListener("click", () => {
+        editing = !editing;
+        document.documentElement.classList.toggle("is-editing", editing);
+        document.querySelectorAll(EDITABLE).forEach((el) => {
+          if (editing) el.setAttribute("contenteditable", "true");
+          else el.removeAttribute("contenteditable");
+        });
+        toggleBtn.textContent = editing ? "退出编辑" : "开始编辑";
+        saveBtn.hidden = !editing;
+        statusEl.textContent = editing ? "编辑中" : "本地编辑";
+      });
+
+      saveBtn.addEventListener("click", async () => {
+        // 克隆整份文档并清理编辑器痕迹，得到干净的可保存 HTML
+        const clone = document.documentElement.cloneNode(true);
+        clone.classList.remove("local-editing", "is-editing");
+        clone.querySelectorAll("[contenteditable]").forEach((el) => el.removeAttribute("contenteditable"));
+        const html = "<!DOCTYPE html>\n" + clone.outerHTML + "\n";
+        setStatus("保存中…");
+        try {
+          const res = await fetch("http://127.0.0.1:3219/save-page", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ page: PAGE, html })
+          });
+          const out = await res.json();
+          setStatus(out.ok ? "已保存 ✓" : `失败：${out.error || res.status}`);
+        } catch (e) {
+          setStatus("保存失败：save-server 未启动？");
+        }
+      });
+    })();
+  </script>
+
+
+
+
+
+
+  <script>
+    // 媒体图块 hover 播放视频（与一级页一致）：进入播放、离开暂停归零。
+    // CSS 已负责 hover 时把视频层显现，这里补上「真正播放」。
+    (() => {
+      document.querySelectorAll(".m-tile").forEach((tile) => {
+        if (tile.classList.contains("is-autoplay")) return;   // 自动循环的格子不走 hover 逻辑
+        const video = tile.querySelector("video");
+        if (!video) return;
+        tile.addEventListener("mouseenter", () => {
+          video.currentTime = 0;
+          video.play().catch(() => {});
+        });
+        tile.addEventListener("mouseleave", () => {
+          video.pause();
+          video.currentTime = 0;
+        });
+      });
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  <script>
+    // hover 播放视频图块：进入时懒升级 preload 并播放，离开暂停
+    (() => {
+      document.querySelectorAll(".ma-tile .ma-tile-box > video").forEach((v) => {
+        const tile = v.closest(".ma-tile");
+        tile.addEventListener("pointerenter", () => {
+          if (v.preload === "none") { v.preload = "metadata"; v.load(); }
+          v.play().catch(() => {});
+        });
+        tile.addEventListener("pointerleave", () => { v.pause(); });
+      });
+    })();
+  </script>
+</body></html>
