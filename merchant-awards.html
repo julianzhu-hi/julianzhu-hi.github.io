@@ -423,8 +423,12 @@
     .ma-solo { max-width: 300px; }
     .ma-tile-box { position: relative; border-radius: 12px; overflow: hidden; background: var(--panel-solid); }
     .ma-tile-box > img { display: block; width: 100%; height: auto; }
+    .ma-tile-box { cursor: pointer; }
     .ma-tile-box > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 240ms ease; }
-    .ma-tile:hover .ma-tile-box > video { opacity: 1; }
+    .ma-tile-box > video.is-ready { opacity: 1; }
+    /* 暂停态：居中播放按钮 */
+    .ma-tile.is-paused .ma-tile-box::before { content: ""; position: absolute; inset: 0; margin: auto; width: 56px; height: 56px; border-radius: 50%; background: rgba(0,0,0,.4); pointer-events: none; }
+    .ma-tile.is-paused .ma-tile-box::after { content: ""; position: absolute; inset: 0; margin: auto; width: 0; height: 0; border-style: solid; border-width: 12px 0 12px 20px; border-color: transparent transparent transparent #fff; transform: translateX(3px); pointer-events: none; }
     .ma-cap { margin: 8px 0 0; text-align: center; font-size: 13px; color: var(--muted); }
     .ma-compare { display: flex; flex-wrap: wrap; gap: 16px; margin: 8px 0 4px; }
     .ma-compare .ma-tile { width: 200px; }
@@ -508,7 +512,7 @@
               <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-13-image.png" alt="年度颁奖视频">
               <video src="assets/uploads/content-13-video.mp4" muted loop playsinline preload="metadata"></video>
             </div>
-            <figcaption class="ma-cap">hover 播放</figcaption>
+            <figcaption class="ma-cap">自动播放 · 点击暂停</figcaption>
           </figure>
         </div>
         <div class="ma-r1-col ma-r1-story" style="flex-grow:2.287">
@@ -522,7 +526,7 @@
     <section class="case-block panel">
       <h2>设计成果2：商家年度报告</h2>
       <p class="en">Result 2</p>
-      <p class="ma-sub">核心页面 · hover 播放动效</p>
+      <p class="ma-sub">核心页面 · 自动循环播放，点击暂停</p>
       <div class="ma-tiles">
         <figure class="ma-tile"><div class="ma-tile-box"><img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-9-image.png" alt="开屏"><video src="assets/uploads/content-9-video.mp4" muted loop playsinline preload="metadata"></video></div><figcaption class="ma-cap">开屏</figcaption></figure>
         <figure class="ma-tile"><div class="ma-tile-box"><img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-10-image.png" alt="入驻旅程"><video src="assets/uploads/content-10-video.mp4" muted loop playsinline preload="metadata"></video></div><figcaption class="ma-cap">入驻旅程</figcaption></figure>
@@ -663,15 +667,29 @@
 
 
   <script>
-    // hover 播放视频图块：进入时懒升级 preload 并播放，离开暂停
+    // 视频图块：进入视口自动静音循环播放，滚出视口暂停省流量；点击图块暂停/继续。
     (() => {
-      document.querySelectorAll(".ma-tile .ma-tile-box > video").forEach((v) => {
-        const tile = v.closest(".ma-tile");
-        tile.addEventListener("pointerenter", () => {
-          if (v.preload === "none") { v.preload = "metadata"; v.load(); }
-          v.play().catch(() => {});
+      const vids = document.querySelectorAll(".ma-tile .ma-tile-box > video");
+      const userPaused = new WeakSet();   // 记录用户手动暂停，避免滚回视口时自动续播
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          const v = e.target;
+          if (e.isIntersecting) {
+            if (v.preload === "none") { v.preload = "auto"; v.load(); }
+            if (!userPaused.has(v)) v.play().catch(() => {});
+          } else {
+            v.pause();
+          }
         });
-        tile.addEventListener("pointerleave", () => { v.pause(); });
+      }, { rootMargin: "200px 0px" });
+      vids.forEach((v) => {
+        const tile = v.closest(".ma-tile");
+        v.addEventListener("playing", () => v.classList.add("is-ready"));  // 首帧就绪后淡入（在此之前显示图片占位）
+        tile.addEventListener("click", () => {
+          if (v.paused) { userPaused.delete(v); tile.classList.remove("is-paused"); v.play().catch(() => {}); }
+          else { userPaused.add(v); tile.classList.add("is-paused"); v.pause(); }
+        });
+        io.observe(v);
       });
     })();
   </script>
