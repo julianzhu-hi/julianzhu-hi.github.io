@@ -402,6 +402,12 @@
     /* 小标题（流程说明 / 核心页面） */
     .ma-sub { margin: 24px 0 8px; font-size: 15px; letter-spacing: 0.02em; color: var(--muted); }
     .ma-storyboard { display: block; width: 100%; height: auto; border-radius: 10px; }
+    /* 成果1：宣发视频 + 流程说明分镜 横排不折行 */
+    .ma-r1-row { display: flex; flex-wrap: nowrap; gap: 20px; align-items: flex-start; margin-top: 8px; }
+    .ma-r1-row .ma-solo { flex: 0 0 200px; max-width: 200px; }
+    .ma-r1-story { flex: 1 1 auto; min-width: 0; }
+    .ma-r1-story .ma-sub { margin-top: 0; }
+    @media (max-width: 560px) { .ma-r1-row { flex-wrap: wrap; } .ma-r1-row .ma-solo { flex-basis: 160px; } .ma-r1-story { flex-basis: 100%; } }
     /* hover 视频图块 */
     .ma-tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--gap); margin-top: 8px; }
     @media (max-width: 900px) { .ma-tiles { grid-template-columns: repeat(3, 1fr); } }
@@ -489,15 +495,19 @@
     <section class="case-block panel">
       <h2>设计成果1：年度颁奖视频</h2>
       <p class="en">Result 1</p>
-      <figure class="ma-tile ma-solo">
-        <div class="ma-tile-box">
-          <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-13-image.png" alt="年度颁奖视频">
-          <video src="assets/uploads/content-13-video.mp4" muted loop playsinline preload="metadata"></video>
+      <div class="ma-r1-row">
+        <figure class="ma-tile ma-solo">
+          <div class="ma-tile-box">
+            <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-13-image.png" alt="年度颁奖视频">
+            <video src="assets/uploads/content-13-video.mp4" muted loop playsinline preload="metadata"></video>
+          </div>
+          <figcaption class="ma-cap">年度颁奖视频 · hover 播放</figcaption>
+        </figure>
+        <div class="ma-r1-story">
+          <p class="ma-sub">流程说明</p>
+          <img class="ma-storyboard" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-storyboard.png" alt="开箱动效分镜：进度加载 → 点击立即开启 → 箱子打开，得物 logo 跟随箱子一侧，镜头推进，同时箱子向右旋转，卡片上升，飘带摆动加扫光效果">
         </div>
-        <figcaption class="ma-cap">年度颁奖视频 · hover 播放</figcaption>
-      </figure>
-      <p class="ma-sub">流程说明</p>
-      <img class="ma-storyboard" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-storyboard.png" alt="开箱动效分镜：进度加载 → 点击立即开启 → 箱子打开，得物 logo 跟随箱子一侧，镜头推进，同时箱子向右旋转，卡片上升，飘带摆动加扫光效果">
+      </div>
     </section>
 
     <!-- 设计成果2：商家年度报告 -->
