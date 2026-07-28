@@ -394,11 +394,10 @@
       .ail-flow .ail-box { flex-basis: calc(50% - 16px); }
     }
     /* ===== 年度商家颁奖会：切图行 + hover 视频图块 ===== */
-    .ma-shots { display: grid; gap: 10px; margin: 8px 0 4px; }
-    .ma-shots.ma-2 { grid-template-columns: repeat(2, 1fr); }
-    .ma-shots.ma-3 { grid-template-columns: repeat(3, 1fr); }
-    .ma-shots > img { display: block; width: 100%; height: auto; border-radius: 10px; }
-    @media (max-width: 760px) { .ma-shots.ma-2, .ma-shots.ma-3 { grid-template-columns: 1fr; } }
+    /* 一排切图：flex-grow=宽高比 → 等高、宽按比例、铺满一行不折行 */
+    .ma-shots { display: flex; gap: 10px; align-items: flex-start; margin: 8px 0 4px; }
+    .ma-shots > img { display: block; flex: 1 1 0; height: auto; min-width: 0; border-radius: 10px; }
+    @media (max-width: 760px) { .ma-shots { flex-wrap: wrap; } .ma-shots > img { flex-basis: 100%; } }
     /* 小标题（流程说明 / 核心页面） */
     .ma-sub { margin: 24px 0 8px; font-size: 15px; letter-spacing: 0.02em; color: var(--muted); }
     .ma-storyboard { display: block; width: 100%; height: auto; border-radius: 10px; }
@@ -437,10 +436,10 @@
     </section>
 
     <section class="case-meta">
-      <article class="meta-item panel"><h3>角色 ROLE</h3><p>（待补充）</p></article>
-      <article class="meta-item panel"><h3>时间 TIMELINE</h3><p>（待补充）</p></article>
-      <article class="meta-item panel"><h3>团队 TEAM</h3><p>（待补充）</p></article>
-      <article class="meta-item panel"><h3>标签 TAGS</h3><p>（待补充）</p></article>
+      <article class="meta-item panel"><h3>角色 ROLE</h3><p>视觉 &amp; 动效设计 / AIGC 落地</p></article>
+      <article class="meta-item panel"><h3>时间 TIMELINE</h3><p>2026.01</p></article>
+      <article class="meta-item panel"><h3>团队 TEAM</h3><p>设计 × 运营 × 研发协作</p></article>
+      <article class="meta-item panel"><h3>标签 TAGS</h3><p>视觉设计 · Motion · AIGC</p></article>
     </section>
 
     <!-- 背景 & 目标 -->
@@ -458,14 +457,14 @@
       <p>设计行动：</p>
       <p>1）年度颁奖视频-通过对风格探索、质感以及立体压印效果的塑造，确定开箱作为入场动效，结合贺卡的意向，营造惊喜感与荣誉感</p>
       <div class="ma-shots ma-3">
-        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-style-light.png" alt="视觉风格-轻量浅色更符合整体调性">
-        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-texture.png" alt="质感-纸的材质更细腻，突出商品">
-        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-layout.png" alt="排版-简约清晰，突出品牌&公司">
+        <img style="flex-grow:1.597" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-style-light.png" alt="视觉风格-轻量浅色更符合整体调性">
+        <img style="flex-grow:1.234" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-texture.png" alt="质感-纸的材质更细腻，突出商品">
+        <img style="flex-grow:1.234" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-layout.png" alt="排版-简约清晰，突出品牌&公司">
       </div>
       <p>2）年度报告-通过视觉风格的尝试，确定礼物&amp;仪式感的调性；对于主视觉元素，避免太抽象/具象，选择更简约直观的风格，动效避免太过活泼，追求平稳，体现商家专属轻量通透、简约专业的视觉风格</p>
       <div class="ma-shots ma-2">
-        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-gift.png" alt="视觉风格-接收一份专属的年度礼物">
-        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-element-light.png" alt="视觉元素-轻量通透、简约专业">
+        <img style="flex-grow:1.227" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-gift.png" alt="视觉风格-接收一份专属的年度礼物">
+        <img style="flex-grow:1.597" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-element-light.png" alt="视觉元素-轻量通透、简约专业">
       </div>
       <div class="ma-compare">
         <figure class="ma-tile"><div class="ma-placeholder">视频占位</div><figcaption class="ma-cap">太活泼❌</figcaption></figure>
@@ -480,14 +479,14 @@
       <p>设计行动：</p>
       <p>1）短时间快速学习 AI 生图生视频的技能，首次尝试完全由 AI 生成画面及动效，沉淀 AI 视频生产流程</p>
       <div class="ma-shots ma-3">
-        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-material.png" alt="素材生成-有细节、有质感">
-        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-element-tone.png" alt="视觉元素-调性统一、有平台心智">
-        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-aivideo.png" alt="AI生成视频-组织画面内元素的动态效果、调整视频细节">
+        <img style="flex-grow:1.227" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-material.png" alt="素材生成-有细节、有质感">
+        <img style="flex-grow:2.016" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-element-tone.png" alt="视觉元素-调性统一、有平台心智">
+        <img style="flex-grow:2.016" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-aivideo.png" alt="AI生成视频-组织画面内元素的动态效果、调整视频细节">
       </div>
       <p>2）项目节奏快，缺少全页面 AI 动态素材适配开发的参考，快速找到适用于开发的 AI 素材格式，两周内产出设计方案并交付开发上线</p>
       <div class="ma-shots ma-2">
-        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-deliver1.png" alt="交付1-解决素材边缘生硬问题">
-        <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-deliver2.png" alt="交付2-分图层交付动态素材、把控细节还原">
+        <img style="flex-grow:2.106" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-deliver1.png" alt="交付1-解决素材边缘生硬问题">
+        <img style="flex-grow:2.748" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-deliver2.png" alt="交付2-分图层交付动态素材、把控细节还原">
       </div>
     </section>
 
