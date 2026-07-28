@@ -395,7 +395,7 @@
     }
     /* ===== 年度商家颁奖会：切图行 + hover 视频图块 ===== */
     /* 一排切图：flex-grow=宽高比 → 等高、宽按比例、铺满一行不折行 */
-    .ma-shots { display: flex; gap: 10px; align-items: flex-start; margin: 8px 0 4px; }
+    .ma-shots { display: flex; gap: var(--gap); align-items: flex-start; margin: 8px 0 4px; }
     .ma-shots > img { display: block; flex: 1 1 0; height: auto; min-width: 0; border-radius: 10px; }
     /* 视频占位也进同一排：figure 作 flex 项，占位框填满列宽（等高由 flex-grow=宽高比 保证），标注挂底部 */
     .ma-shots > figure.ma-tile { flex: 1 1 0; min-width: 0; margin: 0; }
@@ -405,7 +405,7 @@
     .ma-sub { margin: 24px 0 8px; font-size: 15px; letter-spacing: 0.02em; color: var(--muted); }
     .ma-storyboard { display: block; width: 100%; height: auto; border-radius: 10px; }
     /* 成果1：宣发视频 + 流程说明分镜 横排不折行 */
-    .ma-r1-row { display: flex; flex-wrap: nowrap; gap: 24px; align-items: flex-start; margin-top: 8px; }
+    .ma-r1-row { display: flex; flex-wrap: nowrap; gap: var(--gap); align-items: flex-start; margin-top: 8px; }
     .ma-r1-col { flex: 0 0 auto; min-width: 0; }
     .ma-r1-col .ma-sub { margin: 0 0 8px; }
     .ma-r1-row .ma-tile { margin: 0; }
