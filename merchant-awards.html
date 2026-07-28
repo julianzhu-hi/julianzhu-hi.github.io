@@ -397,16 +397,29 @@
     /* 一排切图：flex-grow=宽高比 → 等高、宽按比例、铺满一行不折行 */
     .ma-shots { display: flex; gap: 10px; align-items: flex-start; margin: 8px 0 4px; }
     .ma-shots > img { display: block; flex: 1 1 0; height: auto; min-width: 0; border-radius: 10px; }
-    @media (max-width: 760px) { .ma-shots { flex-wrap: wrap; } .ma-shots > img { flex-basis: 100%; } }
+    /* 视频占位也进同一排：figure 作 flex 项，占位框填满列宽（等高由 flex-grow=宽高比 保证），标注挂底部 */
+    .ma-shots > figure.ma-tile { flex: 1 1 0; min-width: 0; margin: 0; }
+    .ma-shots > figure.ma-tile .ma-placeholder { width: 100%; }
+    @media (max-width: 760px) { .ma-shots { flex-wrap: wrap; } .ma-shots > img, .ma-shots > figure.ma-tile { flex-basis: 100%; } .ma-shots > figure.ma-tile .ma-placeholder { max-width: 220px; margin: 0 auto; } }
     /* 小标题（流程说明 / 核心页面） */
     .ma-sub { margin: 24px 0 8px; font-size: 15px; letter-spacing: 0.02em; color: var(--muted); }
     .ma-storyboard { display: block; width: 100%; height: auto; border-radius: 10px; }
     /* 成果1：宣发视频 + 流程说明分镜 横排不折行 */
-    .ma-r1-row { display: flex; flex-wrap: nowrap; gap: 20px; align-items: flex-start; margin-top: 8px; }
-    .ma-r1-row .ma-solo { flex: 0 0 200px; max-width: 200px; }
-    .ma-r1-story { flex: 1 1 auto; min-width: 0; }
-    .ma-r1-story .ma-sub { margin-top: 0; }
-    @media (max-width: 560px) { .ma-r1-row { flex-wrap: wrap; } .ma-r1-row .ma-solo { flex-basis: 160px; } .ma-r1-story { flex-basis: 100%; } }
+    .ma-r1-row { display: flex; flex-wrap: nowrap; gap: 24px; align-items: flex-start; margin-top: 8px; }
+    .ma-r1-col { flex: 0 0 auto; min-width: 0; }
+    .ma-r1-col .ma-sub { margin: 0 0 8px; }
+    .ma-r1-row .ma-tile { margin: 0; }
+    /* 两张图统一固定高度、顶部对齐；宽度按各自比例 */
+    .ma-r1-row .ma-tile-box { height: 400px; width: auto; display: inline-block; vertical-align: top; }
+    .ma-r1-row .ma-tile-box > img { position: static; width: auto; height: 100%; display: block; }
+    .ma-r1-row .ma-storyboard { height: 400px; width: auto; max-width: 100%; margin: 0; }
+    @media (max-width: 560px) {
+      .ma-r1-row { flex-wrap: wrap; }
+      .ma-r1-col { flex-basis: 100%; }
+      .ma-r1-row .ma-tile-box { height: auto; width: 160px; }
+      .ma-r1-row .ma-tile-box > img { width: 100%; height: auto; }
+      .ma-r1-row .ma-storyboard { height: auto; width: 100%; }
+    }
     /* hover 视频图块 */
     .ma-tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--gap); margin-top: 8px; }
     @media (max-width: 900px) { .ma-tiles { grid-template-columns: repeat(3, 1fr); } }
@@ -457,18 +470,16 @@
       <p>设计行动：</p>
       <p>1）年度颁奖视频-通过对风格探索、质感以及立体压印效果的塑造，确定开箱作为入场动效，结合贺卡的意向，营造惊喜感与荣誉感</p>
       <div class="ma-shots ma-3">
-        <img style="flex-grow:1.597" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-style-light.png" alt="视觉风格-轻量浅色更符合整体调性">
-        <img style="flex-grow:1.234" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-texture.png" alt="质感-纸的材质更细腻，突出商品">
-        <img style="flex-grow:1.234" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-layout.png" alt="排版-简约清晰，突出品牌&公司">
+        <img style="flex-grow:1.624" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-style-light.png" alt="视觉风格-轻量浅色更符合整体调性">
+        <img style="flex-grow:1.244" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-texture.png" alt="质感-纸的材质更细腻，突出商品">
+        <img style="flex-grow:1.244" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-layout.png" alt="排版-简约清晰，突出品牌&公司">
       </div>
       <p>2）年度报告-通过视觉风格的尝试，确定礼物&amp;仪式感的调性；对于主视觉元素，避免太抽象/具象，选择更简约直观的风格，动效避免太过活泼，追求平稳，体现商家专属轻量通透、简约专业的视觉风格</p>
-      <div class="ma-shots ma-2">
-        <img style="flex-grow:1.227" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-gift.png" alt="视觉风格-接收一份专属的年度礼物">
-        <img style="flex-grow:1.597" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-element-light.png" alt="视觉元素-轻量通透、简约专业">
-      </div>
-      <div class="ma-compare">
-        <figure class="ma-tile"><div class="ma-placeholder">视频占位</div><figcaption class="ma-cap">太活泼❌</figcaption></figure>
-        <figure class="ma-tile"><div class="ma-placeholder">视频占位</div><figcaption class="ma-cap">平稳✅</figcaption></figure>
+      <div class="ma-shots">
+        <img style="flex-grow:1.237" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-gift.png" alt="视觉风格-接收一份专属的年度礼物">
+        <img style="flex-grow:1.624" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p1-element-light.png" alt="视觉元素-轻量通透、简约专业">
+        <figure class="ma-tile" style="flex-grow:0.462"><div class="ma-placeholder">视频占位</div><figcaption class="ma-cap">太活泼❌</figcaption></figure>
+        <figure class="ma-tile" style="flex-grow:0.462"><div class="ma-placeholder">视频占位</div><figcaption class="ma-cap">平稳✅</figcaption></figure>
       </div>
     </section>
 
@@ -479,14 +490,14 @@
       <p>设计行动：</p>
       <p>1）短时间快速学习 AI 生图生视频的技能，首次尝试完全由 AI 生成画面及动效，沉淀 AI 视频生产流程</p>
       <div class="ma-shots ma-3">
-        <img style="flex-grow:1.227" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-material.png" alt="素材生成-有细节、有质感">
-        <img style="flex-grow:2.016" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-element-tone.png" alt="视觉元素-调性统一、有平台心智">
-        <img style="flex-grow:2.016" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-aivideo.png" alt="AI生成视频-组织画面内元素的动态效果、调整视频细节">
+        <img style="flex-grow:1.237" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-material.png" alt="素材生成-有细节、有质感">
+        <img style="flex-grow:2.06" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-element-tone.png" alt="视觉元素-调性统一、有平台心智">
+        <img style="flex-grow:2.06" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-aivideo.png" alt="AI生成视频-组织画面内元素的动态效果、调整视频细节">
       </div>
       <p>2）项目节奏快，缺少全页面 AI 动态素材适配开发的参考，快速找到适用于开发的 AI 素材格式，两周内产出设计方案并交付开发上线</p>
       <div class="ma-shots ma-2">
-        <img style="flex-grow:2.106" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-deliver1.png" alt="交付1-解决素材边缘生硬问题">
-        <img style="flex-grow:2.748" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-deliver2.png" alt="交付2-分图层交付动态素材、把控细节还原">
+        <img style="flex-grow:2.154" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-deliver1.png" alt="交付1-解决素材边缘生硬问题">
+        <img style="flex-grow:2.842" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-p2-deliver2.png" alt="交付2-分图层交付动态素材、把控细节还原">
       </div>
     </section>
 
@@ -495,14 +506,16 @@
       <h2>设计成果1：年度颁奖视频</h2>
       <p class="en">Result 1</p>
       <div class="ma-r1-row">
-        <figure class="ma-tile ma-solo">
-          <div class="ma-tile-box">
-            <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-13-image.png" alt="年度颁奖视频">
-            <video src="assets/uploads/content-13-video.mp4" muted loop playsinline preload="metadata"></video>
-          </div>
-          <figcaption class="ma-cap">年度颁奖视频 · hover 播放</figcaption>
-        </figure>
-        <div class="ma-r1-story">
+        <div class="ma-r1-col">
+          <p class="ma-sub">年度颁奖视频 · hover 播放</p>
+          <figure class="ma-tile ma-solo">
+            <div class="ma-tile-box">
+              <img loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/content-13-image.png" alt="年度颁奖视频">
+              <video src="assets/uploads/content-13-video.mp4" muted loop playsinline preload="metadata"></video>
+            </div>
+          </figure>
+        </div>
+        <div class="ma-r1-col ma-r1-story">
           <p class="ma-sub">流程说明</p>
           <img class="ma-storyboard" loading="lazy" decoding="async" src="https://cdn.jsdelivr.net/gh/julianzhu-hi/julianzhu-hi.github.io@main/assets/uploads/ma-storyboard.png" alt="开箱动效分镜：进度加载 → 点击立即开启 → 箱子打开，得物 logo 跟随箱子一侧，镜头推进，同时箱子向右旋转，卡片上升，飘带摆动加扫光效果">
         </div>
