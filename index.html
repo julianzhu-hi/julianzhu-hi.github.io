@@ -898,6 +898,7 @@
       }
       .desc-more .more-text {
         transition: transform 240ms ease;
+        white-space: nowrap;   /* 「View more」不在窄格里断成两行 */
       }
       .desc-more:hover,
       .desc-more:focus-visible {
@@ -2000,6 +2001,12 @@
         .timeline-grid,
         .life-gallery {
           grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        /* 含 View more 的标签排：窄屏改 1 列堆叠，View more 掉到自己那一行（整行宽度，不再断词） */
+        .project-actions:has(.desc-more) > .pill,
+        .project-actions:has(.desc-more) > .desc-more {
+          flex-basis: 100%;
         }
 
         .timeline-grid::before {
