@@ -857,6 +857,18 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: var(--gap);
       }
+      /* 含二级页入口的标签排：改 flex 等宽，View more 作为最右侧一格（与 UI 自动化一致） */
+      .project-actions:has(.desc-more) {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .project-actions:has(.desc-more) > .pill,
+      .project-actions:has(.desc-more) > .desc-more {
+        flex: 1 1 0;
+        min-width: 0;
+        margin: 0;
+        align-self: stretch;
+      }
 
       .project-actions .pill {
         color: #8A8CA0;
@@ -875,6 +887,8 @@
         gap: 10px;
         align-self: flex-start;  /* 靠左 */
         margin-top: auto;        /* 推到底 → 左下角 */
+        padding: 8px 24px;       /* 胶囊内边距（统一三处二级页入口） */
+        border-radius: 999px;    /* 胶囊圆角 */
         color: var(--muted);
         font-size: 19px;
         line-height: 1.6;
@@ -4541,10 +4555,11 @@
 
 
 
-        </p><a class="desc-more" href="ai-search.html" data-for-point="ai-search"><span class="more-dot" aria-hidden="true"></span><span class="more-text">View more</span><span class="project-point-arrow" aria-hidden="true"></span></a></div>
+        </p></div>
             <div class="project-actions">
               <a class="pill panel" href="#">UX&amp;UI</a>
               <a class="pill panel" href="#">Motion Design</a>
+              <a class="desc-more panel" href="ai-search.html" data-for-point="ai-search"><span class="more-dot" aria-hidden="true"></span><span class="more-text">View more</span><span class="project-point-arrow" aria-hidden="true"></span></a>
             </div>
           </div>
           <div class="project-points panel" data-text-id="project-points-searchpush" data-project-points="searchpush" style="font-size: 20px; font-weight: 400; color: rgb(138, 140, 160); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;"><p class="project-point is-active" data-project-point="ai-search" data-project-desc="用户带着模糊逛街心态搜索时，传统货架返回静态商品列表，难以找到想要商品，为此新增 AI 搜索能力：流内 AI 推荐卡 - 在结果页主动推荐可能感兴趣的趋势或属性组合，低成本完成被动种草；AI 独立搜 - 理解用户模糊、描述性的需求，直接生成更贴合的答案或推荐。" role="button" tabindex="0"><span class="project-point-label">AI 智能搜索</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="coupon" data-project-desc="搜索发券链路升级：搜前底纹/下拉/猜你喜欢标签透传优惠权益，搜中通过券条和弹窗两种方式，验证发券效率，同时优惠券出入场动效结合数字滚动强化优惠力度，搜后通过按钮状态（领取&gt;筛选&gt;取消），引导逐步用户核销，提升订单转化。" role="button" tabindex="0"><span class="project-point-label">搜索营销发券</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="visual" data-project-desc="搜索大促氛围：围绕情人节、新年、礼物节等大促节庆活动，搜索框通过桃花/烟花/雪人等的元素表达，并新增榜单的氛围展示点位，提升搜索场域节庆氛围，提升搜索大盘成交转化。" role="button" tabindex="0"><span class="project-point-label">搜索氛围视觉</span><span class="project-point-arrow" aria-hidden="true"></span></p>
@@ -5513,10 +5528,11 @@ Discription">商详潮玩新增故事 tab，通过陀螺仪小卡跟手交互动
           
         
           
-        </p><a class="desc-more" href="merchant-awards.html" data-for-point="annual-report"><span class="more-dot" aria-hidden="true"></span><span class="more-text">View more</span><span class="project-point-arrow" aria-hidden="true"></span></a><a class="desc-more" href="merchant-awards.html" data-for-point="promo-video"><span class="more-dot" aria-hidden="true"></span><span class="more-text">View more</span><span class="project-point-arrow" aria-hidden="true"></span></a><a class="desc-more" href="merchant-awards.html" data-for-point="annual-ranking"><span class="more-dot" aria-hidden="true"></span><span class="more-text">View more</span><span class="project-point-arrow" aria-hidden="true"></span></a></div>
+        </p></div>
             <div class="project-actions">
               <a class="pill panel" href="#">Motion design</a>
               <a class="pill panel" href="#">AIGC</a>
+              <a class="desc-more panel" href="merchant-awards.html" data-for-point="annual-report"><span class="more-dot" aria-hidden="true"></span><span class="more-text">View more</span><span class="project-point-arrow" aria-hidden="true"></span></a><a class="desc-more panel" href="merchant-awards.html" data-for-point="promo-video"><span class="more-dot" aria-hidden="true"></span><span class="more-text">View more</span><span class="project-point-arrow" aria-hidden="true"></span></a><a class="desc-more panel" href="merchant-awards.html" data-for-point="annual-ranking"><span class="more-dot" aria-hidden="true"></span><span class="more-text">View more</span><span class="project-point-arrow" aria-hidden="true"></span></a>
             </div>
           </div>
           <div class="project-points panel" data-project-points="annual" style="font-size: 20px; font-weight: 400; color: rgb(138, 140, 160); line-height: 2.25; padding-top: 10px; padding-bottom: 10px; opacity: 1;" data-text-id="text-13"><p class="project-point is-active" data-project-point="annual-report" data-project-desc="通过年度商家榜单给获奖商家颁奖，提高荣誉感，同时年度报告展示给商家亮眼经营数据，增强商家经营信心，提高分享率；另外根据主视觉延展宣发视频作为外宣渠道。" role="button" tabindex="0"><span class="project-point-label">年度报告</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="promo-video" role="button" tabindex="0"><span class="project-point-label">宣发视频</span><span class="project-point-arrow" aria-hidden="true"></span></p><p class="project-point" data-project-point="annual-ranking" role="button" tabindex="0"><span class="project-point-label">年度榜单</span><span class="project-point-arrow" aria-hidden="true"></span></p>
@@ -6234,7 +6250,7 @@ Discription">个卖首页改版：个卖首页框架优化，突出强化待办�
         
           
         </p>
-          <a class="desc-more panel" href="ui-automation.html" style="margin:0; padding:8px 24px; border-radius:999px; font-size:21px; color:#8A8CA0;"><span class="more-dot" aria-hidden="true"></span><span class="more-text">View more</span><span class="project-point-arrow" aria-hidden="true"></span></a>
+          <a class="desc-more panel" href="ui-automation.html" style="margin:0;"><span class="more-dot" aria-hidden="true"></span><span class="more-text">View more</span><span class="project-point-arrow" aria-hidden="true"></span></a>
         </div>
 
         <div class="ui-auto-row" aria-label="UI 自动化演示模块" style="--ui-auto-h: 401px;">
