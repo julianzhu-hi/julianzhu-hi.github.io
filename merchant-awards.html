@@ -114,6 +114,10 @@
     }
     .next-link:hover .next-arrow { width: 34px; transform: translateX(6px); }
 
+    /* 顶导航自动隐藏：向下浏览收起，向上滚动 / hover 顶部时展示 */
+    header.site-header { transition: transform 320ms ease; will-change: transform; }
+    header.site-header.is-hidden { transform: translateY(-100%); }
+
     /* ---- 主体 ---- */
     .case {
       display: flex;
@@ -748,6 +752,28 @@
       });
       box.addEventListener("click", close);
       document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+    })();
+  </script>
+  <script>
+    // 顶导航自动隐藏：向下滚动收起，向上滚动或鼠标移到页面顶部区域时展示。
+    (() => {
+      const header = document.querySelector("header.site-header");
+      if (!header) return;
+      let lastY = window.scrollY, hovering = false, ticking = false;
+      function apply() {
+        ticking = false;
+        const y = window.scrollY;
+        if (hovering || y <= 8) header.classList.remove("is-hidden");
+        else if (y > lastY + 4 && y > 80) header.classList.add("is-hidden");
+        else if (y < lastY - 4) header.classList.remove("is-hidden");
+        lastY = y;
+      }
+      window.addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(apply); } }, { passive: true });
+      window.addEventListener("mousemove", (e) => {
+        const nearTop = e.clientY <= 72;
+        if (nearTop && !hovering) { hovering = true; header.classList.remove("is-hidden"); }
+        else if (!nearTop && hovering) { hovering = false; }
+      }, { passive: true });
     })();
   </script>
 </body></html>
