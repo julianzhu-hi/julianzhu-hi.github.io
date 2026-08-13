@@ -470,6 +470,11 @@
     .prompt-row .prompt-skel .ps-body{flex:1}
     .prompt-row .agent-cards{flex:1}
     .prompt-row .agent-cards > .agent-card{flex:1}
+    /* 点击放大（灯箱）：工作流切图 + 成果展示图 */
+    .shot, .showcase-shot { cursor: zoom-in; }
+    .lightbox { position: fixed; inset: 0; z-index: 9999; display: none; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.86); padding: 24px; cursor: zoom-out; opacity: 0; transition: opacity 200ms ease; }
+    .lightbox.is-open { display: flex; opacity: 1; }
+    .lightbox img { max-width: 96vw; max-height: 94vh; width: auto; height: auto; border-radius: 8px; box-shadow: 0 12px 48px rgba(0, 0, 0, 0.5); }
   </style></head>
 <body>
   <header class="site-header">
@@ -857,6 +862,22 @@
         if (nearTop && !hovering) { hovering = true; header.classList.remove("is-hidden"); }
         else if (!nearTop && hovering) { hovering = false; }
       }, { passive: true });
+    })();
+
+    // 点击图片放大（灯箱）：工作流切图 + 成果展示图；点背景或按 Esc 关闭。
+    (() => {
+      const box = document.createElement("div");
+      box.className = "lightbox";
+      box.innerHTML = '<img loading="lazy" decoding="async" alt="">';
+      document.body.appendChild(box);
+      const bimg = box.querySelector("img");
+      const open = (src, alt) => { bimg.src = src; bimg.alt = alt || ""; box.classList.add("is-open"); document.body.style.overflow = "hidden"; };
+      const close = () => { box.classList.remove("is-open"); document.body.style.overflow = ""; };
+      document.querySelectorAll(".shot, .showcase-shot").forEach((img) => {
+        img.addEventListener("click", () => open(img.currentSrc || img.src, img.alt));
+      });
+      box.addEventListener("click", close);
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
     })();
   </script>
 </body></html>
